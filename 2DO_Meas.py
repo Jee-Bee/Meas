@@ -48,7 +48,8 @@
 # |_ Impulse response   0
 # |_ Cepstrum           0
 # Measuremnets (class)
-# |_ play/rec audio     5
+# |_ Add Class??
+# |_ play/rec audio     5    30 Jan 2016
 # |_ play/rec vibr      1
 # |_Impact              1
 #   |_ buffer wait      0
@@ -68,7 +69,7 @@
 
 
 # Signal improve (sub class of transform/spectra)
-# |_ RMS                5       4 - 01 - 2016
+# |_ RMS                5       04 Feb 2016
 # |_ peak finder        2
 # |_ avereiging         3
 # |_ Windowfunction     4
@@ -99,7 +100,7 @@
 # Filters ?
 # ERROR                 4
 # Linking folders       5
-# git Repository        5
+# git Repository        5   05 Feb 2016
 
 # GUI  (Make class??)               
 # |_ layout             0
