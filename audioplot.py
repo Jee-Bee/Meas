@@ -2,20 +2,21 @@
 """
 Created on Wed Jan 27 16:45:59 2016
 
-@author: enjbwink
+@author: Jee-Bee jBae (c) 2016
 """
 
 from scipy.io import wavfile
 from numpy import arange
 import matplotlib.pylab as plt
-#import RMS
+from scripts import *
+import RMS as RMS
 
 import sounddevice as sd
 
 
-import numpy as np
+#import numpy as np
 
-def RMS (sig):
+#def RMS (sig):
 #    if isinstance( sig, ( int ) ) == True:
 #        sig_rms = sig/(2**15)
 #        rmsarray = np.sqrt((1/len(sig_rms))*np.sum(sig_rms**2))*sig
@@ -23,7 +24,7 @@ def RMS (sig):
 #    elif isinstance( sig, ( float ) ) == True:
 #        rmsarray = np.sqrt((1/len(sig_rms))*np.sum(sig_rms**2))*sig
 #        return rmsarray
-    return np.sqrt((1/len(sig))*np.sum(sig**2))*sig
+#    return np.sqrt((1/len(sig))*np.sum(sig**2))*sig
 #    return np.sqrt((1/len(sig_rms))*np.sum(sig_rms**2))*sig
 #    return np.sqrt((1/len(sig))*np.sum(sig**2))
 
@@ -67,7 +68,8 @@ t = arange(0,len(data)/fs,1/fs)
 ##plt.draw
 #plt.show()
 
-rmssig = RMS(data)
+#rmssig = RMS(data)
+rmssig = RMS.RMS(data)
 
 #crestsig = Crest(data) 
 [peak,rms,crestsig] = Crest(data)
