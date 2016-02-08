@@ -1,13 +1,14 @@
-import matplotlib.pylab
-from pylab import *
+import matplotlib.pylab as plt
+#from pylab import *
 
-t = arange(0.0, 2.0, 0.01)
-s = sin(2*pi*t)
-plot(t, s)
 
-xlabel('time (s)')
-ylabel('voltage (mV)')
-title('About as simple as it gets, folks')
-grid(True)
-savefig("test.png")
-show()
+t = plt.arange(0.0, 2.0, 0.01)
+s = plt.sin(2*plt.pi*t)
+plt.plot(t, s)
+
+plt.xlabel('time (s)')
+plt.ylabel('voltage (mV)')
+plt.title('About as simple as it gets, folks')
+plt.grid(True)
+plt.savefig("test.png")
+plt.show()

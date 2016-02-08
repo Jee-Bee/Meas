@@ -8,37 +8,18 @@ Created on Wed Jan 27 16:45:59 2016
 from scipy.io import wavfile
 from numpy import arange
 import matplotlib.pylab as plt
-from scripts import *
-import RMS as RMS
+from scripts import RMS
+#import RMS as RMS
 
 import sounddevice as sd
 
 
-#import numpy as np
-
-#def RMS (sig):
-#    if isinstance( sig, ( int ) ) == True:
-#        sig_rms = sig/(2**15)
-#        rmsarray = np.sqrt((1/len(sig_rms))*np.sum(sig_rms**2))*sig
-#        return rmsarray
-#    elif isinstance( sig, ( float ) ) == True:
-#        rmsarray = np.sqrt((1/len(sig_rms))*np.sum(sig_rms**2))*sig
-#        return rmsarray
-#    return np.sqrt((1/len(sig))*np.sum(sig**2))*sig
-#    return np.sqrt((1/len(sig_rms))*np.sum(sig_rms**2))*sig
-#    return np.sqrt((1/len(sig))*np.sum(sig**2))
-
-def Crest (sig):  # Crest Factor singe value from array
-    rms = RMS(sig)
-    peak = abs(sig)
-    C = sum(peak/rms)/len(sig)
-    return(peak, rms,C)
-#    return (temp, C)
+import numpy as np
 
 
 # Samples for internal use only. Just test data for test Results
 #[fs,data] = wavfile.read('15 Sample 15Sec.wav')
-[fs,data] = wavfile.read('09 Sample 15sec.wav')#,dtype=float)
+[fs,data] = wavfile.read("09 Sample 15sec.wav")#,dtype=float)
 data = data[2048:2048+4096:]
 
 data = data.astype(float)/(2**15)
@@ -72,7 +53,8 @@ t = arange(0,len(data)/fs,1/fs)
 rmssig = RMS.RMS(data)
 
 #crestsig = Crest(data) 
-[peak,rms,crestsig] = Crest(data)
+crest = RMS.Crest(data)
+
 
 #if len(t)< 100000:
 ##    mpl.RcParams()

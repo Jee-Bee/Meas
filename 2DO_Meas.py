@@ -53,6 +53,7 @@
 # |_ play/rec vibr      1
 # |_Impact              1
 #   |_ buffer wait      0
+#   |_ gate
 #   |_ save impact      0
 # |_ 2 channels         0
 # |_ multi channel      0

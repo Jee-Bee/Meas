@@ -17,17 +17,24 @@ if sys.platform.startswith('linux'):
     pathtests = "tests/"
     pathscripts = "scripts/"
 elif sys.platform.startswith('win32'):
-    pass
+    currentdir = os.path.dirname(os.path.realpath(__file__))
+    pathtests = "tests\\"
+    pathscripts = "scripts\\"
 elif sys.platform.startswith('cygwin'):
     currentdir = os.path.dirname(os.path.realpath(__file__))
-    pathtests = "tests\"
-    pathscripts = "scripts\"
+    pathtests = "tests\\"
+    pathscripts = "scripts\\"
 elif sys.platform.startswith('darwin'):
     pass
 
 
 # Run script from path
+from tests import print_script
+print_script
 
+
+from tests import simple_plot
+simple_plot # figures don't work...
 
 #runningscript = "noise_test.py"
-runningscript = "simple_plot.py"
+#runningscript = "simple_plot.py"

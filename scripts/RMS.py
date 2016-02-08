@@ -13,6 +13,25 @@ import numpy as np
 
 # http://samcarcagno.altervista.org/blog/basic-sound-processing-python/
 
+def zero_check(vals):
+    (rows,cols) = np.shape(vals)
+    delrows = []
+    for idx in range(rows):
+        for idy in range(cols):
+            if vals[idx][idy] == 0:
+                if len(delrows) == 0:
+                    delrows.append(idx)
+                    print(idx, idy)
+                elif delrows[-1] == idx:
+                    pass 
+                else:
+                    delrows.append(idx)
+                    print(idx, idy)
+            else:
+                pass
+    vals_no0 = np.delete(vals, delrows, 0)
+    return vals_no0
+
 def RMS (sig):
     return np.sqrt((1/len(sig))*np.sum(sig**2))*sig
 
@@ -32,22 +51,22 @@ def Crestarr (sig):  # Crest Factor array
     return (C)
 
 def Crest (sig):  # Crest Factor singe value from array
-    rms = RMS(sig)
+    rms = RMS(abs(sig))
     peak = abs(sig)
-    C = sum(peak/rms)/len(sig)  # peak/rms is bij 0/0 NAN... Fix this
-    print(peak, rms)
-#    C = sum(abs(sig))/sum(rms)
-#    C = sum(Crestarr (sig))
+    C_zero = zero_check(abs(peak/rms))
+    C = sum(C_zero)/len(sig)  # peak/rms is bij 0/0 NAN... Fix this - done
     return (C)
 
 def PAPR (sig):  # Peak to Average Power Ratio
     rms =np.sqrt((1/len(sig))*np.sum(sig**2))
-    papr = sum((abs(sig)**2)/(rms**2))/len(sig)
+    papr_zero = zero_check((abs(sig)**2)/(rms**2))
+    papr = sum((papr_zero)/len(sig))
     return (papr)
 
 def PAPR_dB (sig):  # Peak to Average Power Ratio
     rms =np.sqrt((1/len(sig))*np.sum(sig**2))
-    papr_dB = 10* np.log10( sum((abs(sig)**2)/(rms**2))/len(sig) )
+    papr_zero = zero_check((abs(sig)**2)/(rms**2))
+    papr_dB = 10* np.log10( sum(papr_zero)/len(sig) )
     return (papr_dB)
 
 # par
