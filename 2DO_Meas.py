@@ -47,6 +47,8 @@
 # |_ Transferfunction   0
 # |_ Impulse response   0
 # |_ Cepstrum           0
+# |_ more options Discrete (Co)Sine Transform (DCT/DST) Hilbert transform ...
+# ... Whas it tilbert an realtransform
 # Measuremnets (class)
 # |_ Add Class??
 # |_ play/rec audio     5    30 Jan 2016
@@ -97,6 +99,8 @@
 # RT60
 # Save Auto name date
 # Weighting(A B C and D)
+# |_ FFT values         3    09 feb 2016
+# |_ Transfer functions 1
 # Buffer
 # Filters ?
 # ERROR                 4

@@ -20,8 +20,8 @@ import scipy.fftpack as fft
 #
 def PSD (sig, fs, *arg, **kwargs):
     """
-    Calculate Power Spectral Density [W/Hz]
-    """"
+    Calculate Power Spectral Density [W // Hz]
+    """
     # sig, fs,window,smoothing, 
     # spectrum = complex(=real+imag)/amp+phase, Shift = yes # removed: side = singele/ double sided
     log2val = np.ceil(np.log2(len(sig)))
@@ -63,6 +63,9 @@ def PSD (sig, fs, *arg, **kwargs):
 
 
 def PS (sig, fs, *arg, **kwargs):
+    """
+    Calculate Power Spectrum [W]
+    """
     # sig, fs,window,smoothing, 
     # spectrum = complex(=real+imag)/amp+phase, Shift = yes # removed: side = singele/ double sided
     log2val = np.ceil(np.log2(len(sig)))
@@ -97,16 +100,21 @@ def PS (sig, fs, *arg, **kwargs):
 
 
 def AS (sig, fs, *arg, **kwargs):
+    """
+    Calculate Amplitude Spectrum [v // g // ...]
+    """
     # sig, fs,window,smoothing, 
     # spectrum = complex(=real+imag)/amp+phase, Shift = yes # removed: side = singele/ double sided
     log2val = np.ceil(np.log2(len(sig)))
     nfft = 2**log2val
     if kwargs == []:
         spectrum = 'MagPh'
-#        side = 'single'
-    elif spectrum == ('MagPh' or 'Complex'):
-        pass
-#    elif side == ('single' or 'double' or 'single0'):
+        side = 'single'
+    elif spectrum == 'MagPh' :
+        side = 'single'
+    elif spectrum == 'Complex':
+        side == double
+    elif side == ('single' or 'double' or 'single0'):
 #        pass
     else:
         pass #place error here wrong input value
