@@ -2,7 +2,7 @@
 """
 Created on Wed Jan  6 10:34:31 2016
 
-@author: enjbwink
+@author: Jee-Bee for jBae (c) 2016
 """
 import numpy as np
 from scipy.fftpack import fft, fftshift
@@ -40,6 +40,10 @@ def partzwind(N):
     return (x,w)
 ##    if (idx < 3) == True:
 
+#
+# -----------------------------------------------------------------------------
+#
+
 def genhamwind(N,alpha,beta):
     w=np.zeros(N)
     x=np.zeros(N)
@@ -58,6 +62,64 @@ def hamwind(N):
     beta = 1 - alpha
     [x,w] = genhamwind(N,alpha,beta)
     return (x,w)
+
+#
+# -----------------------------------------------------------------------------
+#
+
+def coswind (N):
+    w = np.zeros(N)
+    x = np.zeros(N)
+    alpha = 1  # rectangular window alpha = 0; cos window alpha = 1; Hann window alpha =2.
+    for idx in range(N):
+        w[idx] = np.cos((np.pi * idx/(N-1)) - np.pi/2)**alpha
+        x[idx] = idx
+    return (x,w)
+
+#
+# -----------------------------------------------------------------------------
+#
+
+def gengausswind(N,sigma,p): 
+    w = np.zeros(N)
+    x= np.zeros(N)
+    for idx in range(N):
+        num = idx-(N-1)/2
+        denum = sigma*(N-1)/2
+        w[idx] = np.e**((-1/2)*( num/denum )**p )
+        x[idx] = idx
+    return (x,w)
+
+def gausswind(N): 
+    sigma = 0.5
+    p = 2
+    [x,w] = gengausswind(N,sigma,p)
+    return (x,w)
+
+#
+# -----------------------------------------------------------------------------
+#
+
+def Tukeywind (N):
+    w = np.zeros(N)
+    x = np.zeros(N)
+    alpha = 0.5
+    for idx in range(N):
+        if idx <= int(alpha*(N-1)/2):
+            w[idx] = 1/2*(1 + np.cos(np.pi*(2*idx/(alpha * (N-1)) -1) ) )
+            x[idx] = idx
+        elif idx >= int(alpha*(N-1)/2) and idx <= int((N-1)*(1-alpha/2)):
+            w[idx] = 1
+            x[idx] = idx
+        elif idx >= int((N-1)*(1-alpha/2)) and idx <= (N-1):
+            w[idx] = 1/2*(1 + np.cos(np.pi*(2*idx/(alpha * (N-1)) - 2/alpha + 1) ) )
+            x[idx] = idx
+    return (x,w)
+
+
+#
+# -----------------------------------------------------------------------------
+#
 
 N = int(1024/8)
 t = np.arange(0,N)
@@ -83,7 +145,7 @@ plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.real(SINP/N)), plt.stem(
 #N = 256
 [wt,x] = triwind(N)
 [x,whan] = hanwind(N)
-[x,wham] = partzwind(N)
+[x,wham] = Tukeywind(N)
 
 WSINP = fftshift(fft(sinp*wt))
 
