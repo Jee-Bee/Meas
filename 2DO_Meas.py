@@ -109,7 +109,7 @@
 # |_ graphs if needed   0
 # |_ Live update plot   2
 # Defaults              2
-
+# Version manager
 
 # Moving targets detection
 # Direction sound comming
