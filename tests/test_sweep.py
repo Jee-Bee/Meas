@@ -16,6 +16,10 @@ t1 = 10
 t = np.arange(0,t1,1/44100)#[numpy.newaxis]; 
 print(t.shape)
 
+if len(t)> 100000:
+#    mpl.RcParams()
+    plt.rcParams['agg.path.chunksize'] = 10000
+
 sine = np.sin(2*np.pi*f0*t)
 
 plt.plot(t, sine)
@@ -24,8 +28,13 @@ plt.ylabel('sin(t)')
 plt.axis('tight')
 plt.show()
 
+
 sweep = sig.chirp(t,f0,t1,f1,'linear',90) 
 # http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.signal.chirp.html
+
+if len(t)> 100000:
+#    mpl.RcParams()
+    plt.rcParams['agg.path.chunksize'] = 10000
 
 plt.plot(t, sweep)
 plt.xlabel('Angle [rad]')
