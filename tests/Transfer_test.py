@@ -16,7 +16,7 @@ Created on Tue Jan 26 14:32:59 2016
 
 import numpy as np
 import scipy.signal as sig
-from scipy.fftpack import fft, fftshift
+from scipy.fftpack import fft, fftshift, ifft
 import matplotlib.pyplot as plt
 
 f= np.array([20, 20000])  # [Hz] Frequency
@@ -85,3 +85,25 @@ plt.subplot(2,1,1); plt.semilogx(F,abs(OUT[val:]))
 plt.subplot(2,1,2); plt.semilogx(F,abs(H1[val:]));# hold all # nothing
 plt.subplot(2,1,2); plt.semilogx(F,abs(H2[val:])); # Ampliefied times 2
 plt.subplot(2,1,2); plt.semilogx(F,abs(H3[val:])); plt.xlim(1, 22.5*10**3); # filtered
+
+
+# Calculate ifft to check what is result of H(0)
+IH1 = ifft( fftshift (H1))
+IH2 = ifft( fftshift (H2))
+IH3 = ifft( fftshift (H3))
+
+plt.figure()
+plt.plot(t,IH1)# hold all;
+plt.plot(t,IH2);
+plt.plot(t,IH3);
+
+
+#
+#---TEST-----------TEST------------TEST----------TEST----
+#
+#SIH3 = fftshift (ifft(H3)) 
+#ISH3 = ifft( fftshift (H3))
+#
+#plt.figure()
+##plt.plot(t,SIH3)# hold all;
+#plt.plot(t,ISH3);
