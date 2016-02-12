@@ -43,6 +43,7 @@ crest = RMS.Crest(data)
 [F,DATA] = Transform.FFT(data,fs)
 [F,RMSSIG] = Transform.FFT(rmssig,fs)
 
+
 plt.figure()
 plt.subplot(2,1,1), plt.plot(t,data)
 plt.subplot(2,1,1), plt.plot(t,rmssig)
@@ -58,3 +59,9 @@ sd.play(data,fs)
 #sd.wait()
 
 #sd.stop()
+
+from scripts.DefaultFigures import Time, SpecMag, SpecPh
+plt.figure()
+Time(t, data)
+plt.figure()
+SpecMag(F,DATA)
