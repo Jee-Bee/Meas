@@ -74,6 +74,7 @@
 # Signal improve (sub class of transform/spectra)
 # |_ RMS                5       04 Feb 2016
 # |_ peak finder        2
+# |_ interpolation      2
 # |_ avereiging         3
 # |_ Windowfunction     4
 # |_ Smoothing          3
