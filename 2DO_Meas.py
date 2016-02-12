@@ -40,12 +40,12 @@
 # V^2 * Hz−1 for the PSD and V^2*s * Hz−1 for the ESD (energy spectral density)
 # |_ multi channel
 # Transforms (make class)
-# |_ Fourier FFT/ DFT   5
+# |_ Fourier FFT/ DFT   5    12 Feb 2016() just data no real/imag  or Amp phase; no smooting and windowing
 #    |_ Wrap phase      3
 #    |_ STFT
 # |_ Laplace/ Z-trans   0
-# |_ Transferfunction   0
-# |_ Impulse response   0
+# |_ Transferfunction   2    12 Feb 2016 (No exeptions or extra parameters)
+# |_ Impulse response   2
 # |_ Cepstrum           0
 # |_ more options Discrete (Co)Sine Transform (DCT/DST) Hilbert transform ...
 # ... Whas it tilbert an realtransform
@@ -74,6 +74,7 @@
 # Signal improve (sub class of transform/spectra)
 # |_ RMS                5       04 Feb 2016
 # |_ peak finder        2
+# |_ interpolation      2
 # |_ avereiging         3
 # |_ Windowfunction     4
 # |_ Smoothing          3

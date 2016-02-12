@@ -17,13 +17,14 @@ Created on Tue Dec 29 12:26:12 2015
 # |_                  0
 # |_ Live updating    2     (FuncAnimation in Matplotlib)
 
+import numpy as np
 import matplotlib.pylab as plt
 #import matplotlib as mpl
 #http://matplotlib.org/api/mlab_api.html
 
 # what variable needed:
-# Signal x axis (t[sec]/ F[Hz])
-# Signal y axis (t[sec]/ f[Hz]/Amp [db /V /V RMS / ... ])
+# Signal x axis (t[sec]/ t_samples[-]/ F[Hz]/ Freuencynr[-] / Quefrecy[?])
+# Signal y axis (t[sec]/ f[Hz]/Amp [db /V /V RMS / ... ], angle deg/rad)
 # Limit X axis
 # Limit Y axis
 # Label X Axis
@@ -32,37 +33,55 @@ import matplotlib.pylab as plt
 # Title
 # Save Yes no + sizes
 
-#
+#http://matplotlib.org/users/shell.html
+##create big-expensive-figure
+#ioff()      # turn updates off
+#title('now how much would you pay?')
+#xticklabels(fontsize=20, color='green')
+#draw()      # force a draw
+#savefig('alldone', dpi=300)
+#close()
+#ion()      # turn updating back on
+#plot(rand(20), mfc='g', mec='r', ms=40, mew=4, ls='--', lw=3)
 
-def time (timear,signal,dimension):
+# save figure:
+#plt.savefig("test.png")
+
+def Time (timear,signal):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
     plt.plot(timear, signal)    
     plt.xlabel('time (s)')
     plt.ylabel('voltage (mV)')
     plt.title('About as simple as it gets, folks')
     plt.grid(True)
-    plt.savefig("test.png")
     plt.show()
 
 
-def Freq (freqar,signal,dimension):
-    plt.plot(freqar, signal)    
-    plt.xlabel('time (s)')
+def SpecMag (F,SIGNAL):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
+    plt.plot(F, SIGNAL)    
+    plt.xlabel('frequency (Hz)')
     plt.ylabel('voltage (mV)')
     plt.title('About as simple as it gets, folks')
     plt.grid(True)
-    plt.savefig("test.png")
     plt.show()
 
-def bode (bodear,signal,dimension):
+def SpecPh (F,SIGNAL):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
+    plt.plot(F, SIGNAL)    
+    plt.xlabel('frequency (Hz)')
+    plt.ylabel('phase (deg)')
+    plt.title('About as simple as it gets, folks')
+    plt.grid(True)
+    plt.show()
+
+def Bode (bodear,signal,dimension):  # Dimension is unit type as V(olt) W(att), etc
+    [m,n] = np.size(bodear)
     plt.plot(bodear, signal)    
     plt.xlabel('time (s)')
     plt.ylabel('voltage (mV)')
     plt.title('About as simple as it gets, folks')
     plt.grid(True)
-    plt.savefig("test.png")
     plt.show()
 
-def Spect (specar,signal,dimension):
+def Spect (specar,signal,dimension):  # Dimension is unit type as V(olt) W(att), etc
     plt.plot(specar, signal)    
     plt.xlabel('time (s)')
     plt.ylabel('voltage (mV)')
@@ -71,13 +90,12 @@ def Spect (specar,signal,dimension):
     plt.savefig("test.png")
     plt.show()
 
-def water (waterar,signal,dimension):
+def water (waterar,signal,dimension):  # Dimension is unit type as V(olt) W(att), etc
     plt.plot(waterar, signal)    
     plt.xlabel('time (s)')
     plt.ylabel('voltage (mV)')
     plt.title('About as simple as it gets, folks')
     plt.grid(True)
-    plt.savefig("test.png")
     plt.show()
 
 

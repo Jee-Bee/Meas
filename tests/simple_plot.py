@@ -1,9 +1,9 @@
 import matplotlib.pylab as plt
 #from pylab import *
 
-
-t = plt.arange(0.0, 2.0, 0.01)
-s = plt.sin(2*plt.pi*t)
+fs = 512
+t = plt.arange(0.0, 2.0, 1/fs)
+s = plt.sin(250*plt.pi*t)
 plt.plot(t, s)
 
 plt.xlabel('time (s)')
