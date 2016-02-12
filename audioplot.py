@@ -8,13 +8,12 @@ Created on Wed Jan 27 16:45:59 2016
 from scipy.io import wavfile
 from numpy import arange
 import matplotlib.pylab as plt
-from scripts import RMS
+from scripts import RMS, Transform
 #import RMS as RMS
 
 import sounddevice as sd
 
-
-import numpy as np
+#import numpy as np
 
 
 # Samples for internal use only. Just test data for test Results
@@ -27,27 +26,6 @@ data = data.astype(float)/(2**15)
 
 t = arange(0,len(data)/fs,1/fs)
 
-#http://matplotlib.org/users/shell.html
-#ioff()      # turn updates off
-#title('now how much would you pay?')
-#xticklabels(fontsize=20, color='green')
-#draw()      # force a draw
-#savefig('alldone', dpi=300)
-#close()
-#ion()      # turn updating back on
-#plot(rand(20), mfc='g', mec='r', ms=40, mew=4, ls='--', lw=3)
-
-
-#sinewave = np.sin(2*np.pi * 100 *t)
-#rmssine = RMS(sinewave)
-#[peak,rms,crestsine] = Crest(sinewave)
-#
-#C=peak/rms  # peak/rms is bij 0/0 NAN... Fix this
-
-#plt.figure()
-#plt.plot(t,sinewave,t,rmssine)
-##plt.draw
-#plt.show()
 
 #rmssig = RMS(data)
 rmssig = RMS.RMS(data)
@@ -60,11 +38,16 @@ crest = RMS.Crest(data)
 ##    mpl.RcParams()
 #    plt.rcParams['agg.path.chunksize'] = 10000
 
+#
+# FFT calculation
+[F,DATA] = Transform.FFT(data,fs)
+[F,RMSSIG] = Transform.FFT(rmssig,fs)
+
 plt.figure()
-plt.plot(t,data)
-#plt.show()
-#plt.figure()
-plt.plot(t,rmssig)
+plt.subplot(2,1,1), plt.plot(t,data)
+plt.subplot(2,1,1), plt.plot(t,rmssig)
+plt.subplot(2,1,2), plt.plot(F,DATA)
+plt.subplot(2,1,2), plt.plot(F,RMSSIG)
 #plt.draw
 plt.show()
 
