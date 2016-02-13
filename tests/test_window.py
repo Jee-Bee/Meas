@@ -124,16 +124,19 @@ def Tukeywind (N):
 N = int(1024/8)
 t = np.arange(0,N)
 
-sinnp = np.sin(2 * np.pi/N * 10 * t)
-sinp = np.sin(2 * np.pi/N * 10.3 * t+(45*np.pi/180))
-SINNP = fftshift(fft(sinnp))
-SINP = fftshift(fft(sinp))
+sin_f = np.sin(2 * np.pi/N * 10 * t)  # Fit
+sin_nf = np.sin(2 * np.pi/N * 10.3 * t+(45*np.pi/180))  # No fit 
+SIN_f = fftshift(fft(sin_f))  # Fit
+SIN_nf = fftshift(fft(sin_nf))  # No fit
 F = np.linspace(0,N/2,N/2+1)
 
 plt.figure()
-plt.subplot(3,1,1), plt.plot(t,sinnp,t,sinp)
-plt.subplot(3,1,2), plt.stem(np.linspace(-N/2,N/2,N),np.real(SINNP/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SINNP/N),'g')
-plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.real(SINP/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SINP/N), 'g')
+plt.subplot(3,1,1), plt.plot(t,sin_f,t,sin_nf)
+plt.title("time: 2 sines")
+plt.subplot(3,1,2), plt.stem(np.linspace(-N/2,N/2,N),np.real(SIN_f/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_f/N),'g')
+plt.title("Spectrum Fit - Real and Imag No Window")
+plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.real(SIN_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_nf/N), 'g')
+plt.title("Spectrum No Fit - Real and Imag No Window")
 
 #sig = np.sin (2 * np.pi/N * 2 * t)
 #rand = np.random.uniform(1,-1,N)
@@ -147,11 +150,14 @@ plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.real(SINP/N)), plt.stem(
 [x,whan] = hanwind(N)
 [x,wham] = Tukeywind(N)
 
-WSINP = fftshift(fft(sinp*wt))
+WIND_nf = fftshift(fft(sin_nf*wt))
 
 plt.figure()
 #plt.subplot(3,1,1), plt.plot(t,sinp,t,sinp*wt)
 #plt.subplot(3,1,1), plt.plot(x,whan)
 plt.subplot(3,1,1), plt.plot(x,wham)
-plt.subplot(3,1,2), plt.stem(np.linspace(-N/2,N/2,N),np.real(SINP/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SINP/N), 'g')
-plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.real(WSINP/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(WSINP/N), 'g')
+plt.title("Window function")
+plt.subplot(3,1,2), plt.stem(np.linspace(-N/2,N/2,N),np.real(SIN_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_nf/N), 'g')
+plt.title("Spectrum No Fit - Real and Imag No Window")
+plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.real(WIND_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(WIND_nf/N), 'g')
+plt.title("Spectrum No Fit - Real and Imag with Window")
