@@ -94,112 +94,168 @@
      <widget class="QWidget" name="">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>14</y>
-        <width>331</width>
-        <height>341</height>
+        <x>15</x>
+        <y>30</y>
+        <width>341</width>
+        <height>371</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <property name="horizontalSpacing">
-        <number>10</number>
-       </property>
-       <property name="verticalSpacing">
-        <number>6</number>
-       </property>
-       <property name="margin">
-        <number>5</number>
-       </property>
-       <item row="5" column="0">
-        <widget class="QComboBox" name="SweepsSelect"/>
-       </item>
-       <item row="10" column="1">
-        <widget class="QDoubleSpinBox" name="EndFreqSpin">
-         <property name="minimumSize">
-          <size>
-           <width>65</width>
-           <height>0</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
-        <widget class="QLabel" name="SigTypeLab">
-         <property name="text">
-          <string>Signal Type</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="QLabel" name="NoSweepsLab">
-         <property name="text">
-          <string>No Sweeps</string>
-         </property>
-        </widget>
-       </item>
-       <item row="9" column="0">
-        <widget class="QLabel" name="EndFreqLab">
-         <property name="text">
-          <string>End Frequency</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QComboBox" name="LengthSelect"/>
-       </item>
-       <item row="10" column="0">
-        <widget class="QSlider" name="EndFreqSlid">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="8" column="0">
-        <widget class="QSlider" name="StartFreqSlid_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="6" column="0">
-        <widget class="QLabel" name="StartFreqLab">
-         <property name="text">
-          <string>Start Frequecy</string>
-         </property>
-        </widget>
+        <layout class="QFormLayout" name="formLayout_4">
+         <item row="0" column="0">
+          <widget class="QLabel" name="SigTypeLab">
+           <property name="text">
+            <string>Signal Type</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QComboBox" name="SigTypeSelect">
+           <property name="minimumSize">
+            <size>
+             <width>162</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="1" column="0">
-        <widget class="QComboBox" name="SigTypeSelect"/>
+        <layout class="QFormLayout" name="formLayout_3">
+         <item row="0" column="0">
+          <widget class="QLabel" name="LengthLab">
+           <property name="text">
+            <string>Length Signal</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QComboBox" name="LengthSelect">
+           <property name="minimumSize">
+            <size>
+             <width>162</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item row="2" column="0">
-        <widget class="QLabel" name="LengthLab">
-         <property name="text">
-          <string>Length Signal</string>
-         </property>
-        </widget>
+        <layout class="QFormLayout" name="formLayout_5">
+         <item row="0" column="0">
+          <widget class="QLabel" name="NoSweepsLab">
+           <property name="text">
+            <string>No Sweeps</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QComboBox" name="SweepsSelect">
+           <property name="minimumSize">
+            <size>
+             <width>162</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="accessibleDescription">
+            <string/>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
-       <item row="8" column="1">
-        <widget class="QDoubleSpinBox" name="StartFreqSpin">
-         <property name="minimumSize">
-          <size>
-           <width>90</width>
-           <height>0</height>
-          </size>
-         </property>
-        </widget>
+       <item row="3" column="0">
+        <layout class="QFormLayout" name="formLayout_6">
+         <item row="0" column="0">
+          <widget class="QLabel" name="StartFreqLab">
+           <property name="text">
+            <string>Start Frequecy</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QSlider" name="StartFreqSlid_2">
+           <property name="minimumSize">
+            <size>
+             <width>162</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <number>100000</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="StartFreqSpin">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <double>100000.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>20.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="4" column="0">
+        <layout class="QFormLayout" name="formLayout_7">
+         <item row="0" column="0">
+          <widget class="QLabel" name="EndFreqLab">
+           <property name="text">
+            <string>End Frequency</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QSlider" name="EndFreqSlid">
+           <property name="minimumSize">
+            <size>
+             <width>162</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <number>100000</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="EndFreqSpin">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximum">
+            <double>100000.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>20000.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
-     <zorder>LengthLab</zorder>
-     <zorder>StartFreqLab</zorder>
-     <zorder>SigTypeLab</zorder>
-     <zorder>SigTypeSelect</zorder>
-     <zorder>NoSweepsLab</zorder>
-     <zorder>SweepsSelect</zorder>
-     <zorder>EndFreqLab</zorder>
-     <zorder>LengthSelect</zorder>
-     <zorder>StartFreqSlid_2</zorder>
-     <zorder>EndFreqSlid</zorder>
+     <zorder>layoutWidget</zorder>
      <zorder>SigLevel</zorder>
     </widget>
     <widget class="QWidget" name="LoadTab">
@@ -295,7 +351,7 @@
     <property name="title">
      <string>Figures</string>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>830</x>
@@ -328,12 +384,12 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>840</x>
        <y>250</y>
-       <width>31</width>
+       <width>34</width>
        <height>91</height>
       </rect>
      </property>
@@ -364,11 +420,8 @@
       </item>
      </layout>
     </widget>
-    <zorder></zorder>
-    <zorder>PlotBottom</zorder>
-    <zorder></zorder>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>420</x>
@@ -390,7 +443,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>420</x>
@@ -408,21 +461,13 @@
      </item>
     </layout>
    </widget>
+   <zorder>layoutWidget</zorder>
+   <zorder>layoutWidget</zorder>
    <zorder>Figures</zorder>
    <zorder>JbaeLogo</zorder>
-   <zorder>progressBar</zorder>
-   <zorder>dateTimeEdit</zorder>
-   <zorder>graphicsView</zorder>
-   <zorder>PlotBottom</zorder>
    <zorder>TestSig</zorder>
    <zorder>StartMeas</zorder>
    <zorder>tabWidget</zorder>
-   <zorder>toolButton</zorder>
-   <zorder>ZoomTButton</zorder>
-   <zorder>ViewPropTButton</zorder>
-   <zorder>ViewPropBButton</zorder>
-   <zorder>ZoomBButton</zorder>
-   <zorder>toolButton_6</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

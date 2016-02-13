@@ -54,8 +54,8 @@
     <rect>
      <x>290</x>
      <y>320</y>
-     <width>47</width>
-     <height>13</height>
+     <width>71</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
@@ -67,8 +67,8 @@
     <rect>
      <x>50</x>
      <y>30</y>
-     <width>47</width>
-     <height>13</height>
+     <width>81</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
@@ -80,8 +80,8 @@
     <rect>
      <x>50</x>
      <y>100</y>
-     <width>47</width>
-     <height>13</height>
+     <width>81</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
@@ -113,12 +113,12 @@
     <rect>
      <x>60</x>
      <y>180</y>
-     <width>47</width>
-     <height>13</height>
+     <width>101</width>
+     <height>16</height>
     </rect>
    </property>
    <property name="text">
-    <string>Signal level DB</string>
+    <string>Signal level dB</string>
    </property>
   </widget>
   <widget class="QDial" name="dial">
