@@ -32,11 +32,13 @@
 # |_                    0
 # |_ Live updating      2     (FuncAnimation in Matplotlib)
 # Spectra (make Clasas??)            
-# |_ FFT/ DFT = AS      5
+# |_ FFT/ DFT = AS = LS 5
 # |_ PS [W]             5
-# |_ (A)SD [V/sqrt(Hz)] 3
+# |_ (A)SD = LSD        3  [V/sqrt(Hz)] (LSD = Linear Spectrum Denisty)
 # |_ PSD [W/Hz]         5 
 # |_ ESD [W*s/Hz]       3
+# |_ ENBW (Effective Noise Band With)
+# |_ Normalized Equivalent Noise BandWidth (See Window >> 395068.pdf)
 # V^2 * Hz−1 for the PSD and V^2*s * Hz−1 for the ESD (energy spectral density)
 # |_ multi channel
 # Transforms (make class)
@@ -79,6 +81,11 @@
 # |_ Windowfunction     4
 # |_ Smoothing          3
 # |_ Overlap (spectrum)
+# |_ (Overlap correlation)
+# |_ Recomend Overlab ROV  (See Window >> 395068.pdf)
+# |_ Frequency bin calculations
+# |_ WOSA (Welch’s Overlapped Segmented Average) (See Window >> 395068.pdf)
+
 
 # multi signal analysis ((sub class of transform/spectra))
 # Mel Cepstrum Coefficents 
@@ -92,9 +99,10 @@
 # (peak to peak versus avg noise)
 # |_ THD
 # |_ SNR
+# |_ LSB (Least Significant Bit)
 
 # Diverse
-# Dimesions             4 [Volt/ g/ Hz/ Pa/ mV etc]
+# Dimesions             4 [Volt/ g/ Hz/ Pa/ mV etc Nob = Number of Bits]
 # Phase direction       0
 # group delay
 # RT60
