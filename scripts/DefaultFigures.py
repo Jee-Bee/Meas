@@ -2,7 +2,7 @@
 """
 Created on Tue Dec 29 12:26:12 2015
 
-@author: Jee-Bee
+@author: Jee-Bee for jBae (c)
 """
 
 # FUNCTION           PRIORITY  DATE FINISHED
@@ -19,6 +19,7 @@ Created on Tue Dec 29 12:26:12 2015
 
 import numpy as np
 import matplotlib.pylab as plt
+from mpl_toolkits.mplot3d import Axes3D
 #import matplotlib as mpl
 #http://matplotlib.org/api/mlab_api.html
 
@@ -47,56 +48,70 @@ import matplotlib.pylab as plt
 # save figure:
 #plt.savefig("test.png")
 
-def Time (timear,signal):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
-    plt.plot(timear, signal)    
-    plt.xlabel('time (s)')
-    plt.ylabel('voltage (mV)')
-    plt.title('About as simple as it gets, folks')
-    plt.grid(True)
-    plt.show()
+class defaultFigures():
+    
+    def __init__(self,signalx,signaly, signalz):
+#        if len(unit) <= 3:
+#            self.unit = unit
+#        else:
+#            print ("Unit vector is too long")
+        self.signalx = signalx
+        self.signaly = signaly
+        self.signalz = signalz
+#        pass
+    
 
-
-def SpecMag (F,SIGNAL):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
-    plt.plot(F, SIGNAL)    
-    plt.xlabel('frequency (Hz)')
-    plt.ylabel('voltage (mV)')
-    plt.title('About as simple as it gets, folks')
-    plt.grid(True)
-    plt.show()
-
-def SpecPh (F,SIGNAL):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
-    plt.plot(F, SIGNAL)    
-    plt.xlabel('frequency (Hz)')
-    plt.ylabel('phase (deg)')
-    plt.title('About as simple as it gets, folks')
-    plt.grid(True)
-    plt.show()
-
-def Bode (bodear,signal,dimension):  # Dimension is unit type as V(olt) W(att), etc
-    [m,n] = np.size(bodear)
-    plt.plot(bodear, signal)    
-    plt.xlabel('time (s)')
-    plt.ylabel('voltage (mV)')
-    plt.title('About as simple as it gets, folks')
-    plt.grid(True)
-    plt.show()
-
-def Spect (specar,signal,dimension):  # Dimension is unit type as V(olt) W(att), etc
-    plt.plot(specar, signal)    
-    plt.xlabel('time (s)')
-    plt.ylabel('voltage (mV)')
-    plt.title('About as simple as it gets, folks')
-    plt.grid(True)
-    plt.savefig("test.png")
-    plt.show()
-
-def water (waterar,signal,dimension):  # Dimension is unit type as V(olt) W(att), etc
-    plt.plot(waterar, signal)    
-    plt.xlabel('time (s)')
-    plt.ylabel('voltage (mV)')
-    plt.title('About as simple as it gets, folks')
-    plt.grid(True)
-    plt.show()
+    def Time (self):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
+        plt.plot(self.signalx, self.signaly)    
+        plt.xlabel('time (s)')
+        plt.ylabel('voltage (mV)')
+        plt.title('About as simple as it gets, folks')
+        plt.grid(True)
+        plt.show()
+    
+    
+    def SpecMag (self):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
+        plt.plot(plt.plot(self.signalx, self.signaly))    
+        plt.xlabel('frequency (Hz)')
+        plt.ylabel('voltage (mV)')
+        plt.title('About as simple as it gets, folks')
+        plt.grid(True)
+        plt.show()
+    
+    def SpecPh (self):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
+        plt.plot(plt.plot(self.signalx, self.signaly))    
+        plt.xlabel('frequency (Hz)')
+        plt.ylabel('phase (deg)')
+        plt.title('About as simple as it gets, folks')
+        plt.grid(True)
+        plt.show()
+    
+    def Bode (self,dimension):  # Dimension is unit type as V(olt) W(att), etc
+        [m,n] = np.size(self.signaly)
+        plt.plot(self.signalx, self.signaly)    
+        plt.xlabel('time (s)')
+        plt.ylabel('voltage (mV)')
+        plt.title('About as simple as it gets, folks')
+        plt.grid(True)
+        plt.show()
+    
+    def Spect (self,dimension):  # Dimension is unit type as V(olt) W(att), etc
+        Axes3D.plot_surface(self.signalx, self.signaly, self.signalz)
+        plt.xlabel('time (s)')
+        plt.ylabel('voltage (mV)')
+        plt.title('About as simple as it gets, folks')
+        plt.grid(True)
+        plt.savefig("test.png")
+        plt.show()
+    
+    def water (self,*argv):  # Dimension is unit type as V(olt) W(att), etc
+#        http://matplotlib.org/examples/mplot3d/polys3d_demo.html        
+        Axes3D.plot_surface(self.signalx, self.signaly, self.signalz)  # till better funcion    
+        plt.xlabel('time (s)')
+        plt.ylabel('voltage (mV)')
+        plt.title('About as simple as it gets, folks')
+        plt.grid(True)
+        plt.show()
 
 
 #def zero (zeeroar,signal,dimension):
