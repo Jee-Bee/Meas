@@ -26,6 +26,11 @@ def NFFT (x):
 def FFT (x,fs,*args, **kwargs):
     # sig, fs,Window_Type, Wwindow_size, smoothing, 
     # spectrum = complex(=real+imag)/amp+phase, Shift = True # removed: side = singele/ double sided
+#    fft of the form:
+#         N-1                      m*k
+#    y_m =sum x_k * exp ( -2pi * i ----)
+#         k=0                        N
+#    Therefore fft * 1/N to correct amplitude
     nfft = NFFT(x)
     N = len (x)
     if len(args) == 0:
