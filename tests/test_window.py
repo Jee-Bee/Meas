@@ -148,16 +148,22 @@ plt.title("Spectrum No Fit - Real and Imag No Window")
 #N = 256
 [wt,x] = triwind(N)
 [x,whan] = hanwind(N)
-[x,wham] = Tukeywind(N)
+[x,wcos] = coswind(N)
 
-WIND_nf = fftshift(fft(sin_nf*wt))
+WIND_nf = fftshift(fft(sin_nf*wcos))
 
 plt.figure()
 #plt.subplot(3,1,1), plt.plot(t,sinp,t,sinp*wt)
 #plt.subplot(3,1,1), plt.plot(x,whan)
-plt.subplot(3,1,1), plt.plot(x,wham)
+plt.subplot(3,1,1), plt.plot(x,wcos)
 plt.title("Window function")
 plt.subplot(3,1,2), plt.stem(np.linspace(-N/2,N/2,N),np.real(SIN_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_nf/N), 'g')
 plt.title("Spectrum No Fit - Real and Imag No Window")
 plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.real(WIND_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(WIND_nf/N), 'g')
 plt.title("Spectrum No Fit - Real and Imag with Window")
+
+
+plt.figure()
+plt.plot(np.linspace(-N/2,N/2,N),20*np.log10(abs(SIN_nf)))
+plt.plot(np.linspace(-N/2,N/2,N),20*np.log10(abs(WIND_nf)))
+plt.title("dB Spectrum No Window Vs. Windowed signal")
