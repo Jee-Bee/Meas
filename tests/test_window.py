@@ -4,7 +4,16 @@ Created on Wed Jan  6 10:34:31 2016
 
 @author: Jee-Bee for jBae (c) 2016
 """
+
+# used documents... 
+# Spectrum and spectral density estimation by the Discrete Fourier
+# transform (DFT), including a comprehensive list of window
+# functions and some new at-top windows.
+# (is 395068.pdf)
+# wikipedia for functions 
+
 import numpy as np
+from scipy.io import wavfile
 from scipy.fftpack import fft, fftshift
 import matplotlib.pylab as plt
 
@@ -121,22 +130,40 @@ def Tukeywind (N):
 # -----------------------------------------------------------------------------
 #
 
+# Vars
 N = int(1024/8)
 t = np.arange(0,N)
 
-sin_f = np.sin(2 * np.pi/N * 10 * t)  # Fit
-sin_nf = np.sin(2 * np.pi/N * 10.3 * t+(45*np.pi/180))  # No fit 
-SIN_f = fftshift(fft(sin_f))  # Fit
-SIN_nf = fftshift(fft(sin_nf))  # No fit
-F = np.linspace(0,N/2,N/2+1)
+# Method
+method = 'file' # options are 'signal' or 'file'
+if method == 'signal':
+    data_f = np.sin(2 * np.pi/N * 10 * t)  # Fit
+    data_nf = np.sin(2 * np.pi/N * 10.3 * t+(45*np.pi/180))  # No fit 
+    DATA_f = fftshift(fft(data_f))  # Fit
+    DATA_nf = fftshift(fft(data_nf))  # No fit
+    F = np.linspace(-N/2,N/2,N)
+elif method == 'file':
+    [fs,data] = wavfile.read("../09 Sample 15sec.wav")#,dtype=float)
+    data_nf = data[2048:2048+N:]
+    data_nf = np.reshape(np.delete(data_nf,0, 1),len(data_nf))
+    DATA_nf = fftshift(fft(data_nf))  # No fit
+    F = np.linspace(-N/2,N/2,N) #(0,N/2,N/2+1)
 
-plt.figure()
-plt.subplot(3,1,1), plt.plot(t,sin_f,t,sin_nf)
-plt.title("time: 2 sines")
-plt.subplot(3,1,2), plt.stem(np.linspace(-N/2,N/2,N),np.real(SIN_f/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_f/N),'g')
-plt.title("Spectrum Fit - Real and Imag No Window")
-plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.real(SIN_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_nf/N), 'g')
-plt.title("Spectrum No Fit - Real and Imag No Window")
+
+if method == 'signal':
+    plt.figure()
+    plt.subplot(3,1,1), plt.plot(t,data_f,t,data_nf)
+    plt.title("time: 2 sines")
+    plt.subplot(3,1,2), plt.stem(F,np.abs(DATA_f/N)), #plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_f/N),'g')
+    plt.title("Spectrum Fit - Absolut No Window")
+    plt.subplot(3,1,3), plt.stem(F,np.abs(DATA_nf/N)), #plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_nf/N), 'g')
+    plt.title("Spectrum No Fit - Absolut No Window")
+elif method == 'file':
+    plt.figure()
+    plt.subplot(2,1,1), plt.plot(t,data_nf)
+    plt.title("time: wav file")
+    plt.subplot(2,1,2), plt.stem(F,np.abs(DATA_nf/N)), #plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_nf/N), 'g')
+    plt.title("Spectrum No Fit - Absolut No Window")
 
 #sig = np.sin (2 * np.pi/N * 2 * t)
 #rand = np.random.uniform(1,-1,N)
@@ -146,24 +173,34 @@ plt.title("Spectrum No Fit - Real and Imag No Window")
 #plt.plot(t,sig)
 
 #N = 256
+
 [wt,x] = triwind(N)
 [x,whan] = hanwind(N)
 [x,wcos] = coswind(N)
 
-WIND_nf = fftshift(fft(sin_nf*wcos))
+S_1 = np.sum(hanwind)
+S_2 = np.sum(hanwind**2)
+
+NENBW = N * S_2/(S_1**2)
+ENBW = fs * S_2/(S_1**2)
+
+print(NENBW, ENBW)
+
+WIND_nf = fftshift(fft(data_nf*whan))
+WIND_o =  fftshift(fft(whan))
 
 plt.figure()
 #plt.subplot(3,1,1), plt.plot(t,sinp,t,sinp*wt)
 #plt.subplot(3,1,1), plt.plot(x,whan)
-plt.subplot(3,1,1), plt.plot(x,wcos)
+plt.subplot(3,1,1), plt.plot(x,whan)
 plt.title("Window function")
-plt.subplot(3,1,2), plt.stem(np.linspace(-N/2,N/2,N),np.real(SIN_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_nf/N), 'g')
-plt.title("Spectrum No Fit - Real and Imag No Window")
-plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.real(WIND_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.imag(WIND_nf/N), 'g')
-plt.title("Spectrum No Fit - Real and Imag with Window")
+plt.subplot(3,1,2), plt.stem(np.linspace(-N/2,N/2,N),np.abs(DATA_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.abs(WIND_o/N), 'g')
+plt.title("Spectrum No Fit - Absolut No Window & FFT Window")
+plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.abs(WIND_nf/N)), #plt.stem(np.linspace(-N/2,N/2,N),np.imag(WIND_nf/N), 'g')
+plt.title("Spectrum No Fit - Absolut with Window")
 
 
 plt.figure()
-plt.plot(np.linspace(-N/2,N/2,N),20*np.log10(abs(SIN_nf)))
+plt.plot(np.linspace(-N/2,N/2,N),20*np.log10(abs(DATA_nf)))
 plt.plot(np.linspace(-N/2,N/2,N),20*np.log10(abs(WIND_nf)))
 plt.title("dB Spectrum No Window Vs. Windowed signal")
