@@ -178,16 +178,17 @@ elif method == 'file':
 [x,whan] = hanwind(N)
 [x,wcos] = coswind(N)
 
-S_1 = np.sum(hanwind)
-S_2 = np.sum(hanwind**2)
+S_1 = np.sum(whan)
+S_2 = np.sum(whan**2)
 
 NENBW = N * S_2/(S_1**2)
-ENBW = fs * S_2/(S_1**2)
+ENBW = fs * S_2/(S_1**2) # = NENBW * fs/N
 
 print(NENBW, ENBW)
 
 WIND_nf = fftshift(fft(data_nf*whan))
 WIND_o =  fftshift(fft(whan))
+
 
 plt.figure()
 #plt.subplot(3,1,1), plt.plot(t,sinp,t,sinp*wt)
@@ -204,3 +205,30 @@ plt.figure()
 plt.plot(np.linspace(-N/2,N/2,N),20*np.log10(abs(DATA_nf)))
 plt.plot(np.linspace(-N/2,N/2,N),20*np.log10(abs(WIND_nf)))
 plt.title("dB Spectrum No Window Vs. Windowed signal")
+
+#now not volt_rms so PS, PSD, LS and LSD are just V and not V_rms
+
+# PS_rms = 2 * np.abs(y_m)/S1 equation 23
+PS_rms = 2 * np.abs(WIND_nf)/S_1
+
+# PSD_rms = PS_rms/ENBW equation 24
+PSD_rms = 2 * np.abs(WIND_nf)**2/(fs*S_2)
+
+# LSD = sqrt(PSD)
+LSD_rms = np.sqrt(PSD_rms) 
+
+# LS = AS = sqrt(PS)
+LS_rms = np.sqrt(PS_rms)
+
+plt.figure()
+plt.subplot(2,2,1), plt.plot(F,PS_rms)
+plt.title("PS")
+plt.subplot(2,2,2), plt.plot(F,PSD_rms)
+plt.title("PSD")
+plt.subplot(2,2,3), plt.plot(F,LS_rms)
+plt.title("LS = AS")
+plt.subplot(2,2,4), plt.plot(F,LSD_rms)
+plt.title("LSD = SD")
+
+#test_window.py
+# By Jee-Bee for jBae (c) 2016
