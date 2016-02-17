@@ -131,7 +131,8 @@ def Tukeywind (N):
 #
 
 # Vars
-N = int(1024/8)
+N = int(1024)
+itt = int(2)
 t = np.arange(0,N)
 
 # Method
@@ -195,15 +196,15 @@ plt.figure()
 #plt.subplot(3,1,1), plt.plot(x,whan)
 plt.subplot(3,1,1), plt.plot(x,whan)
 plt.title("Window function")
-plt.subplot(3,1,2), plt.stem(np.linspace(-N/2,N/2,N),np.abs(DATA_nf/N)), plt.stem(np.linspace(-N/2,N/2,N),np.abs(WIND_o/N), 'g')
+plt.subplot(3,1,2), plt.stem(F,np.abs(DATA_nf/N)), plt.stem(F,np.abs(WIND_o/N), 'g')
 plt.title("Spectrum No Fit - Absolut No Window & FFT Window")
-plt.subplot(3,1,3), plt.stem(np.linspace(-N/2,N/2,N),np.abs(WIND_nf/N)), #plt.stem(np.linspace(-N/2,N/2,N),np.imag(WIND_nf/N), 'g')
+plt.subplot(3,1,3), plt.stem(F,np.abs(WIND_nf/N)), #plt.stem(np.linspace(-N/2,N/2,N),np.imag(WIND_nf/N), 'g')
 plt.title("Spectrum No Fit - Absolut with Window")
 
 
 plt.figure()
-plt.plot(np.linspace(-N/2,N/2,N),20*np.log10(abs(DATA_nf)))
-plt.plot(np.linspace(-N/2,N/2,N),20*np.log10(abs(WIND_nf)))
+plt.plot(F,20*np.log10(abs(DATA_nf)))
+plt.plot(F,20*np.log10(abs(WIND_nf)))
 plt.title("dB Spectrum No Window Vs. Windowed signal")
 
 #now not volt_rms so PS, PSD, LS and LSD are just V and not V_rms
@@ -230,5 +231,51 @@ plt.title("LS = AS")
 plt.subplot(2,2,4), plt.plot(F,LSD_rms)
 plt.title("LSD = SD")
 
-#test_window.py
+#
+#------Multi Window from here -------------
+#
+
+N = int(1024)
+itt = int(2)
+t = np.arange(0,itt *N)
+
+# Method
+[fs,data] = wavfile.read("../09 Sample 15sec.wav")#,dtype=float)
+data_nf = data[2048:2048+itt * N:]
+data_nf = np.reshape(np.delete(data_nf,0, 1),len(data_nf))
+DATA_nf = fftshift(fft(data_nf))  # No fit
+F = np.linspace(-N/2,N/2,N) #(0,N/2,N/2+1)
+
+plt.figure()
+plt.subplot(2,1,1), plt.plot(t,data_nf)
+plt.title("time: wav file")
+plt.subplot(2,1,2), plt.stem(np.linspace(-len(DATA_nf)/2,len(DATA_nf)/2,len(DATA_nf)),np.abs(DATA_nf/N)), #plt.stem(np.linspace(-N/2,N/2,N),np.imag(SIN_nf/N), 'g')
+plt.title("Spectrum No Fit - Absolut No Window")
+
+MWIND_nf = np.zeros((N,itt))
+MWIND_nf = np.rot90(MWIND_nf)
+
+for idx in range(1,itt+1):
+    idxlow = (idx-1)*N
+    idxup = (idx*N)-1
+    MWIND_nf[idx-1] = fftshift(fft(data_nf[(idx-1)*N:(idx*N):]*whan))
+MWIND_nf = np.rot90(MWIND_nf,3)
+
+#itt1 = data_nf[0:N:]
+#square3 = np.array([[1,2,3],[4,5,6],[7,8,9]])
+
+#WIND_nf = fftshift(fft(data_nf*whan))
+WIND_o =  fftshift(fft(whan))
+
+
+plt.figure()
+plt.subplot(3,1,1), plt.plot(x,whan)
+plt.title("Window function")
+plt.subplot(3,1,2), plt.stem(np.linspace(-len(DATA_nf)/2,len(DATA_nf)/2,len(DATA_nf)),np.abs(DATA_nf/N)), 
+plt.stem(F,np.abs(WIND_o/N), 'g')
+plt.title("Spectrum No Fit - Absolut No Window & FFT Window")
+plt.subplot(3,1,3), plt.stem(F,np.abs(MWIND_nf.T[0]/N)), plt.stem(F,np.abs(MWIND_nf.T[1]/N),'g')
+plt.title("Spectrum No Fit - Absolut with Window")
+
+# test_window.py
 # By Jee-Bee for jBae (c) 2016
