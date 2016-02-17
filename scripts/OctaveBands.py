@@ -16,45 +16,30 @@ def Octave(Measurement, fs, *argv):
     pass
 
 
-def Octave3(Measurement, fs, **vargv):  # Prefered frequencys = True
-    if vargv == []:
-        T = fs*len(Measurement)
-        lf = 1/T
-        hf = fs/2
-        while Fterts <= hf:
-            pass
-        while Ftests >= lf:
-            pass
-    else:
-        pass # selected
-
+def Octave3(Measurement,F):
+#    The input parameters are:
+#    o frequencies: frequency values 
+#        (with a fixed of variable frequency step),
+#    o measurements: acoustic absorption coefficent values
+#        (corresponding to the frequency vector defined above).
+#    
+#    The output parameters are:
+#    o one_third_freq: center frequencies of 1/3 octave bands,
+#    o bands: values of the acoustic absorption coefficent in 1/3 bands
+#    
+#    First edition based on
+#    Copyleft 2007-2011 luc.jaouen@matelys.com
+#    cf. APMR on the web,
+#    Standards/OctaveBands.html
+#    for more information
+    Freq_pref =  np.array([16, 20, 25,  31.5, 40, 50, 63, 80, 100, 125, 160, 200, 250,
+                315, 400, 500, 630, 800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 
+                5000, 6300, 8000, 10000, 12500, 16000, 20000])
+    
 #% function [one_third_freq,band] = one_third_octave(frequencies,measurements)
-#%
-#% Narrow bands to one-third octave bands representation.
-#%
-#% Example: [one_third_freq_preferred,band] = narrow_to_one_third_octave(frequencies,alpha_diffuse)
-#%
-#% The input parameters are:
-#% o frequencies: frequency values 
-#%   (with a fixed of variable frequency step),
-#% o measurements: acoustic absorption coefficent values
-#%   (corresponding to the frequency vector defined above). 
-#%
-#% The output parameters are:
-#% o one_third_freq: center frequencies of 1/3 octave bands,
-#% o bands: values of the acoustic absorption coefficent in 1/3 bands
-#%
-#% Copyleft 2007-2011 luc.jaouen@matelys.com
-#% cf. APMR on the web,
-#% Standards/OctaveBands.html
-#% for more information
-#
-#
+
 #function [one_third_freq_preferred,bands] = narrow_to_one_third_octave(frequencies,measurements)
 #
-#  one_third_freq_preferred = [16 20 25  31.5 40 50 63 80 100 125 160 200 250 ...
-#                    315 400 500 630 800 1000 1250 1600 2000 2500 ...
-#                    3150 4000 5000 6300 8000 10000 12500 16000 20000];
 #
 #  % Determine lower and upper limits of each 1/3 octave band
 #  one_third_freq = zeros(1,length(one_third_freq_preferred));
@@ -99,5 +84,15 @@ def Octave3(Measurement, fs, **vargv):  # Prefered frequencys = True
 #  legend('Narrow bands','1/3 octave bands',4)
 #  set(gca,'ylim',[0 1])
 
-
+#Example: 
+#T =3
+#f = 100 Hz #= basic frequency
+#np.log10(1000/1) = 3
+#np.log10(1000/(1/T)) = 3.477...
+#
+#np.log2(1000/(1/T)) = 11.55...
+#but since formulation octave is:
+#1000*2**(n/2) or 1000/2**(n/2)
+#i need to compensate my factor 2 so...
+#1000 / 2**((2*12)/2) = 0.244... is around 0.33 Hz what was the signal
 
