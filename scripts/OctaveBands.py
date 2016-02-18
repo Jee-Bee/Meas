@@ -9,19 +9,50 @@ Created on Wed Feb 17 11:48:31 2016
 # http://apmr.matelys.com/Standards/OctaveBands.html
 #and
 # https://nl.wikipedia.org/wiki/Resolutie_(geluidsmeting)
+#http://blog.prosig.com/2006/02/17/standard-octave-bands/
+
 
 #2DO:
-#Octave
 #1/n octave
-#self calculating octave range
+#self calculating octave range(1/n)
 #self calculating freq bands/ check prefered if needed
 #self asking for making plot or return to plot depends on direction...
-#test current method
+#Update to 1/n method
 
 import numpy as np
 
-def Octave(Measurement, fs, *argv):
-    pass
+def Octave(Measurement, F):
+#    Based on 1/3 Octave version. See Link
+    Freq_pref =  np.array([ 16, 31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000])
+    
+    # Determine lower and upper limits of each 1/3 octave band
+    freq1 = np.zeros(len(Freq_pref))
+    bands1 = np.zeros((2,len(Freq_pref)))
+    for a in range(len(Freq_pref)):
+        freq1[a] = (1000*((2**(1/1)))**(a-7));
+        bands1[0][a] = freq1[a]/2**(1/2)
+        bands1[1][a] = freq1[a]*2**(1/2)
+    
+    # Compute the acoustic absorption coefficient per 1/3 octave band
+    bands = []
+    for a in range(np.size(bands1,1)):
+        bands = np.append(bands,[0])
+        idx = np.where( (F >= bands1[0][a]) & (F < bands1[1][a]) )
+        idx = idx[0]
+#        If we have no 'measurement' point in this band:
+        if ( len(idx) == 0 ):
+            print('Warning: no point found in band centered at %4.0f\n' % freq1[a])
+#        If we have only 1 'measurement' point in this band:
+        elif ( len(idx) == 1 ):
+            print('Warning: only one point found in band centered at %4.0f\n' % freq1[a])
+            bands[a] = Measurement[idx[0]]
+#        If we have more than 1 'measurement' point in this band:
+        elif ( len(idx) > 1 ):
+            for b in range(len(idx)):
+                bands[a] = bands[a] + ( F[idx[0]+b]-F[idx[0]+b-1] ) * abs( Measurement[idx[0]+b] + Measurement[idx[0]+b-1] ) / 2
+            bands[a] = bands[a] / ( F[idx[len(idx)-1]] - F[idx[0]] )
+    return (Freq_pref, bands)
+
 
 
 def Octave3(Measurement,F):
@@ -72,33 +103,12 @@ def Octave3(Measurement,F):
             bands[a] = bands[a] / ( F[idx[len(idx)-1]] - F[idx[0]] )
     return (Freq_pref, bands)
 
-#Small Tesst audio
-from scipy.io import wavfile
-from scipy.fftpack import fft, fftshift
-import matplotlib.pylab as plt
+def OctaveN(Measurement, F, n):
+#    prefered n = 1, 2, 3, 6, 12, 24, 48 and 96 
+    rangeF = np.log2(F[-1]/F[0])
+    pass
 
-N = int(4096)
 
-[fs,data] = wavfile.read("../09 Sample 15sec.wav")#,dtype=float)
-t = np.arange(0,N/fs,1/fs)
-data = data[2048:2048+N:]
-data = np.reshape(np.delete(data,0, 1),len(data))
-DATAs = fftshift(fft(data))  # No fit
-DATAs = abs(DATAs[len(DATAs)/2::])
-DATA = fftshift(fft(data))  # No fit
-DATA = abs(DATA[len(DATA)/2::])
-F = np.linspace(-fs/2,fs/2,N)
-F = F[len(F)/2::]
-
-(tertsF, tertsA) = Octave3(DATAs,F)
-
-# Show curves for narrow bands and 1/3 octave bands.
-plt.figure()
-plt.semilogx(F,DATAs,'k-')#,'linewidth',2)
-plt.semilogx(tertsF,tertsA,'ro','MarkerSize',10)
-plt.xlabel('Frequency (Hz)')
-plt.ylabel('Sound absorption coefficient')
-plt.legend('Narrow bands','1/3 octave bands',4)
 
 
 #Small tests - delete later on:
@@ -123,4 +133,6 @@ plt.legend('Narrow bands','1/3 octave bands',4)
 #1000*2**(n/2) or 1000/2**(n/2)
 #i need to compensate my factor 2 so...
 #1000 / 2**((2*12)/2) = 0.244... is around 0.33 Hz what was the signal
+
+# 1/n test = 1/24
 

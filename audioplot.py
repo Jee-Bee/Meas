@@ -8,12 +8,12 @@ Created on Wed Jan 27 16:45:59 2016
 from scipy.io import wavfile
 from numpy import arange
 import matplotlib.pylab as plt
-from scripts import RMS, Transform
+from scripts import RMS, Transform, OctaveBands
 #import RMS as RMS
 
 import sounddevice as sd
 
-#import numpy as np
+import numpy as np
 
 
 # Samples for internal use only. Just test data for test Results
@@ -65,3 +65,29 @@ plt.figure()
 Time(t, data)
 plt.figure()
 SpecMag(F,DATA)
+
+
+
+#Tertsband test
+#Small Tesst audio
+
+
+N = int(4096)
+
+[fs,data] = wavfile.read("../09 Sample 15sec.wav")#,dtype=float)
+t = np.arange(0,N/fs,1/fs)
+data = data[2048:2048+N:]
+data = np.reshape(np.delete(data,0, 1),len(data))
+[F,DATA] = Transform.FFT(data,fs)
+DATA = abs(DATA[len(DATA)/2::])
+F = F[len(F)/2::]
+
+(tertsF, tertsA) = OctaveBands.Octave3(DATA,F)
+
+# Show curves for narrow bands and 1/3 octave bands.
+plt.figure()
+plt.semilogx(F,DATA,'k-')#,'linewidth',2)
+plt.semilogx(tertsF,tertsA,'ro','MarkerSize',10)
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Sound absorption coefficient')
+plt.legend('Narrow bands','1/3 octave bands',4)
