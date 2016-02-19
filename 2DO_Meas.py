@@ -79,13 +79,12 @@
 # |_ interpolation      2
 # |_ avereiging         3
 # |_ Windowfunction     4
+#   |_ Overlap (spectrum)
+#   |_ (Overlap correlation)
+#   |_ Recomend Overlab ROV  (See Window >> 395068.pdf)
+#   |_ Frequency bin calculations
+#   |_ WOSA (Welch’s Overlapped Segmented Average) (See Window >> 395068.pdf)
 # |_ Smoothing          3
-# |_ Overlap (spectrum)
-# |_ (Overlap correlation)
-# |_ Recomend Overlab ROV  (See Window >> 395068.pdf)
-# |_ Frequency bin calculations
-# |_ WOSA (Welch’s Overlapped Segmented Average) (See Window >> 395068.pdf)
-
 
 # multi signal analysis ((sub class of transform/spectra))
 # Mel Cepstrum Coefficents 
