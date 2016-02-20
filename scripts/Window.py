@@ -13,17 +13,34 @@ class Windows(object):
         self.N = N
 #        pass
 
+#1. Compute the average of the whole time series (before splitting it into segments) and
+#subtract that average from all data points.
+#2. Compute a straight line between the first and last data point of the whole time series
+#(before splitting it into segments) and subtract that line from all data points.
+#3. Compute an average trend via linear regression of the whole time series (before splitting
+#it into segments) and subtract that line from all data points.
+#4. Compute the average of each segment (before applying the window function) and subtract
+#that average from the data points.
+#5. Compute a straight line between the first and last data point of each segment (before
+#applying the window function) and subtract that line from the data points.
+#6. Compute an average trend via linear regression of each segment (before applying the
+#window function) and subtract that line from the data points.
+#7. Pass the input time series through a digital high-pass filter.
+
+    def segment_avg(self, Signal):
+        pass
+        
 # B slpine Windows:
 # Rectangular: k = 1 (st order)
 # Triangular: k = 2 (nd Order)
 # Parzen: k = 4 (th order)
 
-    def rectwind(N):
+    def rectwind(self, N):
         w = np.ones(N)
         x = np.arange(0,N-1,1)
         return(w,x)
 
-    def triwind(N):
+    def triwind(self, N):
         w=np.zeros(N)
         x=np.zeros(N)
         for idx in range(N):
@@ -31,7 +48,7 @@ class Windows(object):
             x[idx] = idx
         return (w,x)
 
-    def partzwind(N):
+    def partzwind(self, N):
         w=np.zeros(int(N/2))
         x=np.zeros(int(N/2))
         for idx in range(int(N/2)):
@@ -49,7 +66,7 @@ class Windows(object):
 # -----------------------------------------------------------------------------
 #
 
-    def genhamwind(N,alpha,beta):
+    def genhamwind(self, N, alpha, beta):
         w=np.zeros(N)
         x=np.zeros(N)
         for idx in range(N):
@@ -57,12 +74,12 @@ class Windows(object):
             x[idx] = idx
         return (x,w)
 
-    def hanwind(N):
+    def hanwind(self, N):
         alpha = beta = 0.5
         [x,w] = genhamwind(N,alpha,beta)
         return (x,w)
 
-    def hamwind(N):
+    def hamwind(self, N):
         alpha =  0.53836
         beta = 1 - alpha
         [x,w] = genhamwind(N,alpha,beta)
@@ -72,7 +89,7 @@ class Windows(object):
 # -----------------------------------------------------------------------------
 #
 
-    def coswind (N):
+    def coswind (self, N):
         w = np.zeros(N)
         x = np.zeros(N)
         alpha = 1  # rectangular window alpha = 0; cos window alpha = 1; Hann window alpha =2.
@@ -85,7 +102,7 @@ class Windows(object):
 # -----------------------------------------------------------------------------
 #
 
-    def gengausswind(N,sigma,p): 
+    def gengausswind(self, N, sigma, p): 
         w = np.zeros(N)
         x= np.zeros(N)
         for idx in range(N):
@@ -95,7 +112,7 @@ class Windows(object):
             x[idx] = idx
         return (x,w)
 
-    def gausswind(N): 
+    def gausswind(self, N): 
         sigma = 0.5
         p = 2
         [x,w] = gengausswind(N,sigma,p)
@@ -105,7 +122,7 @@ class Windows(object):
 # -----------------------------------------------------------------------------
 #
 
-    def Tukeywind (N):
+    def Tukeywind (self, N):
         w = np.zeros(N)
         x = np.zeros(N)
         alpha = 0.5
