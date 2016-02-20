@@ -24,7 +24,7 @@ import numpy as np
 from scipy.io import wavfile
 from scipy.fftpack import fft, fftshift
 import matplotlib.pylab as plt
-from ...scripts.Window import hanwind
+from scripts.Window import *
 
 # Vars
 N = int(1024)
@@ -52,7 +52,7 @@ if method == 'signal':
     DATA_nf = fftshift(fft(data_nf))  # No fit
     F = np.linspace(-N/2,N/2,N)
 elif method == 'file':
-    [fs,data] = wavfile.read("../09 Sample 15sec.wav",dtype=float)
+    [fs,data] = wavfile.read("../09 Sample 15sec.wav")#,dtype=float)
     data_nf = data[2048:2048+N:]
     data_nf = np.reshape(np.delete(data_nf,0, 1),len(data_nf))
     DATA_nf = fftshift(fft(data_nf))  # No fit
@@ -89,7 +89,7 @@ elif method == 'file':
 #7. Pass the input time series through a digital high-pass filter.
 
 #[wt,x] = Window.triwind(N)
-[x,whan] = hanwind(N) 
+[x,whan] = Window.hanwind(N) 
 #[x,wcos] = Window.coswind(N)
 
 
