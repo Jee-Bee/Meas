@@ -24,24 +24,26 @@ import numpy as np
 def Overlap_Characterestics(Window_type, accurency):
 #        Calculate AF = Min/Max
 #        Calculate PF
-#        Calculate OC 
-#        See 395068 Window Document: 
+#        Calculate OC
+#        See 395068 Window Document:
 #            Spectrum and spectral density estimation by the Discrete Fourier
 #            transform (DFT), including a comprehensive list of window
 #            functions and some new at-top windows.
     N = 1024  # Window Length
-    Overlab = 50  # [%] 
-    Overlab_var = Overlab/100 + 1
-    hann = Window.hanwind(N)
-    y= np.zeros(N* Overlab_var)
-    y = y + hann
-    x = np.arange(N*Overlab_var)
-    return (x,y)
+    Overlab = 50  # [%]
+    Overlab_var = Overlab / 100 + 1
+    y = np.zeros(len(N + Overlab_var * N))
+    y[0:N] = Window.hanwind(N)
+    y[N * Overlab_var:] = y[N * Overlab_var:] + Window.hanwind(N)
+    x = np.arange(N + N * Overlab_var)
+    return (x, y)
 #    pass
 
- 
-def ROV (self, Window_type):
+
+def ROV(self, Window_type):
 #        Input are values from Input characteresitcs
     pass
 
 
+[xaxis, yaxis] = Overlap_Characterestics([], [])
+plt.plot(xaxis, yaxis)
