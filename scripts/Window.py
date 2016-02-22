@@ -77,7 +77,7 @@ class Window():
 
     def hanwind(self):
         alpha = beta = 0.5
-        [x, w] = genhamwind(self.N, alpha, beta)
+        [x, w] = self.genhamwind(self.N, alpha, beta)
         return (x, w)
 
     def hamwind(self):
