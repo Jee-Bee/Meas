@@ -2,7 +2,7 @@
 """
 Created on Wed Jan 27 16:45:59 2016
 
-@author: Jee-Bee jBae (c) 2016
+@author: Jee-Bee for jBae (c) 2016
 """
 
 from scipy.io import wavfile
@@ -28,7 +28,8 @@ rmssig = RMS.RMS(data)
 crest = RMS.Crest(data)
 
 N = 1024
-[x, whan] = Window.hanwind(N)
+(x, whan) = Window.Window.hanwind
+
 
 #if len(t)< 100000:
 ##    mpl.RcParams()

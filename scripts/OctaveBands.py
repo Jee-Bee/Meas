@@ -24,38 +24,37 @@ import numpy as np
 def Octave(Measurement, F):
 #    Based on 1/3 Octave version. See Link
     Freq_pref =  np.array([ 16, 31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000])
-    
     # Determine lower and upper limits of each 1/3 octave band
     freq1 = np.zeros(len(Freq_pref))
-    bands1 = np.zeros((2,len(Freq_pref)))
+    bands1 = np.zeros((2, len(Freq_pref)))
     for a in range(len(Freq_pref)):
-        freq1[a] = (1000*((2**(1/1)))**(a-7));
-        bands1[0][a] = freq1[a]/2**(1/2)
-        bands1[1][a] = freq1[a]*2**(1/2)
+        freq1[a] = (1000 * ((2 ** ( 1 / 1))) ** (a - 7))
+        bands1[0][a] = freq1[a] / 2 ** (1 / 2)
+        bands1[1][a] = freq1[a] * 2 ** (1 / 2)
     
     # Compute the acoustic absorption coefficient per 1/3 octave band
     bands = []
-    for a in range(np.size(bands1,1)):
-        bands = np.append(bands,[0])
-        idx = np.where( (F >= bands1[0][a]) & (F < bands1[1][a]) )
+    for a in range(np.size(bands1, 1)):
+        bands = np.append(bands, [0])
+        idx = np.where((F >= bands1[0][a]) & (F < bands1[1][a]))
         idx = idx[0]
 #        If we have no 'measurement' point in this band:
-        if ( len(idx) == 0 ):
+        if (len(idx) == 0):
             print('Warning: no point found in band centered at %4.0f\n' % freq1[a])
 #        If we have only 1 'measurement' point in this band:
-        elif ( len(idx) == 1 ):
+        elif (len(idx) == 1):
             print('Warning: only one point found in band centered at %4.0f\n' % freq1[a])
             bands[a] = Measurement[idx[0]]
 #        If we have more than 1 'measurement' point in this band:
-        elif ( len(idx) > 1 ):
+        elif (len(idx) > 1):
             for b in range(len(idx)):
-                bands[a] = bands[a] + ( F[idx[0]+b]-F[idx[0]+b-1] ) * abs( Measurement[idx[0]+b] + Measurement[idx[0]+b-1] ) / 2
-            bands[a] = bands[a] / ( F[idx[len(idx)-1]] - F[idx[0]] )
+                bands[a] = bands[a] + (F[idx[0] + b] - F[idx[0] + b - 1] ) * abs(Measurement[idx[0] + b] + Measurement[idx[0] + b - 1]) / 2
+            bands[a] = bands[a] / (F[idx[len(idx) - 1]] - F[idx[0]])
     return (Freq_pref, bands)
 
 
 
-def Octave3(Measurement,F):
+def Octave3(Measurement, F):
 #    The input parameters are:
 #    o frequencies: frequency values 
 #        (with a fixed of variable frequency step),
@@ -77,35 +76,34 @@ def Octave3(Measurement,F):
     
     # Determine lower and upper limits of each 1/3 octave band
     freq3 = np.zeros(len(Freq_pref))
-    bands3 = np.zeros((2,len(Freq_pref)))
+    bands3 = np.zeros((2, len(Freq_pref)))
     for a in range(len(Freq_pref)):
-        freq3[a] = (1000*((2**(1/3)))**(a-19));
-        bands3[0][a] = freq3[a]/2**(1/6)
-        bands3[1][a] = freq3[a]*2**(1/6)
-    
+        freq3[a] = (1000 * ((2 ** (1 / 3))) ** (a - 19))
+        bands3[0][a] = freq3[a] / 2 ** (1 / 6)
+        bands3[1][a] = freq3[a] * 2 ** (1 / 6)
     # Compute the acoustic absorption coefficient per 1/3 octave band
     bands = []
-    for a in range(np.size(bands3,1)):
-        bands = np.append(bands,[0])
-        idx = np.where( (F >= bands3[0][a]) & (F < bands3[1][a]) )
+    for a in range(np.size(bands3, 1)):
+        bands = np.append(bands, [0])
+        idx = np.where((F >= bands3[0][a]) & (F < bands3[1][a]))
         idx = idx[0]
 #        If we have no 'measurement' point in this band:
-        if ( len(idx) == 0 ):
+        if (len(idx) == 0):
             print('Warning: no point found in band centered at %4.0f\n' % freq3[a])
 #        If we have only 1 'measurement' point in this band:
-        elif ( len(idx) == 1 ):
+        elif (len(idx) == 1):
             print('Warning: only one point found in band centered at %4.0f\n' % freq3[a])
             bands[a] = Measurement[idx[0]]
 #        If we have more than 1 'measurement' point in this band:
         elif ( len(idx) > 1 ):
             for b in range(len(idx)):
-                bands[a] = bands[a] + ( F[idx[0]+b]-F[idx[0]+b-1] ) * abs( Measurement[idx[0]+b] + Measurement[idx[0]+b-1] ) / 2
-            bands[a] = bands[a] / ( F[idx[len(idx)-1]] - F[idx[0]] )
+                bands[a] = bands[a] + (F[idx[0] + b] - F[idx[0] + b - 1]) * abs(Measurement[idx[0] + b] + Measurement[idx[0] + b - 1]) / 2
+            bands[a] = bands[a] / (F[idx[len(idx) - 1]] - F[idx[0]])
     return (Freq_pref, bands)
 
 def OctaveN(Measurement, F, n):
 #    prefered n = 1, 2, 3, 6, 12, 24, 48 and 96 
-    rangeF = np.log2(F[-1]/F[0])
+    rangeF = np.log2(F[-1] / F[0])
     pass
 
 

@@ -23,51 +23,66 @@ def zero_check(vals):
                     delrows.append(idx)
                     print(idx, idy)
                 elif delrows[-1] == idx:
-                    pass 
+                    pass
                 else:
                     delrows.append(idx)
                     print(idx, idy)
             else:
                 pass
     vals_no0 = np.delete(vals, delrows, 0)
-    return vals_no0
+    return(vals_no0)
 
-def RMS (sig):
-    return np.sqrt((1/len(sig))*np.sum(sig**2))*sig
+def RMS(sig):
+    """
+    Return RMS value of time signal
+    """
+    return(np.sqrt(( 1 / len(sig)) * np.sum(sig ** 2)) * sig)
 
-def RMSf (fsig):
-    return np.sqrt(np.sum(abs(fsig/len(fsig)))**2)*fsig
+def RMSf(fsig):
+    """
+    Return RMS value of frequency signal
+    """
+    return (np.sqrt(np.sum(abs(fsig / len(fsig))) ** 2) * fsig)
 
-def RMSe (sigx, sigy):
+def RMSe(sigx, sigy):
+    """
+    Return RMS error value(s)
+    """
     if len(sigx) != len(sigy):
         pass # return Error
     else:
         N = len(sigx)
-    return (np.sqrt(1/N * np.sum((sigx - sigy )**2))*sigx)
+    return (np.sqrt(1 / N * np.sum((sigx - sigy ) ** 2)) * sigx)
 
-def Crestarr (sig):  # Crest Factor array
+def Crestarr(sig):  # Crest Factor array
+    """
+    Return Crest array is this needed?
+    """
     rms = RMS(sig)
-    C = abs(sig)/rms
-    return (C)
+    C = abs(sig) / rms
+    return(C)
 
-def Crest (sig):  # Crest Factor singe value from array
+def Crest(sig):  # Crest Factor singe value from array
+    """
+    Return Crest Single value
+    """
     rms = RMS(abs(sig))
     peak = abs(sig)
     C_zero = zero_check(abs(peak/rms))
-    C = sum(C_zero)/len(sig)  # peak/rms is bij 0/0 NAN... Fix this - done
-    return (C)
+    C = sum(C_zero) / len(sig)  # peak/rms is bij 0/0 NAN... Fix this - done
+    return(C)
 
-def PAPR (sig):  # Peak to Average Power Ratio
-    rms =np.sqrt((1/len(sig))*np.sum(sig**2))
-    papr_zero = zero_check((abs(sig)**2)/(rms**2))
-    papr = sum((papr_zero)/len(sig))
+def PAPR(sig):  # Peak to Average Power Ratio
+    rms =np.sqrt((1 / len(sig)) * np.sum(sig ** 2))
+    papr_zero = zero_check((abs(sig) ** 2) / (rms ** 2))
+    papr = sum((papr_zero) / len(sig))
     return (papr)
 
-def PAPR_dB (sig):  # Peak to Average Power Ratio
-    rms =np.sqrt((1/len(sig))*np.sum(sig**2))
-    papr_zero = zero_check((abs(sig)**2)/(rms**2))
-    papr_dB = 10* np.log10( sum(papr_zero)/len(sig) )
-    return (papr_dB)
+def PAPR_dB(sig):  # Peak to Average Power Ratio
+    rms =np.sqrt((1 / len(sig)) * np.sum(sig ** 2))
+    papr_zero = zero_check((abs(sig) ** 2) / (rms ** 2))
+    papr_dB = 10 * np.log10(sum(papr_zero) / len(sig))
+    return(papr_dB)
 
 # par
 

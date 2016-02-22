@@ -12,17 +12,17 @@
 # @ pink Noise: t or T ??
 # @ brown Noise: t or T ??
 
-def varlist (var,length):
+def varlist(var,length):
     if len(var) > length:
-#        msg = 
+#        msg =
         raise OSError('list is to long only first '+ length +' paramerets will be used' )
         return False
     elif len(var) < length:
-        raise OSError('list is to short '+ length +' is less than required' )
+        raise OSError('list is to short '+ length +' is less than required')
         return False
     else:
         return True
-        
+
 
 def SigGen(gentype, f, T, fs,*arg):
     # Creating signal generator:
@@ -31,9 +31,7 @@ def SigGen(gentype, f, T, fs,*arg):
     # http://stackoverflow.com/questions/919680/can-a-variable-number-of-arguments-be-passed-to-a-function
     import numpy as np
     import scipy.signal as sig
-    
-    t = np.linspace(0, T - (1 / fs), T * fs)  
-    
+    t = np.linspace(0, T - (1 / fs), T * fs)
     if gentype == "Sine":
         if varlist == True:
             f0 = f
@@ -44,30 +42,30 @@ def SigGen(gentype, f, T, fs,*arg):
         if varlist == True:
             f0 = f
         elif varlist == False:
-            f0 = f[0]        
+            f0 = f[0]
         Sig = sig.Sawtooth(2 * np.pi * f0 * t)
     elif gentype == 'Square':
         if varlist == True:
             f0 = f
         elif varlist == False:
-            f0 = f[0]        
+            f0 = f[0]
         Sig = sig.Square(2 * np.pi * f0 * t)
     elif gentype == 'Triangle':
         if varlist == True:
             f0 = f
         elif varlist == False:
-            f0 = f[0]        
-        Sig = sig.Sawtooth(2 * np.pi * f0 * t,width=0.5)
+            f0 = f[0]
+        Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
     elif gentype == 'Chirp':
         if varlist == True:
             break
         elif varlist == False:
             f0 = f[0]
             f1 = f[1]
-        sig = sig.chirp(t, f0, T, f1, 'linear',90)
+        sig = sig.chirp(t, f0, T, f1, 'linear', 90)
         # http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.signal.chirp.html
     elif gentype == 'Wnoise':  # White Noise
-        sig = np.random.normal(0,1,len(t))
+        sig = np.random.normal(0, 1, len(t))
     elif gentype == 'Pnoise':  # Pink noise
         pass
     elif gentype == 'bnoise':  # Brown noise
