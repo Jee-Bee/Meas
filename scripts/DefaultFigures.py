@@ -48,6 +48,7 @@ from mpl_toolkits.mplot3d import Axes3D
 # save figure:
 #plt.savefig("test.png")
 
+
 class defaultFigures():
 
     def __init__(self, signalx, signaly, signalz):
@@ -60,16 +61,14 @@ class defaultFigures():
         self.signalz = signalz
 #        pass
 
-
-    def Time(self):  #,dimension):  # Dimension is unit type as V(olt) W(att), etc
+    def Time(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
         plt.plot(self.signalx, self.signaly)
         plt.xlabel('time [s]')  # or sample number
         plt.ylabel('voltage [mV]')  # auto add unit here
         plt.title('')
         plt.grid(True)
         plt.show()
-    
-    
+
     def SpecMag(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
         plt.plot(plt.plot(self.signalx, self.signaly))
         plt.xlabel('frequency [Hz]')  # or frequency bin
@@ -78,7 +77,7 @@ class defaultFigures():
         plt.grid(True)
         plt.show()
 
-    def SpecPh (self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
+    def SpecPh(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
         plt.plot(plt.plot(self.signalx, self.signaly))
         plt.xlabel('frequency [Hz]')  # or frequency bin
         plt.ylabel('phase [deg]')  # or add radians
@@ -86,8 +85,8 @@ class defaultFigures():
         plt.grid(True)
         plt.show()
 
-    def Bode (self,dimension):  # Dimension is unit type as V(olt) W(att), etc
-        [m,n] = np.size(self.signaly)
+    def Bode(self, dimension):  # Dimension is unit type as V(olt) W(att), etc
+        [m, n] = np.size(self.signaly)
 #        magnitude
         plt.subplot(2, 1, 1), plt.plot(self.signalx, self.signaly)
         plt.xlabel('Frequency [Hz]')  # Or sample number
@@ -102,11 +101,11 @@ class defaultFigures():
         plt.grid(True)
         plt.show()
 
-    def Spect (self,dimension):  # Dimension is unit type as V(olt) W(att), etc
+    def Spect(self, dimension):  # Dimension is unit type as V(olt) W(att), etc
         Axes3D.plot_surface(self.signalx, self.signaly, self.signalz)
-        plt.xlabel('time [s]') # Or Sample number
-        plt.ylabel('Frequency [Hz]') # Or Freq Bins number
-        plt.zlabel('voltage [mV]') # auto add unit here
+        plt.xlabel('time [s]')  # Or Sample number
+        plt.ylabel('Frequency [Hz]')  # Or Freq Bins number
+        plt.zlabel('voltage [mV]')  # auto add unit here
         plt.title(' ')  # set title
         plt.grid(True)
         plt.show()
@@ -114,9 +113,9 @@ class defaultFigures():
     def water(self, *argv):  # Dimension is unit type as V(olt) W(att), etc
 #        http://matplotlib.org/examples/mplot3d/polys3d_demo.html
         Axes3D.plot_surface(self.signalx, self.signaly, self.signalz)  # till better funcion
-        plt.xlabel('time [s]') # Or Sample number
-        plt.ylabel('Frequency [Hz]') # Or Freq Bins number
-        plt.zlabel('voltage [mV]') # auto add unit here
+        plt.xlabel('time [s]')  # Or Sample number
+        plt.ylabel('Frequency [Hz]')  # Or Freq Bins number
+        plt.zlabel('voltage [mV]')  # auto add unit here
         plt.title(' ')  # set title
         plt.grid(True)
         plt.show()
