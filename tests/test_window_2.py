@@ -14,30 +14,16 @@ Created on Wed Jan  6 10:34:31 2016
 
 import numpy as np
 #from scipy.io import wavfile
-#from scipy.fftpack import fft, fftshift
+from scipy.fftpack import fft, fftshift
 import scipy.stats as stat
-#import matplotlib.pylab as plt
-#from scripts import Window  # 2 possible error depend on lokation file
-#ImportError: No module named 'scripts'
-#AttributeError: 'module' object has no attribute 'hanwind'
-#from ..scripts import Window
-#SystemError: Parent module '' not loaded, cannot perform relative import
+import matplotlib.pylab as plt
+import Window_1 as wind  # 2 possible error depend on lokation file
+# For testing make copy of window function. Otherwise one of the following
+#   Errors occure
+# ImportError: No module named 'scripts'
+# AttributeError: 'module' object has no attribute 'hanwind'
+# SystemError: Parent module '' not loaded, cannot perform relative import
 
-# Temp Window functions stupid ... thing
-
-#def genhamwind(N, alpha, beta):
-#    w = np.zeros(N)
-#    x = np.zeros(N)
-#    for idx in range(N):
-#        w[idx] = alpha - beta * np.cos((2*np.pi * idx) / (N-1))
-#        x[idx] = idx
-#    return (x, w)
-#
-#
-#def hanwind(N):
-#    alpha = beta = 0.5
-#    [x, w] = genhamwind(N, alpha, beta)
-#    return (x, w)
 
 # Vars
 fs = 10000.  # Sampling FRequency [Hz]
@@ -62,37 +48,41 @@ ur = ur - ur_avg
 # 2. Compute a straight line between the first and last data point..
 ur_line = np.linspace(-ur[0], -ur[-1], len(ur))
 ur = ur - ur_line
-# 3. Compute an average trend via linear regression of the whole time series (before splitting
-# it into segments) and subtract that line from all data points.
-#ur_linReg = stat.linregress(t, ur)
+# 3. Compute an average trend via linear regression
 slope, intercept, r_value, p_value, std_err = stat.linregress(t, ur)
 # http://central.scipy.org/item/16/2/basic-linear-regression
 predict_ur = intercept + slope * t
 ur = ur - predict_ur
 
+# @ 2DO
+# @@ Edit to formula equation 9 (page 8)
+# @@@ Change afterwards to function within FFT
 fres = 100
-N = fs / fres  # N = see: Spectrum and spectral density estimation by the DDFT ... Ch 12
+N = fs / fres
+# N = see: Spectrum and spectral density estimation by the DDFT ... Ch 12
 if N % 1 != 0:
     np.round(N)
     fres = fs/N
 # Don't plot time... not importand for now.!!
 
+wt = wind.Window(N)
+(x, wt) = wt.triwind()
+wn = wind.Window(N)
+(x, whan) = wn.hanwind()
+# (x, whan) = Window.Window.hanwind(N)
+# [x, wcos] = Window.coswind(N)
 
-#[wt,x] = Window.triwind(N)
-#[x, whan] = Window.Window.hanwind(N)
-##[x,wcos] = Window.coswind(N)
+S_1 = np.sum(whan)
+S_2 = np.sum(whan ** 2)
 #
-#S_1 = np.sum(whan)
-#S_2 = np.sum(whan ** 2)
-#
-#NENBW = N * S_2 / (S_1**2)
-#ENBW = fs * S_2 / (S_1**2)  # = NENBW * fs/N
-#
-#print(NENBW, ENBW)
-#
-#widx = 0
-#while (widx * N) <= len(u):
-   
+NENBW = N * S_2 / (S_1**2)
+ENBW = fs * S_2 / (S_1**2)  # = NENBW * fs/N
+
+print(NENBW, ENBW)
+
+# widx = 0
+# while (widx * N) <= len(u):
+
 # 4. Compute the average of each segment (before applying the window function) and subtract
 # that average from the data points.
 
@@ -107,61 +97,61 @@ if N % 1 != 0:
 
 # 7. Pass the input time series through a digital high-pass filter.
 
-#MWIND_nf = np.zeros((N, itt))
-#MWIND_nf = np.rot90(MWIND_nf)
+# MWIND_nf = np.zeros((N, itt))
+# MWIND_nf = np.rot90(MWIND_nf)
 #
-#for idx in range(1, itt+1):
+# for idx in range(1, itt+1):
 #    idxlow = (idx-1)*N
 #    idxup = (idx*N)-1
 #    MWIND_nf[idx-1] = fftshift(fft(data_nf[(idx-1)*N:(idx*N):]*whan))
-#MWIND_nf = np.rot90(MWIND_nf, 3)
-#
-### Implement Later!! First read Paper
-#whan_ls = np.zeros((len(data_nf), itt))  # Long signal
-#for idx in range(itt):
-##    whan_ls[idx * N:(idx+1) * N:][idx] = whan
+# MWIND_nf = np.rot90(MWIND_nf, 3)
+
+# ## Implement Later!! First read Paper
+# whan_ls = np.zeros((len(data_nf), itt))  # Long signal
+# for idx in range(itt):
+# #    whan_ls[idx * N:(idx+1) * N:][idx] = whan
 #    whan_ls[(idx*N):((idx+1) * N), idx] = whan
-#whan_ls =np.sum(whan_ls, axis=1)
-##MWIND_ls = fftshift(fft(data_nf[(idx-1) * N:(idx * N):] * whan))
+# whan_ls =np.sum(whan_ls, axis=1)
+# #MWIND_ls = fftshift(fft(data_nf[(idx-1) * N:(idx * N):] * whan))
 
-#itt1 = data_nf[0:N:]
-#square3 = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+# itt1 = data_nf[0:N:]
+# square3 = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 
-#WIND_nf = fftshift(fft(data_nf * whan))
-#WIND_o =  fftshift(fft(whan))
+# WIND_nf = fftshift(fft(data_nf * whan))
+# WIND_o =  fftshift(fft(whan))
 
 #
-#plt.figure()
-#plt.subplot(3, 1, 1), plt.plot(x, whan)
-#plt.title("Window function")
-#plt.subplot(3, 1, 2), plt.stem(np.linspace(-len(DATA_nf) / 2, len(DATA_nf) / 2, len(DATA_nf)), np.abs(DATA_nf / N)), 
-#plt.stem(F,np.abs(WIND_o/N), 'g')
-#plt.title("Spectrum No Fit - Absolut No Window & FFT Window")
-#plt.subplot(3, 1, 3), plt.stem(F, np.abs(MWIND_nf.T[0] / N)), plt.stem(F, np.abs(MWIND_nf.T[1] / N), 'g')
-#plt.title("Spectrum No Fit - Absolut with Window")
-#
-##now not volt_rms so PS, PSD, LS and LSD are just V and not V_rms
-## PS_rms = 2 * np.abs(y_m) / S1 equation 23
-#PS_rms = 2 * np.abs(WIND_nf) / S_1
-#
-## PSD_rms = PS_rms/ENBW equation 24
-#PSD_rms = 2 * np.abs(WIND_nf)**2/(fs*S_2)
-#
-## LSD = sqrt(PSD)
-#LSD_rms = np.sqrt(PSD_rms)
-#
-## LS = AS = sqrt(PS)
-#LS_rms = np.sqrt(PS_rms)
+# plt.figure()
+# plt.subplot(3, 1, 1), plt.plot(x, whan)
+# plt.title("Window function")
+# plt.subplot(3, 1, 2), plt.stem(np.linspace(-len(DATA_nf) / 2, len(DATA_nf) / 2, len(DATA_nf)), np.abs(DATA_nf / N)), 
+# plt.stem(F,np.abs(WIND_o/N), 'g')
+# plt.title("Spectrum No Fit - Absolut No Window & FFT Window")
+# plt.subplot(3, 1, 3), plt.stem(F, np.abs(MWIND_nf.T[0] / N)), plt.stem(F, np.abs(MWIND_nf.T[1] / N), 'g')
+# plt.title("Spectrum No Fit - Absolut with Window")
 
-#plt.figure()
-#plt.subplot(2, 2, 1), plt.plot(F, PS_rms)
-#plt.title("PS")
-#plt.subplot(2, 2, 2), plt.plot(F, PSD_rms)
-#plt.title("PSD")
-#plt.subplot(2, 2, 3), plt.plot(F, LS_rms)
-#plt.title("LS = AS")
-#plt.subplot(2, 2, 4), plt.plot(F, LSD_rms)
-#plt.title("LSD = SD")
+# #now not volt_rms so PS, PSD, LS and LSD are just V and not V_rms
+# # PS_rms = 2 * np.abs(y_m) / S1 equation 23
+# PS_rms = 2 * np.abs(WIND_nf) / S_1
+
+# # PSD_rms = PS_rms/ENBW equation 24
+# PSD_rms = 2 * np.abs(WIND_nf)**2/(fs*S_2)
+
+# # LSD = sqrt(PSD)
+# LSD_rms = np.sqrt(PSD_rms)
+
+# # LS = AS = sqrt(PS)
+# LS_rms = np.sqrt(PS_rms)
+
+# plt.figure()
+# plt.subplot(2, 2, 1), plt.plot(F, PS_rms)
+# plt.title("PS")
+# plt.subplot(2, 2, 2), plt.plot(F, PSD_rms)
+# plt.title("PSD")
+# plt.subplot(2, 2, 3), plt.plot(F, LS_rms)
+# plt.title("LS = AS")
+# plt.subplot(2, 2, 4), plt.plot(F, LSD_rms)
+# plt.title("LSD = SD")
 
 
 # test_window.py

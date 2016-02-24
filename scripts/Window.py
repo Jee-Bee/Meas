@@ -9,10 +9,13 @@ import numpy as np
 
 
 class Window():
-
+    """Class of different Window types"""
     def __init__(self, N):
         self.N = N
-#        pass
+#        self.alpha = alpha
+#        self.beta = beta
+#        self.gamma = gamma
+#        self.p = p
 
 #1. Compute the average of the whole time series (before splitting it into segments) and
 #subtract that average from all data points.
@@ -44,7 +47,7 @@ class Window():
     def triwind(self):
         w = np.zeros(self.N)
         x = np.zeros(self.N)
-        for idx in range(self.N):
+        for idx in range(int(self.N)):
             w[idx] = 1 - abs((idx - ((self.N - 1) / 2))/(self.N / 2))
             x[idx] = idx
         return (w, x)
@@ -55,13 +58,13 @@ class Window():
         for idx in range(int(self.N/2)):
             x[idx] = idx
             if (idx >= 0) and (idx <= (self.N/4)):
-                w[idx] = 1 - (6 * (idx / (self.N / 2)) ** 2) * (1- abs(idx) / (self.N / 2))
+                w[idx] = 1 - (6 * (idx / (self.N / 2)) ** 2) * (1 - abs(idx) / (self.N / 2))
             elif(idx >= self.N/4) and (idx <= (self.N/2)):
                 w[idx] = 2 * (1 - abs(idx) / (self.N / 2)) ** 3
         x = np.append(x, x + int(self.N/2))
         w = np.append(w[::-1], w)
         return (x, w)
-##    if (idx < 3) == True:
+# #    if (idx < 3) == True:
 
 #
 # -----------------------------------------------------------------------------
@@ -70,20 +73,24 @@ class Window():
     def genhamwind(self, alpha, beta):
         w = np.zeros(self.N)
         x = np.zeros(self.N)
-        for idx in range(self.N):
+        for idx in range(int(self.N)):
             w[idx] = alpha - beta * np.cos((2 * np.pi * idx) / (self.N - 1))
             x[idx] = idx
         return (x, w)
 
     def hanwind(self):
         alpha = beta = 0.5
-        [x, w] = self.genhamwind(self.N, alpha, beta)
+        N = self.N
+        gh = Window(N)
+        (x, w) = gh.genhamwind(alpha, beta)
         return (x, w)
 
     def hamwind(self):
         alpha = 0.53836
         beta = 1 - alpha
-        [x, w] = genhamwind(self.N, alpha, beta)
+        N = self.N
+        gh = Window(N)
+        (x, w) = gh.genhamwind(alpha, beta)
         return (x, w)
 
 #
@@ -94,7 +101,7 @@ class Window():
         w = np.zeros(self.N)
         x = np.zeros(self.N)
         alpha = 1  # rectangular window alpha = 0; cos window alpha = 1; Hann window alpha =2.
-        for idx in range(self.N):
+        for idx in range(int(self.N)):
             w[idx] = np.cos((np.pi * idx / (self.N - 1)) - np.pi / 2) ** alpha
             x[idx] = idx
         return (x, w)
@@ -103,21 +110,23 @@ class Window():
 # -----------------------------------------------------------------------------
 #
 
-    def gengausswind(self, sigma, p): 
+    def gengausswind(self, sigma, p):
         w = np.zeros(self.N)
         x = np.zeros(self.N)
-        for idx in range(self.N):
+        for idx in range(int(self.N)):
             num = idx-(self.N-1)/2
             denum = sigma*(self.N-1)/2
             w[idx] = np.e ** ((-1 / 2) * (num / denum) ** p)
             x[idx] = idx
         return (x, w)
-    
-    def gausswind(self): 
+
+    def gausswind(self):
         sigma = 0.5
         p = 2
-        [x,w] = gengausswind(self.N,sigma,p)
-        return (x,w)
+        N = self.N
+        gg = Window(N)
+        [x, w] = gg.gengausswind(sigma, p)
+        return (x, w)
 
 #
 # -----------------------------------------------------------------------------
@@ -127,7 +136,7 @@ class Window():
         w = np.zeros(self.N)
         x = np.zeros(self.N)
         alpha = 0.5
-        for idx in range(self.N):
+        for idx in range(int(self.N)):
             if idx <= int(alpha*(self.N-1)/2):
                 w[idx] = 1 / 2 * (1 + np.cos(np.pi * (2 * idx / (alpha * (self.N - 1)) - 1)))
                 x[idx] = idx
