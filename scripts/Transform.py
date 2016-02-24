@@ -17,6 +17,8 @@ Created on Tue Feb  9 15:25:42 2016
 
 import scipy.fftpack as ft
 import numpy as np
+
+
 def NFFT(x):
     log2val = np.ceil(np.log2(len(x)))
     nfft = 2 ** log2val
@@ -24,53 +26,53 @@ def NFFT(x):
 
 
 def FFT(x, fs, *args, **kwargs):
-    # sig, fs,Window_Type, Wwindow_size, smoothing,
+    # sig, fs,Window_Type, Window_size, smoothing,
     # spectrum = complex(=real+imag)/amp+phase, Shift = True # removed: side = singele/ double sided
-#    fft of the form:
-#         N-1                      m*k
-#    y_m =sum x_k * exp ( -2pi * i ----)
-#         k=0                        N
-#    Therefore fft * 1/N to correct amplitude
+    # fft of the form:
+    #      N-1                      m*k
+    # y_m =sum x_k * exp ( -2pi * i ----)
+    #      k=0                        N
+    # Therefore fft * 1/N to correct amplitude
     nfft = NFFT(x)
     N = len(x)
     if len(args) == 0:
         X = ft.fft(x, nfft)
     elif len(args) <= 3:
         if len(args) == 3:
-            if isinstance(args[1],str)== True:
+            if isinstance(args[1], str) == True:
 #                Window_Type = argv[1]
                 pass
             else:
                 print("Window type not the right input type")
             # argv[2]
-            if isinstance(args[2],int)== True:
+            if isinstance(args[2], int) == True:
 #                Window_size = (args[2])
                 pass
             elif isinstance(args[2], float) == True:
-                if args[2]%1 == 0:
+                if args[2] % 1 == 0:
 #                    Window_size = int(args[2])
                     pass
             else:
                 print("Window size not the right input type")
             # argv[3]
-            if isinstance(args[3],int)== True:
+            if isinstance(args[3], int) == True:
 #                smoothing = (args[3])
                 pass
             elif isinstance(args[2], float) == True:
-                if args[2]%1 == 0:
+                if args[2] % 1 == 0:
 #                    smoothing = int(args[3])
                     pass
             else:
                 print("Smooting not the right input type")
         else:
-            if isinstance(args[1],str)== True:
+            if isinstance(args[1], str) == True:
 #                Window_Type = argv[1]
                 pass
-            elif isinstance(args[1],int)== True:
+            elif isinstance(args[1], int) == True:
 #                smoothing = int(args[1])
                 pass
             elif isinstance(args[1], float) == True:
-                if args[1]%1 == 0:
+                if args[1] % 1 == 0:
 #                    smoothing = int(args[1])
                     pass
             else:
@@ -82,7 +84,6 @@ def FFT(x, fs, *args, **kwargs):
         pass
     else:
         print(kwargs)
-    
     X = ft.fft(x, nfft) / N
     F = np.arange(0, fs, 1 / (N / fs))
 #    F = np.arange(-fs / 2, fs / 2, 1 / (N / fs))
@@ -91,15 +92,37 @@ def FFT(x, fs, *args, **kwargs):
     return(F, X)
 
 
-def Transfer(x_in, x_out, fs): # possible some input paremeters addded later
-# transfer function is in case of in = microphone and out is ref signal:
-#     in signal     in1    in2     blackbox out
-# H = ---------- --> --- or --- is ------------
-#     out signal     out    out     blackbox in
+def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
+    # transfer function is in case of in = microphone and out is ref signal:
+    #     in signal     in1    in2     blackbox out
+    # H = ---------- --> --- or --- is ------------
+    #     out signal     out    out     blackbox in
     X_IN = FFT(x_in, fs)
     X_OUT = FFT(x_out, fs)
     H_0 = X_IN / X_OUT
     return(H_0)
+np.
+
+def ImpulseResponse(H, F):
+    print("""This function works only correct when:
+            - no smoothing or averaging is applied
+            - full spectrum data is returned!""")
+    # 2DO Check for full Spectrum
+    if isinstance(H, tuple):  # could also use assert
+        pass
+    else:
+        if np.iscomplex(H):
+            IR = ft.ifft(H)
+#        elif (isinstance(H[0], real)) and (isinstance(H[1], np.imag)):
+#            pass
+#        elif (isinstance(H[0], real)) and (isinstance(H[1], real)):
+#            pass
+    IR = ft.ifft(H)
+    dF = F[1]-F[0]
+    T = 1 / dF
+    F_Upper = len(F)/2 * dF
+    fs = 2 * F_Upper
+    return(IR, fs, T)
 
 
 def Cepstrum(x):
