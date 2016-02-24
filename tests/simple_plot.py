@@ -17,8 +17,22 @@ plt.show()
 # ----------- From Here Overlab characteristics function ---------------------
 #
 import sys
-from ..scripts import Window
 import numpy as np
+
+
+def genhamwind(N, alpha, beta):
+    w = np.zeros(N)
+    x = np.zeros(N)
+    for idx in range(N):
+        w[idx] = alpha - beta * np.cos((2 * np.pi * idx) / (N - 1))
+        x[idx] = idx
+    return (x, w)
+
+
+def hanwind(N):
+    alpha = beta = 0.5
+    [x, w] = genhamwind(N, alpha, beta)
+    return (x, w)
 
 
 def Overlap_Characterestics(Window_type, accurency):
@@ -30,12 +44,13 @@ def Overlap_Characterestics(Window_type, accurency):
 #            transform (DFT), including a comprehensive list of window
 #            functions and some new at-top windows.
     N = 1024  # Window Length
-    Overlab = 50  # [%]
-    Overlab_var = Overlab / 100 + 1
-    y = np.zeros(len(N + Overlab_var * N))
-    y[0:N] = Window.hanwind(N)
-    y[N * Overlab_var:] = y[N * Overlab_var:] + Window.hanwind(N)
-    x = np.arange(N + N * Overlab_var)
+    Overlab = 30  # [%]
+    Overlab_var = 1 - Overlab / 100
+    y = np.zeros(np.round(N + N * Overlab_var))
+    (dummy, win) = hanwind(N)
+    y[:N] = win
+    y[N * Overlab_var:] = y[N * Overlab_var:] + win
+    x = np.arange(np.round(N + N * Overlab_var))
     return (x, y)
 #    pass
 
