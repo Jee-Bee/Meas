@@ -25,6 +25,42 @@ def NFFT(x):
     return(nfft)
 
 
+def Symmetry(x, Stype):
+    N = len(x)
+    temp = []
+    if Stype == 'even':
+        for idx in range(int(N / 2 - 1)):
+            if round(x[idx + 1], 6) == round(x[(N - 1) - idx], 6):
+                pass
+                # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
+            else:
+                # print(False)
+                return (False)
+                break
+    elif Stype == 'odd':
+        for idx in range(int(N / 2 - 1)):
+            if round(x[idx + 1], 6) == - round(x[(N - 1) - idx], 6):
+                pass
+                # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
+            else:
+                # print(False)
+                return (False)
+                break
+    else:
+        print('No valid input type or value')
+        return(False)
+    return(True, temp)    else:
+        print('No valid input type or value')
+        return(False)
+    return(True)
+
+
+def (MAG, PHI):
+    RE = MAG * np.cos(phi)
+    IM = MAG * np.sin(phi)
+    return(RE, IM)
+
+
 def FFT(x, fs, *args, **kwargs):
     # sig, fs,Window_Type, Window_size, smoothing,
     # spectrum = complex(=real+imag)/amp+phase, Shift = True # removed: side = singele/ double sided
@@ -65,13 +101,13 @@ def FFT(x, fs, *args, **kwargs):
             else:
                 print("Smooting not the right input type")
         else:
-            if isinstance(args[1], str) == True:
+            if isinstance(args[1], str):
 #                Window_Type = argv[1]
                 pass
-            elif isinstance(args[1], int) == True:
+            elif isinstance(args[1], int):
 #                smoothing = int(args[1])
                 pass
-            elif isinstance(args[1], float) == True:
+            elif isinstance(args[1], float):
                 if args[1] % 1 == 0:
 #                    smoothing = int(args[1])
                     pass
@@ -101,7 +137,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     X_OUT = FFT(x_out, fs)
     H_0 = X_IN / X_OUT
     return(H_0)
-np.
+
 
 def ImpulseResponse(H, F):
     print("""This function works only correct when:
@@ -109,14 +145,33 @@ def ImpulseResponse(H, F):
             - full spectrum data is returned!""")
     # 2DO Check for full Spectrum
     if isinstance(H, tuple):  # could also use assert
-        pass
+        # Check arrays for type of signal
+        # Mag + Phase --> Mag is absolut no neg values
+        # Check symetrie no symmerie is false info...
+        # Without shift X[0] = F - 0Hz and X[fs/2] =
+        # shift check on symmetry?
+        H0even = Symmetry(H[0], 'even')
+        H1odd = Symmetry(H[1], 'odd')
+        if (H0even and H1odd) == True:
+            if H[0] == abs(H[0]):
+                if max(abs(H[1])) <= np.pi:  # check for phase RAD information
+                    pass
+                elif max(abs(H[1])) <= 180:  # check for phase DEG information
+                    H[1] = H[1] * np.pi / 180
+                    pass
+#                    http://stackoverflow.com/questions/2598734/numpy-creating-a-complex-array-from-2-real-ones
+#            elif ...:  # check for complex paterns don't know how
+#                pass
+            else:
+                pass
+        else:
+            print('No valid frequency array')
+            break
     else:
         if np.iscomplex(H):
             IR = ft.ifft(H)
-#        elif (isinstance(H[0], real)) and (isinstance(H[1], np.imag)):
-#            pass
-#        elif (isinstance(H[0], real)) and (isinstance(H[1], real)):
-#            pass
+        else:
+            print('Not right input type')
     IR = ft.ifft(H)
     dF = F[1]-F[0]
     T = 1 / dF
