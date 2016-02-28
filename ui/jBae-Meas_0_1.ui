@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Meas</string>
   </property>
   <property name="styleSheet">
    <string notr="true">font: 9pt &quot;SansSerif&quot;;</string>
@@ -30,7 +30,7 @@
      <locale language="English" country="UnitedKingdom"/>
     </property>
    </widget>
-   <widget class="QToolButton" name="TestSig">
+   <widget class="QToolButton" name="testSig">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -43,7 +43,7 @@
      <string>Test Signal</string>
     </property>
    </widget>
-   <widget class="QToolButton" name="StartMeas">
+   <widget class="QToolButton" name="startMeas">
     <property name="geometry">
      <rect>
       <x>200</x>
@@ -68,11 +68,11 @@
     <property name="currentIndex">
      <number>0</number>
     </property>
-    <widget class="QWidget" name="NewTab">
+    <widget class="QWidget" name="newTab">
      <attribute name="title">
       <string>Create New</string>
      </attribute>
-     <widget class="QDial" name="SigLevel">
+     <widget class="QDial" name="sigLevel">
       <property name="geometry">
        <rect>
         <x>250</x>
@@ -91,7 +91,7 @@
        <string/>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>15</x>
@@ -100,18 +100,18 @@
         <height>371</height>
        </rect>
       </property>
-      <layout class="QGridLayout" name="gridLayout">
+      <layout class="QGridLayout" name="signalPropGrid">
        <item row="0" column="0">
-        <layout class="QFormLayout" name="formLayout_4">
+        <layout class="QFormLayout" name="signalTypeGrid">
          <item row="0" column="0">
-          <widget class="QLabel" name="SigTypeLab">
+          <widget class="QLabel" name="sigTypeLab">
            <property name="text">
             <string>Signal Type</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QComboBox" name="SigTypeSelect">
+          <widget class="QComboBox" name="sigTypeSel">
            <property name="minimumSize">
             <size>
              <width>162</width>
@@ -123,16 +123,16 @@
         </layout>
        </item>
        <item row="1" column="0">
-        <layout class="QFormLayout" name="formLayout_3">
+        <layout class="QFormLayout" name="LengthGrid">
          <item row="0" column="0">
-          <widget class="QLabel" name="LengthLab">
+          <widget class="QLabel" name="lengthLab">
            <property name="text">
             <string>Length Signal</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QComboBox" name="LengthSelect">
+          <widget class="QComboBox" name="lengthSelect">
            <property name="minimumSize">
             <size>
              <width>162</width>
@@ -144,9 +144,9 @@
         </layout>
        </item>
        <item row="2" column="0">
-        <layout class="QFormLayout" name="formLayout_5">
+        <layout class="QFormLayout" name="sweepGrid">
          <item row="0" column="0">
-          <widget class="QLabel" name="NoSweepsLab">
+          <widget class="QLabel" name="sweepsLab">
            <property name="text">
             <string>No Sweeps</string>
            </property>
@@ -168,16 +168,16 @@
         </layout>
        </item>
        <item row="3" column="0">
-        <layout class="QFormLayout" name="formLayout_6">
+        <layout class="QFormLayout" name="startFreqGrid">
          <item row="0" column="0">
-          <widget class="QLabel" name="StartFreqLab">
+          <widget class="QLabel" name="startFreqLab">
            <property name="text">
             <string>Start Frequecy</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QSlider" name="StartFreqSlid_2">
+          <widget class="QSlider" name="startFreqSlid_2">
            <property name="minimumSize">
             <size>
              <width>162</width>
@@ -193,7 +193,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="StartFreqSpin">
+          <widget class="QDoubleSpinBox" name="startFreqSpin">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -211,16 +211,16 @@
         </layout>
        </item>
        <item row="4" column="0">
-        <layout class="QFormLayout" name="formLayout_7">
+        <layout class="QFormLayout" name="endFreqGrid">
          <item row="0" column="0">
-          <widget class="QLabel" name="EndFreqLab">
+          <widget class="QLabel" name="endFreqLab">
            <property name="text">
             <string>End Frequency</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QSlider" name="EndFreqSlid">
+          <widget class="QSlider" name="endFreqSlid">
            <property name="minimumSize">
             <size>
              <width>162</width>
@@ -236,7 +236,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="EndFreqSpin">
+          <widget class="QDoubleSpinBox" name="endFreqSpin">
            <property name="minimumSize">
             <size>
              <width>100</width>
@@ -256,7 +256,7 @@
       </layout>
      </widget>
      <zorder>layoutWidget</zorder>
-     <zorder>SigLevel</zorder>
+     <zorder>sigLevel</zorder>
     </widget>
     <widget class="QWidget" name="LoadTab">
      <attribute name="title">
@@ -355,28 +355,28 @@
      <property name="geometry">
       <rect>
        <x>830</x>
-       <y>560</y>
+       <y>570</y>
        <width>34</width>
        <height>91</height>
       </rect>
      </property>
-     <layout class="QFormLayout" name="formLayout">
+     <layout class="QFormLayout" name="figBottomGrid">
       <item row="0" column="0">
-       <widget class="QToolButton" name="ViewPropBButton">
+       <widget class="QToolButton" name="ViewPropBBottom">
         <property name="text">
          <string>...</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QToolButton" name="ZoomBButton">
+       <widget class="QToolButton" name="ZoomBottom">
         <property name="text">
          <string>...</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QToolButton" name="toolButton_6">
+       <widget class="QToolButton" name="toolBottom">
         <property name="text">
          <string>...</string>
         </property>
@@ -387,32 +387,32 @@
     <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
-       <x>840</x>
-       <y>250</y>
+       <x>830</x>
+       <y>260</y>
        <width>34</width>
        <height>91</height>
       </rect>
      </property>
-     <layout class="QFormLayout" name="formLayout_2">
+     <layout class="QFormLayout" name="figTopGrid">
       <property name="fieldGrowthPolicy">
        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
       </property>
       <item row="0" column="0">
-       <widget class="QToolButton" name="ViewPropTButton">
+       <widget class="QToolButton" name="ViewPropTop">
         <property name="text">
          <string>...</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QToolButton" name="ZoomTButton">
+       <widget class="QToolButton" name="zoomTop">
         <property name="text">
          <string>...</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QToolButton" name="toolButton">
+       <widget class="QToolButton" name="toolTop">
         <property name="text">
          <string>...</string>
         </property>
@@ -452,9 +452,9 @@
       <height>621</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QVBoxLayout" name="figVert">
      <item>
-      <widget class="QGraphicsView" name="graphicsView"/>
+      <widget class="QGraphicsView" name="plotTop"/>
      </item>
      <item>
       <widget class="QGraphicsView" name="PlotBottom"/>
@@ -465,8 +465,8 @@
    <zorder>layoutWidget</zorder>
    <zorder>Figures</zorder>
    <zorder>JbaeLogo</zorder>
-   <zorder>TestSig</zorder>
-   <zorder>StartMeas</zorder>
+   <zorder>testSig</zorder>
+   <zorder>startMeas</zorder>
    <zorder>tabWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -532,28 +532,28 @@
  </widget>
  <layoutdefault spacing="6" margin="9"/>
  <tabstops>
-  <tabstop>TestSig</tabstop>
-  <tabstop>StartMeas</tabstop>
+  <tabstop>testSig</tabstop>
+  <tabstop>startMeas</tabstop>
   <tabstop>lineEdit_3</tabstop>
-  <tabstop>ViewPropBButton</tabstop>
+  <tabstop>ViewPropBBottom</tabstop>
   <tabstop>tabWidget</tabstop>
-  <tabstop>SigLevel</tabstop>
-  <tabstop>SigTypeSelect</tabstop>
-  <tabstop>LengthSelect</tabstop>
+  <tabstop>sigLevel</tabstop>
+  <tabstop>sigTypeSel</tabstop>
+  <tabstop>lengthSelect</tabstop>
   <tabstop>SweepsSelect</tabstop>
-  <tabstop>StartFreqSlid_2</tabstop>
-  <tabstop>EndFreqSlid</tabstop>
+  <tabstop>startFreqSlid_2</tabstop>
+  <tabstop>endFreqSlid</tabstop>
   <tabstop>pushButton_2</tabstop>
-  <tabstop>toolButton</tabstop>
-  <tabstop>ZoomTButton</tabstop>
-  <tabstop>ViewPropTButton</tabstop>
-  <tabstop>ZoomBButton</tabstop>
-  <tabstop>toolButton_6</tabstop>
+  <tabstop>toolTop</tabstop>
+  <tabstop>zoomTop</tabstop>
+  <tabstop>ViewPropTop</tabstop>
+  <tabstop>ZoomBottom</tabstop>
+  <tabstop>toolBottom</tabstop>
   <tabstop>pushButton</tabstop>
   <tabstop>dateTimeEdit</tabstop>
   <tabstop>JbaeLogo</tabstop>
   <tabstop>PlotBottom</tabstop>
-  <tabstop>graphicsView</tabstop>
+  <tabstop>plotTop</tabstop>
  </tabstops>
  <resources/>
  <connections/>

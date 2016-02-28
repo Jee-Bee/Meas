@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>469</width>
-    <height>669</height>
+    <height>644</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QScrollArea" name="scrollArea">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>-40</y>
+     <x>0</x>
+     <y>0</y>
      <width>400</width>
-     <height>565</height>
+     <height>600</height>
     </rect>
    </property>
    <property name="widgetResizable">
@@ -31,7 +31,7 @@
       <x>0</x>
       <y>0</y>
       <width>398</width>
-      <height>563</height>
+      <height>598</height>
      </rect>
     </property>
     <widget class="QLineEdit" name="lineEdit">
@@ -71,7 +71,7 @@
      <property name="geometry">
       <rect>
        <x>0</x>
-       <y>530</y>
+       <y>570</y>
        <width>400</width>
        <height>32</height>
       </rect>
@@ -83,25 +83,25 @@
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
      </property>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>460</y>
+       <y>410</y>
        <width>170</width>
        <height>52</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_7">
+       <widget class="QLabel" name="defFreqMaxLab">
         <property name="text">
          <string>default frequency Max</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLineEdit" name="lineEdit_5">
+       <widget class="QLineEdit" name="defFreqMaxEdit">
         <property name="minimumSize">
          <size>
           <width>162</width>
@@ -112,32 +112,32 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>210</y>
-       <width>267</width>
+       <y>190</y>
+       <width>281</width>
        <height>85</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_3">
+       <widget class="QLabel" name="selFsLab">
         <property name="text">
          <string>Select Fs</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1" rowspan="3">
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QCheckBox" name="standardFs">
         <property name="text">
-         <string>CheckBox</string>
+         <string>Standard Fs</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QComboBox" name="comboBox_2">
+       <widget class="QComboBox" name="FsSel">
         <property name="minimumSize">
          <size>
           <width>162</width>
@@ -147,29 +147,29 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLineEdit" name="lineEdit_3"/>
+       <widget class="QLineEdit" name="fsEdit"/>
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>310</y>
+       <y>280</y>
        <width>170</width>
        <height>52</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_4">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="buffSizeLab">
         <property name="text">
          <string>buffersize</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QComboBox" name="comboBox_3">
+       <widget class="QComboBox" name="buffSizeSel">
         <property name="minimumSize">
          <size>
           <width>162</width>
@@ -180,11 +180,11 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>350</y>
+       <y>470</y>
        <width>170</width>
        <height>52</height>
       </rect>
@@ -209,25 +209,25 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>30</x>
-       <y>410</y>
+       <y>350</y>
        <width>170</width>
        <height>52</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="defFreqMinLab">
         <property name="text">
          <string>default frequency Min</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLineEdit" name="lineEdit_4">
+       <widget class="QLineEdit" name="defFreqMinEdit">
         <property name="minimumSize">
          <size>
           <width>162</width>
@@ -238,7 +238,7 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <property name="geometry">
       <rect>
        <x>30</x>
@@ -249,21 +249,21 @@
      </property>
      <layout class="QFormLayout" name="formLayout_5">
       <item row="0" column="0">
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="selInterfaceLab">
         <property name="text">
          <string>select interface</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QToolButton" name="toolButton">
+       <widget class="QToolButton" name="updateInterface">
         <property name="text">
          <string>Update interface</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QComboBox" name="comboBox">
+       <widget class="QComboBox" name="interfaceSel">
         <property name="minimumSize">
          <size>
           <width>162</width>
