@@ -11,7 +11,7 @@
 # 2Do List Meas:
 # FUNCTION          PRIORITY  DATE FINISHED (DATE CHECKED)
 # --------------------------------------------------------------------
-# Signal generator  (Make Class??)  
+# Signal generator  (Make Class??)
 # |_ Sine               5     6 Jan 2016
 # |_ Chirp              5     6 Jan 2016
 # |_ square + DC        5     6 Jan 2016(NO DC/ Duty Cycle)
@@ -22,23 +22,24 @@
 # |_ brown Noise        1
 # |_ multitone          1
 # |_ Polychirp          1
-# Plots (class?)              
+# Plots (class?)
 # |_ time plot          5
 # |_ Freq plot/ bode    5
 # |_ spectrum time      4
 # |_ Waterfall          4
-# |_ 1/n oct bar plot   0
+# |_ 1/n oct bar plot   0     
 # |_ zero poles         1
 # |_                    0
 # |_ Live updating      2     (FuncAnimation in Matplotlib)
-# Spectra (make Clasas??)            
-# |_ FFT/ DFT = AS = LS 5
+# Spectra (make Clasas??)
+# |_ FFT/ DFT = AS = LS 5    12 Feb 2016
 # |_ PS [W]             5
 # |_ (A)SD = LSD        3  [V/sqrt(Hz)] (LSD = Linear Spectrum Denisty)
-# |_ PSD [W/Hz]         5 
+# |_ PSD [W/Hz]         5    20 Feb 2016
 # |_ ESD [W*s/Hz]       3
 # |_ ENBW (Effective Noise Band With)
 # |_ Normalized Equivalent Noise BandWidth (See Window >> 395068.pdf)
+# |_ 1/n bands                14 Feb 2016 (1/3 and 1/1 bands)
 # V^2 * Hz−1 for the PSD and V^2*s * Hz−1 for the ESD (energy spectral density)
 # |_ multi channel
 # Transforms (make class)
@@ -47,7 +48,7 @@
 #    |_ STFT
 # |_ Laplace/ Z-trans   0
 # |_ Transferfunction   2    12 Feb 2016 (No exeptions or extra parameters)
-# |_ Impulse response   2
+# |_ Impulse response   2    24 Feb 2016
 # |_ Cepstrum           0
 # |_ more options Discrete (Co)Sine Transform (DCT/DST) Hilbert transform ...
 # ... Whas it tilbert an realtransform
@@ -78,23 +79,26 @@
 # |_ peak finder        2
 # |_ interpolation      2
 # |_ avereiging         3
+#   |_ SMA
+#   |_ CMA
+#   |_
 # |_ Windowfunction     4
 #   |_ Overlap (spectrum)
-#   |_ (Overlap correlation)
-#   |_ Recomend Overlab ROV  (See Window >> 395068.pdf)
+#   |_ (Overlap correlation)   3 Mar 2016
+#   |_ Recomend Overlab ROV    3 Mar 2016 (See Window >> 395068.pdf)
 #   |_ Frequency bin calculations
 #   |_ WOSA (Welch’s Overlapped Segmented Average) (See Window >> 395068.pdf)
 # |_ Smoothing          3
 
 # multi signal analysis ((sub class of transform/spectra))
-# Mel Cepstrum Coefficents 
+# Mel Cepstrum Coefficents
 # cross-correlation
 # Convolution
 # autocorrelation
 # http://dsp.stackexchange.com/questions/27451/the-difference-between-convolution-and-cross-correlation-from-a-signal-analysis
 
 # Signal quality
-# |_ Crest factor 
+# |_ Crest factor       2     8 feb 2016
 # (peak to peak versus avg noise)
 # |_ THD
 # |_ SNR
@@ -106,7 +110,7 @@
 # group delay
 # RT60
 # Save Auto name date
-# Weighting(A B C and D)
+# Weighting(A B C and D)     24 Feb 2016
 # |_ FFT values         3    09 feb 2016
 # |_ Transfer functions 1
 # Buffer
@@ -115,7 +119,7 @@
 # Linking folders       5
 # git Repository        5   05 Feb 2016
 
-# GUI  (Make class??)               
+# GUI  (Make class??)
 # |_ layout             0
 # |_ button             0
 # |_ graphs if needed   0
