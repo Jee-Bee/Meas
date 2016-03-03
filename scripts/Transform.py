@@ -49,15 +49,12 @@ def Symmetry(x, Stype):
     else:
         print('No valid input type or value')
         return(False)
-    return(True, temp)    else:
-        print('No valid input type or value')
-        return(False)
     return(True)
 
 
-def (MAG, PHI):
-    RE = MAG * np.cos(phi)
-    IM = MAG * np.sin(phi)
+def MagPh2ReIm(MAG, PHI):
+    RE = MAG * np.cos(PHI)
+    IM = MAG * np.sin(PHI)
     return(RE, IM)
 
 
