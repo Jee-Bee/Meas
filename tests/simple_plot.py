@@ -34,16 +34,35 @@ def hanwind(N):
     return (x, w)
 
 
-def OC(Window_Type, percent):
+def OC(Window_Type, percent, **kwargs):
+    # See: http://www.recordingblogs.com/sa/tabid/88/Default.aspx?topic=Overlap+correlation
     r = percent/100
     N = 1024
-    (dummy, w) = hanwind(N)
-    oc_num = np.sum(w * w.T + (1 - r) * N)
-    oc_denum = np.sum(w ** 2)
-    oc = oc_num / oc_denum
+    if kwargs == {}:
+        (dummy, w) = hanwind(N)
+    elif kwargs['WindowSet'] == 'window':
+        w = Window_Type
+    else:
+        (dummy, w) = hanwind(N)
+    oc_num = []
+    for idx in range(int(r * len(w))):
+        oc_num = np.append(oc_num, w[idx] * w[idx + (1 - r) * len(w)])
+    oc = oc_num.sum() / np.sum(w ** 2)
     return (oc)
 
 
+def ROV(af, oc):
+    # Input are values from Input characteresitcs
+    N = len(af)
+    rovidx = np.argmax(af / oc)
+    rov = 100 / N * (rovidx - 1)
+    return(rov, rovidx)
+
+
+# a * idx + b (in log_2)
+# if N = 1024, N/8 = 128; N = 2 ** 10; 8 = 2 ** 3; 128 = 2 ** 7
+# idx[0] = a*0 + b = 2; b = 2
+# idx[N] = a*N + 2 = 7; a = 5 / N
 def Overlap_Characterestics(Window_type, Window_Length):
     #    Calculate AF = Min/Max
     #    Calculate PF
@@ -53,18 +72,19 @@ def Overlap_Characterestics(Window_type, Window_Length):
     #       transform (DFT), including a comprehensive list of window
     #       functions and some new at-top windows.
     N = Window_Length  # Window Length
-    nW = int(N/8)
-#    Overlab = 64  # [%]
     (dummy, win) = hanwind(N)
     af = []
+#    pf = []
+    oc = []
     for Overlab_var in range(1, N+1):
+        nW = 2 ** (int(Overlab_var * (np.log2(N) - 3 - 2) / N) + 2)
         #    Overlab_var = Overlab / 100
         y = np.zeros(np.round(nW * N - (nW - 1) * Overlab_var))
         for idx in range(nW):
             idxl = round(idx * N - idx * Overlab_var)
             idxu = round((idx + 1) * N - idx * Overlab_var)
             y[idxl:idxu] = y[idxl:idxu] + win
-        locmin = np.r_[True, y[1:] < y[:-1]] & np.r_[y[:-1] < y[1:], 
+        locmin = np.r_[True, y[1:] < y[:-1]] & np.r_[y[:-1] < y[1:],
                        True] | np.r_[True, y[1:] == y[:-1]] & np.r_[
                         y[:-1] < y[1:], True] | np.r_[True,
                         y[1:] < y[:-1]] & np.r_[y[:-1] == y[1:], True]
@@ -73,35 +93,34 @@ def Overlap_Characterestics(Window_type, Window_Length):
                            True] | np.r_[True, y[1:] == y[:-1]] & np.r_[
                            y[:-1] > y[1:], True] | np.r_[True,
                            y[1:] > y[:-1]] & np.r_[y[:-1] == y[1:], True]
-        minval = []
-#        minidx = []
-        maxval = []
-#        maxidx = []
-        temp = []
+        minaf = []
+#        minap = []
+        maxaf = []
+#        maxap = []
         for idx in range(len(locmin)):
             if locmin[idx] == True:
                 if y[idx] != 0:
-                    minval = np.append(minval, y[idx])
-                    # minidx = np.append(minidx, idx)
-                temp = np.append(temp, minval, axis=1)
+                    minaf = np.append(minaf, y[idx])
+#                    minap = np.append(minap, y[idx] ** 2)
             if locmax[idx] == True:
-                maxval = np.append(maxval, y[idx])
-                # maxidx = np.append(maxidx, idx)
-        if minval != []:
-            af = np.append(af, np.min(minval) / np.max(maxval))
+                maxaf = np.append(maxaf, y[idx])
+#                maxap = np.append(maxap, y[idx] ** 2)
+        if minaf != []:
+            af = np.append(af, minaf.min() / maxaf.max())
+#            pf = np.append(pf, minap.min() / maxap.max())
         else:
             af = np.append(af, np.NaN)
+#            pf = np.append(pf, np.NaN)
+        oc = np.append(oc, OC(win, 100 / N * Overlab_var, WindowSet='window'))
+    (rov, rovidx) = ROV(af, oc)
     percent = np.linspace(0, 100, N)
-    return (percent, af) #, temp)
+    return (percent, af, oc, rov)  # pf ,oc)
 
-
-def ROV(self, Window_type):
-    # Input are values from Input characteresitcs
-    pass
 
 # https://terpconnect.umd.edu/~toh/spectrum/PeakFindingandMeasurement.htm
 # https://gist.github.com/endolith/250860
-[xaxis, yaxis] = Overlap_Characterestics([], 1024)
+[xaxis, afval, ocval, index] = Overlap_Characterestics([], 1024)
 # http://stackoverflow.com/questions/4624970/finding-local-maxima-minima-with-numpy-in-a-1d-numpy-array
 
-plt.plot(xaxis, yaxis)
+plt.plot(xaxis, afval, xaxis, ocval)
+# plt.arrow(index, ocval[index], 0, afval[index] - ocval[index])
