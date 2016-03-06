@@ -28,8 +28,8 @@ rmssig = RMS.RMS(data)
 crest = RMS.Crest(data)
 
 N = 1024
-(x, whan) = Window.Window.hanwind
-
+whan = Window.Window(N)
+(x, whan) = whan.hanwind()
 
 #if len(t)< 100000:
 ##    mpl.RcParams()
