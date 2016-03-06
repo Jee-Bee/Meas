@@ -69,10 +69,10 @@ def FFT(x, fs, *args, **kwargs):
     nfft = NFFT(x)
     N = len(x)
     if len(args) == 0:
-        X = ft.fft(x, nfft)
+        X = ft.fft(x, nfft) / N
     elif len(args) <= 3:
         if len(args) == 3:
-            if isinstance(args[1], str) == True:
+            if isinstance(args[1], str):
 #                Window_Type = argv[1]
                 pass
             else:
@@ -88,10 +88,10 @@ def FFT(x, fs, *args, **kwargs):
             else:
                 print("Window size not the right input type")
             # argv[3]
-            if isinstance(args[3], int) == True:
+            if isinstance(args[3], int):
 #                smoothing = (args[3])
                 pass
-            elif isinstance(args[2], float) == True:
+            elif isinstance(args[2], float):
                 if args[2] % 1 == 0:
 #                    smoothing = int(args[3])
                     pass
@@ -117,7 +117,7 @@ def FFT(x, fs, *args, **kwargs):
         pass
     else:
         print(kwargs)
-    X = ft.fft(x, nfft) / N
+#    X = ft.fft(x, nfft) / N
     F = np.arange(0, fs, 1 / (N / fs))
 #    F = np.arange(-fs / 2, fs / 2, 1 / (N / fs))
     # fft shift = True: -fs / 2, fs / 2
@@ -149,7 +149,7 @@ def ImpulseResponse(H, F):
         # shift check on symmetry?
         H0even = Symmetry(H[0], 'even')
         H1odd = Symmetry(H[1], 'odd')
-        if (H0even and H1odd) == True:
+        if (H0even and H1odd):
             if H[0] == abs(H[0]):
                 if max(abs(H[1])) <= np.pi:  # check for phase RAD information
                     pass
@@ -163,7 +163,7 @@ def ImpulseResponse(H, F):
                 pass
         else:
             print('No valid frequency array')
-            break
+            return
     else:
         if np.iscomplex(H):
             IR = ft.ifft(H)

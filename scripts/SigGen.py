@@ -1,71 +1,84 @@
 # -*- coding: utf8 -*-
 #
-# Input parameters each function
-#
-# t: T + fs
-# Sine: 1* f + t
-# Saw: 1 * f + t
-# square: 1* f + t + DC
-# @ Triangle: 1 * f + t
-# Chirp: 2 * f + t + T
-# White Noise: t or T
-# @ pink Noise: t or T ??
-# @ brown Noise: t or T ??
 
-def varlist(var,length):
-    if len(var) > length:
+def varlist(var, length):
+    from numpy import array
+    if len(array(var)) > length:
 #        msg =
-        raise OSError('list is to long only first '+ length +' paramerets will be used' )
-        return False
-    elif len(var) < length:
-        raise OSError('list is to short '+ length +' is less than required')
-        return False
+        raise OSError('list is to long only first ' + str(length) + ' paramerets will be used' )
+        return(False, True)
+    elif len(array(var)) < length:
+        raise OSError('list is to short ' + str(length) + ' is less than required')
+        return(False, False)
     else:
-        return True
+        return(True, True)
 
-
-def SigGen(gentype, f, T, fs,*arg):
+# for generating sounds is time array not importand...
+# for generating plots is time array importand!!
+def SigGen(gentype, f, T, fs, *arg):
     # Creating signal generator:
     # Options gentype: Sine; Sawtooth; Triangle; Square PW; ...
     # White/Pink noise; Chirp; Poly Chirp
     # http://stackoverflow.com/questions/919680/can-a-variable-number-of-arguments-be-passed-to-a-function
     import numpy as np
     import scipy.signal as sig
+    f = np.array(f)
     t = np.linspace(0, T - (1 / fs), T * fs)
     if gentype == "Sine":
-        if varlist == True:
+        if varlist(f, 1) == (True, True):
             f0 = f
-        elif varlist == False:
+            Sig = np.sin(2 * np.pi * f0 * t)
+        elif varlist(f, 1) == (False, True):
             f0 = f[0]
+            Sig = np.sin(2 * np.pi * f0 * t)
+        else:
+            Sig = []
         Sig = np.sin(2 * np.pi * f0 * t)
     elif gentype == "Sawtooth":
-        if varlist == True:
+        if varlist(f, 1) == (True, True):
             f0 = f
-        elif varlist == False:
+            Sig = sig.Sawtooth(2 * np.pi * f0 * t)
+        elif varlist(f, 1) == (False, True):
             f0 = f[0]
-        Sig = sig.Sawtooth(2 * np.pi * f0 * t)
+            Sig = sig.Sawtooth(2 * np.pi * f0 * t)
+        else:
+            Sig = []
+            raise OSError('Nothing to return')
     elif gentype == 'Square':
-        if varlist == True:
+        if varlist(f, 1) == (True, True):
             f0 = f
-        elif varlist == False:
+            Sig = sig.Square(2 * np.pi * f0 * t)
+        elif varlist(f, 1) == (False, True):
             f0 = f[0]
-        Sig = sig.Square(2 * np.pi * f0 * t)
+            Sig = sig.Square(2 * np.pi * f0 * t)
+        else:
+            Sig = []
+            raise OSError('Nothing to return')
     elif gentype == 'Triangle':
-        if varlist == True:
+        if varlist(f, 1) == (True, True):
             f0 = f
-        elif varlist == False:
+            Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
+        elif varlist(f, 1) == (False, True):
             f0 = f[0]
-        Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
+            Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
+        else:
+            Sig = []
+            raise OSError('Nothing to return')
     elif gentype == 'Chirp':
-        if varlist == True:
-            break
-        elif varlist == False:
+        if varlist(f, 2) == (True, True):
             f0 = f[0]
             f1 = f[1]
-        sig = sig.chirp(t, f0, T, f1, 'linear', 90)
+            Sig = sig.chirp(t, f0, T, f1, 'linear', 90)
+        elif varlist(f, 2) == (False, True):
+            f0 = f[0]
+            f1 = f[1]
+            Sig = sig.chirp(t, f0, T, f1, 'linear', 90)
+        else:
+            Sig = []
+            raise OSError('Nothing to return')
         # http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.signal.chirp.html
     elif gentype == 'Wnoise':  # White Noise
-        sig = np.random.normal(0, 1, len(t))
+        Sig = np.random.normal(0, 1, len(t))
     elif gentype == 'Pnoise':  # Pink noise
         pass
     elif gentype == 'bnoise':  # Brown noise
