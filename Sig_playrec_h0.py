@@ -1,9 +1,8 @@
 # Test Script for signal generation and recording:
 
 import numpy as np
-#import scipy.signal as sig
 import scripts.SigGen as sg
-from scripts import Transform
+from scripts import Transform, Interface
 #from importlib.machinery import SourceFileLoader
 import sounddevice as sd
 import matplotlib.pyplot as plt
@@ -21,22 +20,28 @@ f = np.array(f)
 
 # Signal to soundcard
 # Soundcard information
-devinfo = sd.query_devices()
-print(devinfo)
+(devinfo, devopt) = Interface.InterfaceIO()
+print(devinfo, devopt)
 
-# Simultanious play/ recording
-rec = sd.playrec(sigout, fs, channels=2)
-sd.wait()
-#sd.stop()
-rect = rec.T[0]
-[F, REC] = Transform.FFT(rect, fs)
+print(devopt)
+if len(devopt) == 0:
+    print('play and record a signal at the same time is not possible')
+else:
+    # sd.default.device = 6  # [6, 1]
+    # Simultanious play/ recording
+    rec = sd.playrec(sigout, fs, channels=2)
+    sd.wait()
 
-plt.figure()
-timeplt = defaultFigures(t, rec, [])
-timeplt.Time()
-plt.figure()
-specplt = defaultFigures(F, REC, [])
-specplt.SpecMag()
+    # sd.stop()
+    rect = rec.T[0]
+    [F, REC1] = Transform.FFT(rect, fs)
+
+    plt.figure()
+    timeplt = defaultFigures(t, rec, [])
+    timeplt.Time()
+    plt.figure()
+    specplt = defaultFigures(F, REC, [])
+    specplt.SpecMag()
 
 # 2Do
 # https://pypi.python.org/pypi/kaching/0.3
