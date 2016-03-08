@@ -27,7 +27,6 @@ def NFFT(x):
 
 def Symmetry(x, Stype):
     N = len(x)
-    temp = []
     if Stype == 'even':
         for idx in range(int(N / 2 - 1)):
             if round(x[idx + 1], 6) == round(x[(N - 1) - idx], 6):
@@ -67,46 +66,47 @@ def FFT(x, fs, *args, **kwargs):
     #      k=0                        N
     # Therefore fft * 1/N to correct amplitude
     nfft = NFFT(x)
-    N = len(x)
+    N = len(x)  # Temporary solution
     if len(args) == 0:
         X = ft.fft(x, nfft) / N
+        N = nfft
     elif len(args) <= 3:
         if len(args) == 3:
             if isinstance(args[1], str):
-#                Window_Type = argv[1]
+                # Window_Type = argv[1]
                 pass
             else:
                 print("Window type not the right input type")
             # argv[2]
             if isinstance(args[2], int) == True:
-#                Window_size = (args[2])
+                # Window_size = (args[2])
                 pass
             elif isinstance(args[2], float) == True:
                 if args[2] % 1 == 0:
-#                    Window_size = int(args[2])
+                    # Window_size = int(args[2])
                     pass
             else:
                 print("Window size not the right input type")
             # argv[3]
             if isinstance(args[3], int):
-#                smoothing = (args[3])
+                # smoothing = (args[3])
                 pass
             elif isinstance(args[2], float):
                 if args[2] % 1 == 0:
-#                    smoothing = int(args[3])
+                    # smoothing = int(args[3])
                     pass
             else:
                 print("Smooting not the right input type")
         else:
             if isinstance(args[1], str):
-#                Window_Type = argv[1]
+                # Window_Type = argv[1]
                 pass
             elif isinstance(args[1], int):
-#                smoothing = int(args[1])
+                # smoothing = int(args[1])
                 pass
             elif isinstance(args[1], float):
                 if args[1] % 1 == 0:
-#                    smoothing = int(args[1])
+                    # smoothing = int(args[1])
                     pass
             else:
                 print("not the right input type")
@@ -117,7 +117,7 @@ def FFT(x, fs, *args, **kwargs):
         pass
     else:
         print(kwargs)
-#    X = ft.fft(x, nfft) / N
+    # X = ft.fft(x, nfft) / N
     F = np.arange(0, fs, 1 / (N / fs))
 #    F = np.arange(-fs / 2, fs / 2, 1 / (N / fs))
     # fft shift = True: -fs / 2, fs / 2
