@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1280</width>
-    <height>800</height>
+    <width>844</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Meas</string>
@@ -20,11 +26,17 @@
    <widget class="QGraphicsView" name="JbaeLogo">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>25</y>
-      <width>281</width>
-      <height>111</height>
+      <x>10</x>
+      <y>10</y>
+      <width>240</width>
+      <height>121</height>
      </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>350</height>
+     </size>
     </property>
     <property name="locale">
      <locale language="English" country="UnitedKingdom"/>
@@ -33,10 +45,10 @@
    <widget class="QToolButton" name="testSig">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>670</y>
-      <width>120</width>
-      <height>40</height>
+      <x>10</x>
+      <y>520</y>
+      <width>80</width>
+      <height>23</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -49,10 +61,10 @@
    <widget class="QToolButton" name="startMeas">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>670</y>
-      <width>120</width>
-      <height>40</height>
+      <x>110</x>
+      <y>520</y>
+      <width>131</width>
+      <height>23</height>
      </rect>
     </property>
     <property name="toolTip">
@@ -65,69 +77,53 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>170</y>
-      <width>380</width>
-      <height>490</height>
+      <x>10</x>
+      <y>140</y>
+      <width>241</width>
+      <height>361</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>240</width>
+      <height>0</height>
+     </size>
+    </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="newTab">
      <attribute name="title">
       <string>Create New</string>
      </attribute>
-     <widget class="QDial" name="sigLevel">
+     <widget class="QWidget" name="">
       <property name="geometry">
        <rect>
-        <x>250</x>
-        <y>70</y>
-        <width>50</width>
-        <height>64</height>
+        <x>10</x>
+        <y>20</y>
+        <width>221</width>
+        <height>281</height>
        </rect>
       </property>
-      <property name="toolTip">
-       <string extracomment="Signal Level">Set Volume Level</string>
-      </property>
-      <property name="statusTip">
-       <string/>
-      </property>
-      <property name="accessibleDescription">
-       <string/>
-      </property>
-     </widget>
-     <widget class="QWidget" name="layoutWidget">
-      <property name="geometry">
-       <rect>
-        <x>15</x>
-        <y>30</y>
-        <width>341</width>
-        <height>371</height>
-       </rect>
-      </property>
-      <layout class="QGridLayout" name="signalPropGrid">
-       <item row="0" column="0">
-        <layout class="QFormLayout" name="signalTypeGrid">
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="0" column="1" rowspan="3">
+        <layout class="QGridLayout" name="gridLayout_2">
          <item row="0" column="0">
-          <widget class="QLabel" name="sigTypeLab">
+          <widget class="QLabel" name="label">
            <property name="text">
-            <string>Signal Type</string>
+            <string>SoundLevel</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QComboBox" name="sigTypeSel">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
+          <widget class="QDial" name="sigLevel">
            <property name="toolTip">
-            <string>Select Signal Type</string>
+            <string extracomment="Signal Level">Set Volume Level</string>
            </property>
            <property name="statusTip">
+            <string/>
+           </property>
+           <property name="accessibleDescription">
             <string/>
            </property>
           </widget>
@@ -147,12 +143,42 @@
           <widget class="QComboBox" name="lengthSelect">
            <property name="minimumSize">
             <size>
-             <width>162</width>
+             <width>140</width>
              <height>0</height>
             </size>
            </property>
            <property name="toolTip">
             <string>Select Length of Signal in k samples</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="0" column="0">
+        <layout class="QFormLayout" name="signalTypeGrid">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
+         <item row="0" column="0">
+          <widget class="QLabel" name="sigTypeLab">
+           <property name="text">
+            <string>Signal Type</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QComboBox" name="sigTypeSel">
+           <property name="minimumSize">
+            <size>
+             <width>140</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Select Signal Type</string>
+           </property>
+           <property name="statusTip">
+            <string/>
            </property>
           </widget>
          </item>
@@ -171,7 +197,7 @@
           <widget class="QComboBox" name="SweepsSelect">
            <property name="minimumSize">
             <size>
-             <width>162</width>
+             <width>140</width>
              <height>0</height>
             </size>
            </property>
@@ -185,8 +211,11 @@
          </item>
         </layout>
        </item>
-       <item row="3" column="0">
+       <item row="3" column="0" colspan="2">
         <layout class="QFormLayout" name="startFreqGrid">
+         <property name="fieldGrowthPolicy">
+          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+         </property>
          <item row="0" column="0">
           <widget class="QLabel" name="startFreqLab">
            <property name="text">
@@ -195,7 +224,7 @@
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QSlider" name="startFreqSlid_2">
+          <widget class="QSlider" name="startFreqSlid">
            <property name="minimumSize">
             <size>
              <width>162</width>
@@ -232,54 +261,54 @@
            </property>
           </widget>
          </item>
-        </layout>
-       </item>
-       <item row="4" column="0">
-        <layout class="QFormLayout" name="endFreqGrid">
-         <item row="0" column="0">
-          <widget class="QLabel" name="endFreqLab">
-           <property name="text">
-            <string>End Frequency</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QSlider" name="endFreqSlid">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string>Select End Frequency</string>
-           </property>
-           <property name="maximum">
-            <number>100000</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="endFreqSpin">
-           <property name="minimumSize">
-            <size>
-             <width>100</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string>Set End Frequency</string>
-           </property>
-           <property name="maximum">
-            <double>100000.000000000000000</double>
-           </property>
-           <property name="value">
-            <double>20000.000000000000000</double>
-           </property>
-          </widget>
+         <item row="2" column="0" colspan="2">
+          <layout class="QFormLayout" name="endFreqGrid">
+           <item row="0" column="0">
+            <widget class="QLabel" name="endFreqLab">
+             <property name="text">
+              <string>End Frequency</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QSlider" name="endFreqSlid">
+             <property name="minimumSize">
+              <size>
+               <width>162</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Select End Frequency</string>
+             </property>
+             <property name="maximum">
+              <number>100000</number>
+             </property>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QDoubleSpinBox" name="endFreqSpin">
+             <property name="minimumSize">
+              <size>
+               <width>100</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="toolTip">
+              <string>Set End Frequency</string>
+             </property>
+             <property name="maximum">
+              <double>100000.000000000000000</double>
+             </property>
+             <property name="value">
+              <double>20000.000000000000000</double>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -287,6 +316,7 @@
      </widget>
      <zorder>layoutWidget</zorder>
      <zorder>sigLevel</zorder>
+     <zorder>label</zorder>
     </widget>
     <widget class="QWidget" name="LoadTab">
      <attribute name="title">
@@ -295,8 +325,8 @@
      <widget class="QPushButton" name="pushButton">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>20</y>
+        <x>120</x>
+        <y>10</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -308,8 +338,8 @@
      <widget class="QLineEdit" name="lineEdit_3">
       <property name="geometry">
        <rect>
-        <x>70</x>
-        <y>20</y>
+        <x>0</x>
+        <y>40</y>
         <width>211</width>
         <height>20</height>
        </rect>
@@ -338,7 +368,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="measurement">
        <property name="geometry">
@@ -367,11 +397,27 @@
        </attribute>
       </widget>
       <widget class="QWidget" name="measurement3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>100</width>
+         <height>30</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Page</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="measurement4">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>100</width>
+         <height>30</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Page</string>
        </attribute>
@@ -379,99 +425,12 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="Figures">
-    <property name="geometry">
-     <rect>
-      <x>400</x>
-      <y>0</y>
-      <width>871</width>
-      <height>671</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Figures</string>
-    </property>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>830</x>
-       <y>570</y>
-       <width>34</width>
-       <height>91</height>
-      </rect>
-     </property>
-     <layout class="QFormLayout" name="figBottomGrid">
-      <item row="0" column="0">
-       <widget class="QToolButton" name="ViewPropBBottom">
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QToolButton" name="ZoomBottom">
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QToolButton" name="toolBottom">
-        <property name="text">
-         <string>...</string>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normalon>../resources/icons/WrenchSm.png</normalon>
-         </iconset>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QWidget" name="layoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>830</x>
-       <y>260</y>
-       <width>34</width>
-       <height>91</height>
-      </rect>
-     </property>
-     <layout class="QFormLayout" name="figTopGrid">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-      </property>
-      <item row="0" column="0">
-       <widget class="QToolButton" name="ViewPropTop">
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QToolButton" name="zoomTop">
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QToolButton" name="toolTop">
-        <property name="text">
-         <string>...</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>680</y>
-      <width>801</width>
+      <x>260</x>
+      <y>520</y>
+      <width>481</width>
       <height>27</height>
      </rect>
     </property>
@@ -488,38 +447,140 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
+   <widget class="QGraphicsView" name="plotTop">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>40</y>
-      <width>801</width>
-      <height>621</height>
+      <x>263</x>
+      <y>7</y>
+      <width>480</width>
+      <height>240</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="figVert">
+   </widget>
+   <widget class="QGraphicsView" name="PlotBottom">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>260</y>
+      <width>480</width>
+      <height>240</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>10</y>
+      <width>28</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QGraphicsView" name="plotTop"/>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>180</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
-      <widget class="QGraphicsView" name="PlotBottom"/>
+      <widget class="QToolButton" name="ViewPropTop">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="zoomTop">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolTop">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>260</y>
+      <width>28</width>
+      <height>231</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>180</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QToolButton" name="ViewPropBBottom">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="ZoomBottom">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolBottom">
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normalon>../resources/icons/WrenchSm.png</normalon>
+        </iconset>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
    <zorder>layoutWidget</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>Figures</zorder>
    <zorder>JbaeLogo</zorder>
    <zorder>testSig</zorder>
    <zorder>startMeas</zorder>
    <zorder>tabWidget</zorder>
+   <zorder>plotTop</zorder>
+   <zorder>layoutWidget</zorder>
+   <zorder>PlotBottom</zorder>
+   <zorder>layoutWidget</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>844</width>
      <height>23</height>
     </rect>
    </property>
@@ -607,28 +668,30 @@
  </widget>
  <layoutdefault spacing="6" margin="9"/>
  <tabstops>
-  <tabstop>testSig</tabstop>
-  <tabstop>startMeas</tabstop>
-  <tabstop>lineEdit_3</tabstop>
-  <tabstop>ViewPropBBottom</tabstop>
-  <tabstop>tabWidget</tabstop>
-  <tabstop>sigLevel</tabstop>
   <tabstop>sigTypeSel</tabstop>
   <tabstop>lengthSelect</tabstop>
   <tabstop>SweepsSelect</tabstop>
-  <tabstop>startFreqSlid_2</tabstop>
+  <tabstop>startFreqSlid</tabstop>
+  <tabstop>startFreqSpin</tabstop>
   <tabstop>endFreqSlid</tabstop>
-  <tabstop>pushButton_2</tabstop>
-  <tabstop>toolTop</tabstop>
-  <tabstop>zoomTop</tabstop>
+  <tabstop>endFreqSpin</tabstop>
+  <tabstop>sigLevel</tabstop>
+  <tabstop>startMeas</tabstop>
+  <tabstop>testSig</tabstop>
   <tabstop>ViewPropTop</tabstop>
+  <tabstop>zoomTop</tabstop>
+  <tabstop>toolTop</tabstop>
+  <tabstop>ViewPropBBottom</tabstop>
   <tabstop>ZoomBottom</tabstop>
   <tabstop>toolBottom</tabstop>
+  <tabstop>tabWidget</tabstop>
+  <tabstop>pushButton_2</tabstop>
   <tabstop>pushButton</tabstop>
+  <tabstop>lineEdit_3</tabstop>
+  <tabstop>plotTop</tabstop>
+  <tabstop>PlotBottom</tabstop>
   <tabstop>dateTimeEdit</tabstop>
   <tabstop>JbaeLogo</tabstop>
-  <tabstop>PlotBottom</tabstop>
-  <tabstop>plotTop</tabstop>
  </tabstops>
  <resources/>
  <connections/>
