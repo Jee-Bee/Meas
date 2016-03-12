@@ -2,16 +2,16 @@
 """
 Created on Mon Feb  1 13:45:23 2016
 
-@author: enjbwink
+@author: Jee-Bee for jBae (c) 2016
 """
 
 # scale type(float int etc)
-# 
+#
 # scale based on size <1 en >1.
 # scale to 1 and then times signal
 
 # 2 Do
-# Fix error messages 
+# Fix error messages
 # check for floating values or int values in floating array
 
 import numpy as np
@@ -53,6 +53,7 @@ def input_type(data):
         else:
             print('wrong input type')
 
+
 def input_check(data):
 #    For what do i need the input check??
 #    Check for float data signals
@@ -69,35 +70,66 @@ def input_check(data):
             return(False)
             print('wrong input type')
 
-def U_LSB(data, n):
+
+def LSB(data, n):
+    """ Unit LSB """
     MaxVal = np.amax(data)
     MinVal = np.amin(data)
     LSB = (MaxVal - MinVal) / (2 ** n)
     return(LSB)
 
 
+def iLSB(data, n):
+    """ Unit LSB """
+    MaxVal = np.amax(data)
+    MinVal = np.amin(data)
+    LSB = (MaxVal - MinVal) * (2 ** n)
+    return(LSB)
+
+
 def LSB_Sig(data, n, *argv):
-    LSB = U_LSB(data, n)
-    LSB_sig = LSB * data
+    """LSB = Least significant Bit
+    Inputs:
+    data = signal value or signal array
+    n  = number of bits depth"""
+    LSB_val = LSB(data, n)
+    LSB_sig = LSB_val * data
     return(LSB_sig)
 
 
+def iLSB_Sig(data, n, *argv):
+    """LSB = Least significant Bit
+    Inputs:
+    data = signal value or signal array
+    n  = number of bits depth"""
+    iLSB_val = iLSB(data, n)
+    iLSB_sig = iLSB_val * data
+    return(iLSB_sig)
+
+
 def Bits2Volt(data, n, *argv):
-    # inputs on argv are: Amplification or Gain/ Offset 
+    # inputs on argv are: Amplification or Gain/ Offset
     # 2DO
-    Volt = LSB_Sig (data, n, argv)
+    Volt = LSB_Sig(data, n, argv)
     return(Volt)
 
 
-def V2P(data, *argv):
+def Volt2Bits(data, n, *argv):
+    # inputs on argv are: Amplification or Gain/ Offset
+    # 2DO
+    Bits = iLSB_Sig(data, n, argv)
+    return(Bits)
+
+
+def Volt2Power(data, *argv):
     if len(argv) == 0:
         R = 50.0
     elif len(argv) == 1:
         if (type(argv[1]) == float) or (type(argv[1]) == int):
             R = argv[1]
         else:
-            print ("Wrong Inpute Type")
+            print("Wrong Inpute Type")
     else:
-        print ("Too many parameters")
+        print("Too many parameters")
     power = (data ** 2) / R
     return(power)
