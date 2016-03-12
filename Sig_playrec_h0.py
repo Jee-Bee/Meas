@@ -2,7 +2,7 @@
 
 import numpy as np
 import scripts.SigGen as sg
-from scripts import Transform, Interface
+from scripts import Transform, Interface, Conversion
 #from importlib.machinery import SourceFileLoader
 import sounddevice as sd
 import matplotlib.pyplot as plt
@@ -14,9 +14,9 @@ T = 10  # [s] T= Time in seconds
 f = (20, 20000)  # [Hz] Frequency signal generation
 fs = 44100  # [Hz] fs = Samplerate
 
-
 f = np.array(f)
 (sigout, t) = sg.SigGen('Chirp', f, T, fs)  # before testing signals etc
+sigout = Conversion.input_check(sigout)
 
 # Signal to soundcard
 # Soundcard information
@@ -31,10 +31,15 @@ else:
     # Simultanious play/ recording
     rec = sd.playrec(sigout, fs, channels=2)
     sd.wait()
+    rec = Conversion.input_check(rec)
 
     # sd.stop()
     rect = rec.T[0]
     [F, REC1] = Transform.FFT(rect, fs)
+    # Transfer function:
+    [F, SIGOUT] = Transform.FFT(sigout, fs)
+    (F, H1) = Transform.Transfer(rec1, sigout, fs)  # Rebuild Transfer for ...
+    # ... adding two allready calculated spectra
 
     plt.figure()
     timeplt = defaultFigures(t, rec, [])

@@ -8,7 +8,7 @@ Created on Wed Jan 27 16:45:59 2016
 from scipy.io import wavfile
 import numpy as np
 import matplotlib.pylab as plt
-from scripts import RMS, Transform, OctaveBands, Window
+from scripts import RMS, Transform, OctaveBands, Window, Conversion
 import sounddevice as sd
 
 # Samples for internal use only. Just test data for test Results
@@ -16,15 +16,12 @@ import sounddevice as sd
 [fs, data] = wavfile.read("09 Sample 15sec.wav")  # ,dtype=float)
 data = data[2048:2048+4096:]
 
-data = data.astype(float) / (2 ** 15)
-
+# Check input data
+data = Conversion.input_check(data)
 t = np.arange(0, len(data) / fs, 1 / fs)
 
-
-#rmssig = RMS(data)
+# Calculate RMS and Crest Factor
 rmssig = RMS.RMS(data)
-
-#crestsig = Crest(data)
 crest = RMS.Crest(data)
 
 N = 1024
