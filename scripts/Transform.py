@@ -130,6 +130,12 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     #     in signal     in1    in2     blackbox out
     # H = ---------- --> --- or --- is ------------
     #     out signal     out    out     blackbox in
+    #
+    # 2 Do:
+    #
+    # Check complex values
+    # check equal sized
+    # if complex than no FFT
     X_IN = FFT(x_in, fs)
     X_OUT = FFT(x_out, fs)
     H_0 = X_IN / X_OUT
