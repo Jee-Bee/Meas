@@ -34,7 +34,7 @@ def input_type(data):
             data = data.astype(float) / (2 ** (8 - 1))
             return(data)
         else:
-            print('wrong input type')
+            raise TypeError('wrong input type')
     elif np.ndim(data) == 0:
         if isinstance(data, np.float):
             return(data)
@@ -51,7 +51,7 @@ def input_type(data):
             data = data.astype(float) / (2 ** (8 - 1))
             return(data)
         else:
-            print('wrong input type')
+            raise TypeError('wrong input type')
 
 
 def input_check(data):
@@ -61,14 +61,14 @@ def input_check(data):
         if isinstance(data[0], np.float):
             return(True)
         else:
-            print('wrong input type')
+            raise TypeError('wrong input type')
             return(False)
     elif np.ndim(data) == 0:
         if isinstance(data, np.float):
             return(True)
         else:
             return(False)
-            print('wrong input type')
+            raise TypeError('wrong input type')
 
 
 def LSB(data, n):
@@ -128,8 +128,8 @@ def Volt2Power(data, *argv):
         if (type(argv[1]) == float) or (type(argv[1]) == int):
             R = argv[1]
         else:
-            print("Wrong Inpute Type")
+            raise TypeError("Wrong Inpute Type")
     else:
-        print("Too many parameters")
+        raise ValueError("Too many parameters")
     power = (data ** 2) / R
     return(power)

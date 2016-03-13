@@ -34,7 +34,7 @@ def PSD(sig, fs, *arg, **kwargs):
 #    elif side == ('single' or 'double' or 'single0'):
 #        pass
     else:
-        pass #place error here wrong input value
+        raise ValueError("Wrong input Value")
 #    'single0':
 #    F = np.arange(len(sig)/fs, fs, (len(sig)/2)+1)
     if spectrum == 'MagPh':
@@ -75,7 +75,7 @@ def PS(sig, fs, *arg, **kwargs):
 #    elif side == ('single' or 'double' or 'single0'):
 #        pass
     else:
-        pass #place error here wrong input value
+        raise ValueError("Wrong input Value")
 #    'single0':
 #    F = np.arange(len(sig)/fs, fs, (len(sig)/2)+1)
     
@@ -112,7 +112,7 @@ def AS(sig, fs, *arg, **kwargs):
     elif side == ('single' or 'double' or 'single0'):
         pass
     else:
-        pass  # place error here wrong input value
+        raise ValueError("Wrong input Value")
 #    'single0':
 #    F = np.arange(len(sig)/fs, fs, (len(sig)/2)+1)
     

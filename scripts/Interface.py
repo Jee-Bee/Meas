@@ -26,13 +26,13 @@ def InterfaceIO():
         devopt = np.append(devopt, np.where(nzout == nzin[idx]))
 
     if len(devopt) != 0:
-        print('This are full dupplex interfaces under all circumstances:')
+        raise SystemError('This are full dupplex interfaces under all circumstances:')
         for idx in devopt:
             temp = devinfo[np.int(idx)]
             print(idx, temp['name'])
     else:
         if sys.platform.startswith('linux'):
-            print('No full dupplex interfaces are availlable. Any valid combination of interfaces will work :')
+            raise SystemError('No full dupplex interfaces are availlable. Any valid combination of interfaces will work :')
             print('Inputs:')
             for idx in nzin:
                 temp = devinfo[np.int(idx)]
@@ -43,9 +43,9 @@ def InterfaceIO():
                 print(idx, temp['name'])
             devopt = (nzin, nzout)
         elif sys.platform.startswith('win32'):
-            print('No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
+            raise SystemError('No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
         elif sys.platform.startswith('cygwin'):
-            print('No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
+            raise SystemError('No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
         elif sys.platform.startswith('darwin'):
             print('No full dupplex interfaces are availlable. Any valid combination of interfaces will work :')
             print('Inputs:')
