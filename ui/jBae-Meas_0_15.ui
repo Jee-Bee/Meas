@@ -32,6 +32,12 @@
       <height>121</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>240</width>
+      <height>120</height>
+     </size>
+    </property>
     <property name="maximumSize">
      <size>
       <width>16777215</width>
@@ -86,7 +92,7 @@
     <property name="minimumSize">
      <size>
       <width>240</width>
-      <height>0</height>
+      <height>360</height>
      </size>
     </property>
     <property name="currentIndex">
@@ -96,77 +102,39 @@
      <attribute name="title">
       <string>Create New</string>
      </attribute>
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>231</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Meas Comment here</string>
+      </property>
+     </widget>
      <widget class="QWidget" name="">
       <property name="geometry">
        <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>221</width>
-        <height>281</height>
+        <x>1</x>
+        <y>50</y>
+        <width>231</width>
+        <height>271</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
-       <item row="0" column="1" rowspan="3">
-        <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0">
-          <widget class="QLabel" name="label">
-           <property name="text">
-            <string>SoundLevel</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QDial" name="sigLevel">
-           <property name="toolTip">
-            <string extracomment="Signal Level">Set Volume Level</string>
-           </property>
-           <property name="statusTip">
-            <string/>
-           </property>
-           <property name="accessibleDescription">
-            <string/>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="1" column="0">
-        <layout class="QFormLayout" name="LengthGrid">
-         <item row="0" column="0">
-          <widget class="QLabel" name="lengthLab">
-           <property name="text">
-            <string>Length Signal</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QComboBox" name="lengthSelect">
-           <property name="minimumSize">
-            <size>
-             <width>140</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string>Select Length of Signal in k samples</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="0" column="0">
-        <layout class="QFormLayout" name="signalTypeGrid">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-         </property>
-         <item row="0" column="0">
+       <item row="0" column="0" rowspan="2">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
           <widget class="QLabel" name="sigTypeLab">
            <property name="text">
             <string>Signal Type</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item>
           <widget class="QComboBox" name="sigTypeSel">
            <property name="minimumSize">
             <size>
@@ -184,16 +152,72 @@
          </item>
         </layout>
        </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>SoundLevel</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" rowspan="2">
+        <widget class="QDial" name="sigLevel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>75</width>
+           <height>75</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string extracomment="Signal Level">Set Volume Level</string>
+         </property>
+         <property name="statusTip">
+          <string/>
+         </property>
+         <property name="accessibleDescription">
+          <string/>
+         </property>
+        </widget>
+       </item>
        <item row="2" column="0">
-        <layout class="QFormLayout" name="sweepGrid">
-         <item row="0" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="QLabel" name="lengthLab">
+           <property name="text">
+            <string>Length Signal</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="lengthSelect">
+           <property name="minimumSize">
+            <size>
+             <width>140</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Select Length of Signal in k samples</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="3" column="0">
+        <layout class="QVBoxLayout" name="verticalLayout_5">
+         <item>
           <widget class="QLabel" name="sweepsLab">
            <property name="text">
             <string>No Sweeps</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item>
           <widget class="QComboBox" name="SweepsSelect">
            <property name="minimumSize">
             <size>
@@ -211,11 +235,8 @@
          </item>
         </layout>
        </item>
-       <item row="3" column="0" colspan="2">
-        <layout class="QFormLayout" name="startFreqGrid">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-         </property>
+       <item row="4" column="0" colspan="2">
+        <layout class="QGridLayout" name="gridLayout">
          <item row="0" column="0">
           <widget class="QLabel" name="startFreqLab">
            <property name="text">
@@ -225,9 +246,15 @@
          </item>
          <item row="1" column="0">
           <widget class="QSlider" name="startFreqSlid">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
-             <width>162</width>
+             <width>140</width>
              <height>0</height>
             </size>
            </property>
@@ -246,7 +273,7 @@
           <widget class="QDoubleSpinBox" name="startFreqSpin">
            <property name="minimumSize">
             <size>
-             <width>100</width>
+             <width>65</width>
              <height>0</height>
             </size>
            </property>
@@ -261,66 +288,75 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0" colspan="2">
-          <layout class="QFormLayout" name="endFreqGrid">
-           <item row="0" column="0">
-            <widget class="QLabel" name="endFreqLab">
-             <property name="text">
-              <string>End Frequency</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QSlider" name="endFreqSlid">
-             <property name="minimumSize">
-              <size>
-               <width>162</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Select End Frequency</string>
-             </property>
-             <property name="maximum">
-              <number>100000</number>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QDoubleSpinBox" name="endFreqSpin">
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="toolTip">
-              <string>Set End Frequency</string>
-             </property>
-             <property name="maximum">
-              <double>100000.000000000000000</double>
-             </property>
-             <property name="value">
-              <double>20000.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-          </layout>
+        </layout>
+       </item>
+       <item row="5" column="0" colspan="2">
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="QLabel" name="endFreqLab">
+           <property name="text">
+            <string>End Frequency</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QSlider" name="endFreqSlid">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>140</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Select End Frequency</string>
+           </property>
+           <property name="maximum">
+            <number>100000</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QDoubleSpinBox" name="endFreqSpin">
+           <property name="minimumSize">
+            <size>
+             <width>65</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Set End Frequency</string>
+           </property>
+           <property name="decimals">
+            <number>0</number>
+           </property>
+           <property name="maximum">
+            <double>100000.000000000000000</double>
+           </property>
+           <property name="value">
+            <double>20000.000000000000000</double>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
       </layout>
      </widget>
      <zorder>layoutWidget</zorder>
-     <zorder>sigLevel</zorder>
-     <zorder>label</zorder>
+     <zorder>PlotBottom</zorder>
+     <zorder>lineEdit</zorder>
     </widget>
     <widget class="QWidget" name="LoadTab">
      <attribute name="title">
-      <string>Load Exist</string>
+      <string>Existing</string>
      </attribute>
      <widget class="QPushButton" name="pushButton">
       <property name="geometry">
@@ -348,8 +384,8 @@
      <widget class="QPushButton" name="pushButton_2">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>20</y>
+        <x>10</x>
+        <y>10</y>
         <width>75</width>
         <height>23</height>
        </rect>
@@ -361,22 +397,22 @@
      <widget class="QToolBox" name="recMeasurements">
       <property name="geometry">
        <rect>
-        <x>30</x>
-        <y>70</y>
-        <width>291</width>
-        <height>351</height>
+        <x>10</x>
+        <y>80</y>
+        <width>211</width>
+        <height>241</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="measurement">
        <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>291</width>
-         <height>235</height>
+         <width>211</width>
+         <height>225</height>
         </rect>
        </property>
        <attribute name="label">
@@ -388,8 +424,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>291</width>
-         <height>235</height>
+         <width>211</width>
+         <height>125</height>
         </rect>
        </property>
        <attribute name="label">
@@ -401,12 +437,12 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>211</width>
+         <height>21</height>
         </rect>
        </property>
        <attribute name="label">
-        <string>Page</string>
+        <string>Page 3</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="measurement4">
@@ -414,12 +450,32 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>211</width>
+         <height>21</height>
         </rect>
        </property>
        <attribute name="label">
-        <string>Page</string>
+        <string>Page 4</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="measurement5">
+       <attribute name="label">
+        <string>Page 5</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="measurement6">
+       <attribute name="label">
+        <string>Page 6</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="measurement7">
+       <attribute name="label">
+        <string>Page 7</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="measurement8">
+       <attribute name="label">
+        <string>Page 8</string>
        </attribute>
       </widget>
      </widget>
@@ -450,11 +506,23 @@
    <widget class="QGraphicsView" name="plotTop">
     <property name="geometry">
      <rect>
-      <x>263</x>
-      <y>7</y>
-      <width>480</width>
+      <x>260</x>
+      <y>10</y>
+      <width>521</width>
       <height>240</height>
      </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>240</height>
+     </size>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
     </property>
    </widget>
    <widget class="QGraphicsView" name="PlotBottom">
@@ -462,15 +530,21 @@
      <rect>
       <x>260</x>
       <y>260</y>
-      <width>480</width>
+      <width>521</width>
       <height>240</height>
      </rect>
     </property>
+    <property name="minimumSize">
+     <size>
+      <width>0</width>
+      <height>240</height>
+     </size>
+    </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>800</x>
       <y>10</y>
       <width>28</width>
       <height>231</height>
@@ -513,10 +587,10 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>760</x>
+      <x>800</x>
       <y>260</y>
       <width>28</width>
       <height>231</height>
@@ -565,7 +639,6 @@
     </layout>
    </widget>
    <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget</zorder>
    <zorder>JbaeLogo</zorder>
    <zorder>testSig</zorder>
    <zorder>startMeas</zorder>
@@ -574,6 +647,7 @@
    <zorder>layoutWidget</zorder>
    <zorder>PlotBottom</zorder>
    <zorder>layoutWidget</zorder>
+   <zorder>verticalSpacer_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -588,6 +662,8 @@
     <property name="title">
      <string>File</string>
     </property>
+    <addaction name="actionNew"/>
+    <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_As"/>
     <addaction name="actionSave_All"/>
@@ -610,7 +686,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Exit</string>
+    <string>&amp;Quite</string>
    </property>
    <property name="toolTip">
     <string>Exit Meas</string>
@@ -621,7 +697,7 @@
   </action>
   <action name="actionSave">
    <property name="text">
-    <string>Save</string>
+    <string>&amp;Save</string>
    </property>
    <property name="toolTip">
     <string>Save Measurements</string>
@@ -643,7 +719,7 @@
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>Preferences</string>
+    <string>&amp;Preferences</string>
    </property>
    <property name="toolTip">
     <string>Preferences Meas</string>
@@ -663,6 +739,16 @@
   <action name="actionDelete_Measurement">
    <property name="text">
     <string>Delete Measurement</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>&amp;Open</string>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>&amp;New</string>
    </property>
   </action>
  </widget>
