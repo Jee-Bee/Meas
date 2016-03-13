@@ -104,18 +104,18 @@ def divide(x, y):
 #divide("2", "1")
 
 
-#def varlist(var, length):
-#    from numpy import array
-#    try:
-#        return True
-#    except len(array(var)) > length:
-#        return False
-#        raise ValueError('#Your Error message 1')
-#    except len(array(var)) < length:
-#        return False
-#        raise ValueError('#Your Error message 2')
-#
-#import numpy as np
-#a = np.arange(3)
-#b = 2
-#c = varlist(a,b)
+def varlist(var, length):
+    from numpy import array
+    try:
+        return True
+    except (len(array(var)) > length is False):
+        return False
+        raise ValueError('#Your Error message 1')
+    except (len(array(var)) < length is False):
+        return False
+        raise ValueError('#Your Error message 2')
+
+import numpy as np
+a = np.arange(2)
+b = 6
+c = varlist(a, b)
