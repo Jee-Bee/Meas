@@ -1,18 +1,27 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Mar  9 19:06:07 2016
-
 @author: Jee-Bee for Jbae (c) 2016
 """
 # https://wiki.python.org/moin/HandlingExceptions
 
 import sys
-#import Exception
+# import Exception
 
 
 class MeasError(Exception):
     """Base class for Meas Error handling"""
-    pass
+    """MORE INFO:
+        Exception raised for errors in the input.
+
+    Attributes:
+        expression -- input expression in which the error occurred
+        message -- explanation of the error
+    """
+#    def __init__(self, value):
+#        self.value = value
+#    def __str__(self):
+#        return repr(self.value)
 
 
 class Error(MeasError):
@@ -20,6 +29,9 @@ class Error(MeasError):
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
+
+    def __str__(self):
+        return repr([self.expression, self.message])
 
 
 class DataError(MeasError):
@@ -29,12 +41,19 @@ class DataError(MeasError):
         self.expression = expression
         self.message = message
 
+    def __str__(self):
+        return repr([self.expression, self.message])
+
 
 class EmptyError(MeasError):
     """Exeption raised non existing Functions"""
-    def __init__(self, function):
+    def __init__(self, expression):
         # Maybe same type of Error as input Error
-        self.function = function
+        self.expression = expression
+        self. message = 'is an array with size 0'
+
+    def __str__(self):
+        return repr([self.expression, self.message])
 
 
 class FunctionError(MeasError):
@@ -42,20 +61,26 @@ class FunctionError(MeasError):
     def __init__(self, function):
         # Maybe same type of Error as input Error
         self.function = function
+        self.message = 'This function doesn\'t exist'
+
+    def __str__(self):
+        return repr([self.function, self.message])
 
 
 class InputValError(MeasError):
     """Exeption raised for wrong input values"""
+    """Exception raised for errors in the input.
+
+    Attributes:
+        expression -- input expression in which the error occurred
+        message -- explanation of the error
+    """
     def __init__(self, expression, message):
         self.expression = expression
         self.message = message
 
-
-class InputTypeError(MeasError):
-    """Exeption raised for wrong input types"""
-    def __init__(self, expression, message):
-        self.expression = expression
-        self.message = message
+    def __str__(self):
+        return repr([self.expression, self.message])
 
 
 class InterfaceError(MeasError):
@@ -64,6 +89,9 @@ class InterfaceError(MeasError):
         self.expression = expression
         self.message = message
 
+    def __str__(self):
+        return repr([self.expression, self.message])
+
 
 class SizeError(MeasError):
     """Exeption raised for non working combinations of inputs"""
@@ -71,51 +99,27 @@ class SizeError(MeasError):
         self.expression = expression
         self.message = message
 
+    def __str__(self):
+        return repr([self.expression, self.message])
+
 
 # small Test From here
+# Tests from :
+# #1
+# #2 
+# Don't work method according to @@ Put name here
 
-#a = []
-#b = 5
-#
-#try:
-#    c = a + b
-#    print(c)
-#except EmptyError:
-#    raise ValueError("No Value chosen")
-#except b > a:
-#    raise ValueError("Value 'b' have to be bigger")
+# import numpy as np
+# a = np.arange(2)
+# b = 6
+# c = varlist(a, b)
 
-def divide(x, y):
-    try:
-        result = x / y
-    except ZeroDivisionError:
-        print("division by zero!")
-    else:
-        print("result is", result)
-    finally:
-        print("executing finally clause")
+# a = np.arange(6)
+# b = np.arange(1,6)
+# c= a*b
+# ValueError: operands could not be broadcast together with shapes (6,) (5,)
+# ErrorStr = 'Some text here shapes ' + str(np.shape(a)) + ' ' + str(np.shape(b)) + '.'
+# raise ValueError(ErrorStr)
 
-#divide(2, 1)
-#
-#
-#divide(2, 0)
-#
-#
-#divide("2", "1")
-
-
-def varlist(var, length):
-    from numpy import array
-    try:
-        return True
-    except (len(array(var)) > length is False):
-        return False
-        raise ValueError('#Your Error message 1')
-    except (len(array(var)) < length is False):
-        return False
-        raise ValueError('#Your Error message 2')
-
-import numpy as np
-a = np.arange(2)
-b = 6
-c = varlist(a, b)
+# raise InterfaceError('inputs',ErrorStr)
+# raise FunctionError('inputs')
