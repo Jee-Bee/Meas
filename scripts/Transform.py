@@ -144,6 +144,43 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         - Check complex values
         - check equal sized
         - if complex than no FFT"""
+    # Tuple = FFT or wrong input
+    # Compex valued signals = FFT
+    # Nummeric is real valued and neeed FFT!!
+    # else is wrong valued type and give error
+    if isinstance(x_in, tuple):
+        if isinstance(x_out, tuple):
+            pass
+        elif np.iscomplex(x_out):
+            pass
+        elif np.isnumeric(X_out):
+            pass
+        else:
+            # Edit output error wrong input type
+            pass
+    elif np.iscomplex(x_in):
+        if isinstance(x_out, tuple):
+            pass
+        elif np.iscomplex(x_out):
+            pass
+        elif np.isnumeric(X_out):
+            pass
+        else:
+            # Edit output error wrong input type
+            pass
+    elif np.isnumeric(x_in):
+        if isinstance(x_out, tuple):
+            pass
+        elif np.iscomplex(x_out):
+            pass
+        elif np.isnumeric(X_out):
+            pass
+        else:
+            # Edit output error wrong input type
+            pass
+    else:
+        # print error wrong input type
+        pass
     X_IN = FFT(x_in, fs)
     X_OUT = FFT(x_out, fs)
     H_0 = X_IN / X_OUT
