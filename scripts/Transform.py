@@ -21,12 +21,14 @@ import MeasError, MeasWarning
 
 
 def NFFT(x):
+    """ Calculate Next higher 2^N order for FFT"""
     log2val = np.ceil(np.log2(len(x)))
     nfft = 2 ** log2val
     return(nfft)
 
 
 def Symmetry(x, Stype):
+    """ Check for symmetry in given Signals"""
     N = len(x)
     if Stype == 'even':
         for idx in range(int(N / 2 - 1)):
@@ -53,19 +55,22 @@ def Symmetry(x, Stype):
 
 
 def MagPh2ReIm(MAG, PHI):
+    """ Calculate vack the Real and imaginary Values
+    To Do:
+        - Make Real + Imag to Complex values - If required """
     RE = MAG * np.cos(PHI)
     IM = MAG * np.sin(PHI)
     return(RE, IM)
 
 
 def FFT(x, fs, *args, **kwargs):
-    # sig, fs,Window_Type, Window_size, smoothing,
-    # spectrum = complex(=real+imag)/amp+phase, Shift = True # removed: side = singele/ double sided
-    # fft of the form:
-    #      N-1                      m*k
-    # y_m =sum x_k * exp ( -2pi * i ----)
-    #      k=0                        N
-    # Therefore fft * 1/N to correct amplitude
+    """ sig, fs,Window_Type, Window_size, smoothing,
+    spectrum = complex(=real+imag)/amp+phase, Shift = True # removed: side = singele/ double sided
+    fft of the form:
+         N-1                      m*k
+    y_m =sum x_k * exp ( -2pi * i ----)
+         k=0                       N
+    Therefore fft * 1/N to correct amplitude """
     nfft = NFFT(x)
     N = len(x)  # Temporary solution
     if len(args) == 0:
@@ -130,16 +135,15 @@ def FFT(x, fs, *args, **kwargs):
 
 
 def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
-    # transfer function is in case of in = microphone and out is ref signal:
-    #     in signal     in1    in2     blackbox out
-    # H = ---------- --> --- or --- is ------------
-    #     out signal     out    out     blackbox in
-    #
-    # 2 Do:
-    #
-    # Check complex values
-    # check equal sized
-    # if complex than no FFT
+    """transfer function is in case of in = microphone and out is ref signal:
+        in signal     in1    in2     blackbox out
+    H = ---------- --> --- or --- is ------------
+        out signal     out    out     blackbox in
+    
+    2 Do:
+        - Check complex values
+        - check equal sized
+        - if complex than no FFT"""
     X_IN = FFT(x_in, fs)
     X_OUT = FFT(x_out, fs)
     H_0 = X_IN / X_OUT
