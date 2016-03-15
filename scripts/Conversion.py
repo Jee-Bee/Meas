@@ -15,9 +15,11 @@ Created on Mon Feb  1 13:45:23 2016
 # check for floating values or int values in floating array
 
 import numpy as np
+import MeasWarning
 
 
 def input_type(data):
+    """ Check number type for required scaling """
     if np.ndim(data) > 0:
         if isinstance(data[0], np.float):
             return(data)
@@ -55,24 +57,28 @@ def input_type(data):
 
 
 def input_check(data):
-#    For what do i need the input check??
-#    Check for float data signals
+    """ Check size and if floating value od input signals 
+    2DO:
+        - Add Inputtype to function"""
     if np.ndim(data) > 0:
         if isinstance(data[0], np.float):
             return(True)
         else:
-            raise TypeError('wrong input type')
+            raise MeasWarning.TypeWarning('wrong input type')
             return(False)
     elif np.ndim(data) == 0:
         if isinstance(data, np.float):
             return(True)
         else:
             return(False)
-            raise TypeError('wrong input type')
+            raise MeasWarning.TypeWarning('wrong input type')
 
 
 def LSB(data, n):
-    """ Unit LSB """
+    """ Calculate single LSB value- Least Significant Bit 
+    Inputs:
+    data = signal value or signal array
+    n  = number of bits depth"""
     MaxVal = np.amax(data)
     MinVal = np.amin(data)
     LSB = (MaxVal - MinVal) / (2 ** n)
@@ -80,7 +86,10 @@ def LSB(data, n):
 
 
 def iLSB(data, n):
-    """ Unit LSB """
+    """ Calculate single inverse LSB value - Least Significant Bit 
+    Inputs:
+    data = signal value or signal array
+    n  = number of bits depth"""
     MaxVal = np.amax(data)
     MinVal = np.amin(data)
     LSB = (MaxVal - MinVal) * (2 ** n)
@@ -88,7 +97,7 @@ def iLSB(data, n):
 
 
 def LSB_Sig(data, n, *argv):
-    """LSB = Least significant Bit
+    """ Calculate single inverse LSB signal - Least Significant Bit
     Inputs:
     data = signal value or signal array
     n  = number of bits depth"""
@@ -98,7 +107,7 @@ def LSB_Sig(data, n, *argv):
 
 
 def iLSB_Sig(data, n, *argv):
-    """LSB = Least significant Bit
+    """ Calculate single inverse LSB signal - Least Significant Bit
     Inputs:
     data = signal value or signal array
     n  = number of bits depth"""
@@ -108,20 +117,38 @@ def iLSB_Sig(data, n, *argv):
 
 
 def Bits2Volt(data, n, *argv):
-    # inputs on argv are: Amplification or Gain/ Offset
-    # 2DO
+    """ Calculate bit valued signal of Voltage signal
+    Inputs:
+    data = signal value or signal array
+    n  = number of bits depth
+    inputs on argv are: Amplification or Gain/ Offset
+    2DO:
+    """
     Volt = LSB_Sig(data, n, argv)
     return(Volt)
 
 
 def Volt2Bits(data, n, *argv):
-    # inputs on argv are: Amplification or Gain/ Offset
-    # 2DO
+    """ Calculate Voltage Signal from Bit vulued signal
+    Inputs:
+    data = signal value or signal array
+    n  = number of bits depth
+    inputs on argv are: Amplification or Gain/ Offset
+    2DO
+    """
     Bits = iLSB_Sig(data, n, argv)
     return(Bits)
 
 
 def Volt2Power(data, *argv):
+    """ Calculate Power Signal from Voltage Signal
+    Inputs:
+    data = Volt signal value or Volt signal array
+    argv = resistence
+    r  = resistence in \Ohm
+    inputs on argv are: Amplification or Gain/ Offset
+    2DO
+    """
     if len(argv) == 0:
         R = 50.0
     elif len(argv) == 1:
