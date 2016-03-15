@@ -36,7 +36,6 @@ def Symmetry(x, Stype):
                 pass
                 # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
             else:
-                # print(False)
                 return (False)
                 break
     elif Stype == 'odd':
@@ -45,7 +44,6 @@ def Symmetry(x, Stype):
                 pass
                 # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
             else:
-                # print(False)
                 return (False)
                 break
     else:
