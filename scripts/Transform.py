@@ -17,6 +17,7 @@ Created on Tue Feb  9 15:25:42 2016
 
 import scipy.fftpack as ft
 import numpy as np
+import MeasError, MeasWarning
 
 
 def NFFT(x):
@@ -46,7 +47,7 @@ def Symmetry(x, Stype):
                 return (False)
                 break
     else:
-        print('No valid input type or value')
+        raise TypeError('No valid input type or value')
         return(False)
     return(True)
 
@@ -76,8 +77,9 @@ def FFT(x, fs, *args, **kwargs):
                 # Window_Type = argv[1]
                 pass
             else:
-                print("Window type not the right input type")
-            # argv[2]
+                errorstr = "Window Type not right type: Has to be 'str'" 
+                raise TypeError(errorstr)
+            # argv[2]print
             if isinstance(args[2], int) == True:
                 # Window_size = (args[2])
                 pass
@@ -86,7 +88,8 @@ def FFT(x, fs, *args, **kwargs):
                     # Window_size = int(args[2])
                     pass
             else:
-                print("Window size not the right input type")
+                errorstr = "Window Length not right type: Has to be 'int' or 'float'" 
+                raise TypeError(errorstr)
             # argv[3]
             if isinstance(args[3], int):
                 # smoothing = (args[3])
@@ -96,7 +99,8 @@ def FFT(x, fs, *args, **kwargs):
                     # smoothing = int(args[3])
                     pass
             else:
-                print("Smooting not the right input type")
+                errorstr = "Smooting not the right input type: Has to be 'int' or Float" 
+                raise TypeError(errorstr)
         else:
             if isinstance(args[1], str):
                 # Window_Type = argv[1]
@@ -109,9 +113,9 @@ def FFT(x, fs, *args, **kwargs):
                     # smoothing = int(args[1])
                     pass
             else:
-                print("not the right input type")
+                raise TypeError("not the right input type")
     else:
-        print("not the right number of parameters")
+        raise MeasError.SizeError(args, "not the right number of parameters")
         print(args)
     if len(kwargs) == 0:
         pass
@@ -168,13 +172,12 @@ def ImpulseResponse(H, F):
             else:
                 pass
         else:
-            print('No valid frequency array')
-            return
+            raise MeasError.DataError(H, 'No valid frequency array')
     else:
         if np.iscomplex(H):
             IR = ft.ifft(H)
         else:
-            print('Not right input type')
+            raise TypeError('Not right input type')
     IR = ft.ifft(H)
     dF = F[1]-F[0]
     T = 1 / dF
