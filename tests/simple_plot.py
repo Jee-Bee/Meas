@@ -18,7 +18,6 @@ import matplotlib.pylab as plt
 # ----------- From Here Overlab characteristics function ---------------------
 #
 
-
 def genhamwind(N, alpha, beta):
     w = np.zeros(N)
     x = np.zeros(N)
@@ -64,26 +63,32 @@ def ROV(af, oc):
 # idx[0] = a*0 + b = 2; b = 2
 # idx[N] = a*N + 2 = 7; a = 5 / N
 def Overlap_Characterestics(Window_type, Window_Length):
-    #    Calculate AF = Min/Max
-    #    Calculate PF
-    #    Calculate OC
-    #    See 395068 Window Document:
-    #       Spectrum and spectral density estimation by the Discrete Fourier
-    #       transform (DFT), including a comprehensive list of window
-    #       functions and some new at-top windows.
+    """Calculate AF = Min/Max
+       Calculate PF
+       Calculate OC
+       See 395068 Window Document:
+           Spectrum and spectral density estimation by the Discrete Fourier
+           transform (DFT), including a comprehensive list of window
+           functions and some new at-top windows.
+    """
     N = Window_Length  # Window Length
     (dummy, win) = hanwind(N)
     af = []
 #    pf = []
     oc = []
     for Overlab_var in range(1, N+1):
-        nW = 2 ** (int(Overlab_var * (np.log2(N) - 3 - 2) / N) + 2)
+        nW = 3 + 2 ** np.int(Overlab_var * (np.log2(N) - 5) / N)  # - 3 - 2 = 1/8 N max & 2 min
         #    Overlab_var = Overlab / 100
         y = np.zeros(np.round(nW * N - (nW - 1) * Overlab_var))
-        for idx in range(nW):
-            idxl = round(idx * N - idx * Overlab_var)
-            idxu = round((idx + 1) * N - idx * Overlab_var)
+        idx = 1
+        idxl = 0
+        idxu = N
+        while idx < nW:
             y[idxl:idxu] = y[idxl:idxu] + win
+            idxl += (N - Overlab_var)
+            idxu += (N - Overlab_var)
+            idx +=1
+        # Min value
         locmin = np.r_[True, y[1:] < y[:-1]] & np.r_[y[:-1] < y[1:],
                        True] | np.r_[True, y[1:] == y[:-1]] & np.r_[
                         y[:-1] < y[1:], True] | np.r_[True,
@@ -94,9 +99,7 @@ def Overlap_Characterestics(Window_type, Window_Length):
                            y[:-1] > y[1:], True] | np.r_[True,
                            y[1:] > y[:-1]] & np.r_[y[:-1] == y[1:], True]
         minaf = []
-#        minap = []
         maxaf = []
-#        maxap = []
         for idx in range(len(locmin)):
             if locmin[idx] == True:
                 if y[idx] != 0:
@@ -124,3 +127,18 @@ def Overlap_Characterestics(Window_type, Window_Length):
 
 plt.plot(xaxis, afval, xaxis, ocval)
 # plt.arrow(index, ocval[index], 0, afval[index] - ocval[index])
+
+#For loop
+#1 loops, best of 3: 16.2 s per loop
+#C:/Users/enjbwink/Documents/python/temp_ovr.py:57: RuntimeWarning: divide by zero encountered in true_divide
+#  rovidx = np.argmax(af / oc)
+
+# while
+#1 loops, best of 3: 16.2 s per loop
+#C:/Users/enjbwink/Documents/python/temp_ovr.py:57: RuntimeWarning: divide by zero encountered in true_divide
+#  rovidx = np.argmax(af / oc)
+
+#while +:
+#1 loops, best of 3: 9.94 s per loop
+#C:/Users/enjbwink/Documents/python/temp_ovr.py:58: RuntimeWarning: divide by zero encountered in true_divide
+#  rovidx = np.argmax(af / oc)
