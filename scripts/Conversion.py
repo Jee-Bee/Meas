@@ -15,7 +15,7 @@ Created on Mon Feb  1 13:45:23 2016
 # check for floating values or int values in floating array
 
 import numpy as np
-import MeasWarning
+import scripts.MeasWarning
 
 
 def input_type(data):

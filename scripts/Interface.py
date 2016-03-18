@@ -3,8 +3,8 @@
 import sys
 import numpy as np
 import sounddevice as sd
-import MeasError
-import MeasWarning
+import scripts.MeasError
+import scripts.MeasWarning
 
 
 def InterfaceIO():
@@ -35,7 +35,7 @@ def InterfaceIO():
             print(idx, temp['name'])
     else:
         if sys.platform.startswith('linux'):
-        raise MeasWarning.InterfaceWarning('This are full dupplex interfaces under all circumstances:')
+            raise MeasWarning.InterfaceWarning('This are full dupplex interfaces under all circumstances:')
             print('Inputs:')
             for idx in nzin:
                 temp = devinfo[np.int(idx)]
