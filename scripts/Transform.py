@@ -17,7 +17,7 @@ Created on Tue Feb  9 15:25:42 2016
 
 import scipy.fftpack as ft
 import numpy as np
-import MeasError, MeasWarning
+from scripts import MeasError  # , MeasWarning
 
 
 def NFFT(x):
@@ -149,6 +149,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     if isinstance(x_in, tuple):
         x_in0even = Symmetry(x_in[0], 'even')
         x_in1odd = Symmetry(x_in[0], 'odd')
+        print(x_in0even,x_in1odd)
         # make complex array
         if (x_in0even & x_in1odd):
             x_in = x_in[0] + 1j*x_in[0]
@@ -159,14 +160,14 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
             if (x_out0even & x_out1odd):
                 x_out = x_out[0] + 1j*x_out[0]
                 H_0 = x_in / x_out
-        elif np.iscomplex(x_out):
+        elif np.iscomplexobj(x_out):
             H_0 = x_in / x_out
-        elif np.isnumeric(x_out):
+        elif np.isrealobj(x_out):
             X_OUT = FFT(x_out, fs)
             H_0 = x_in / X_OUT
         else:
             raise TypeError("Wrong input type")
-    elif np.iscomplex(x_in):
+    elif np.iscomplexobj(x_in):
         if isinstance(x_out, tuple):
             x_out0even = Symmetry(x_out[0], 'even')
             x_out1odd = Symmetry(x_out[1], 'odd')
@@ -174,15 +175,15 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
             if (x_out0even & x_out1odd):
                 x_out = x_out[0] + 1j*x_out[0]
                 H_0 = x_in / x_out
-        elif np.iscomplex(x_out):
+        elif np.iscomplexobj(x_out):
             H_0 = x_in / x_out
-        elif np.isnumeric(x_out):
-            X_OUT = FFT(x_out, fs)
+        elif np.isrealobj(x_out):
+            (X_OUT, F) = FFT(x_out, fs)
             H_0 = x_in / X_OUT
         else:
             raise TypeError("Wrong input type")
-    elif np.isnumeric(x_in):
-        X_IN = FFT(x_in, fs)
+    elif np.isrealobj(x_in):
+        (X_IN, F) = FFT(x_in, fs)
         if isinstance(x_out, tuple):
             x_out0even = Symmetry(x_out[0], 'even')
             x_out1odd = Symmetry(x_out[1], 'odd')
@@ -190,10 +191,10 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
             if (x_out0even & x_out1odd):
                 x_out = x_out[0] + 1j*x_out[0]
                 H_0 = X_IN / x_out
-        elif np.iscomplex(x_out):
+        elif np.iscomplexobj(x_out):
             H_0 = X_IN / x_out
         elif np.isnumeric(x_out):
-            X_OUT = FFT(x_out, fs)
+            (X_OUT, F) = FFT(x_out, fs)
             H_0 = X_IN / X_OUT
         else:
             raise TypeError("Wrong input type")
