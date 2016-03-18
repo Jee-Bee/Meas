@@ -132,12 +132,12 @@ def FFT(x, fs, *args, **kwargs):
     return(F, X)
 
 
+# http://stackoverflow.com/questions/2598734/numpy-creating-a-complex-array-from-2-real-ones
 def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     """transfer function is in case of in = microphone and out is ref signal:
         in signal     in1    in2     blackbox out
     H = ---------- --> --- or --- is ------------
         out signal     out    out     blackbox in
-    
     2 Do:
         - Check complex values
         - check equal sized
@@ -147,41 +147,58 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     # Nummeric is real valued and neeed FFT!!
     # else is wrong valued type and give error
     if isinstance(x_in, tuple):
+        x_in0even = Symmetry(x_in[0], 'even')
+        x_in1odd = Symmetry(x_in[0], 'odd')
+        # make complex array
+        if (x_in0even & x_in1odd):
+            x_in = x_in[0] + 1j*x_in[0]
         if isinstance(x_out, tuple):
-            pass
+            x_out0even = Symmetry(x_out[0], 'even')
+            x_out1odd = Symmetry(x_out[1], 'odd')
+            # make complex array
+            if (x_out0even & x_out1odd):
+                x_out = x_out[0] + 1j*x_out[0]
+                H_0 = x_in / x_out
         elif np.iscomplex(x_out):
-            pass
-        elif np.isnumeric(X_out):
-            pass
+            H_0 = x_in / x_out
+        elif np.isnumeric(x_out):
+            X_OUT = FFT(x_out, fs)
+            H_0 = x_in / X_OUT
         else:
-            # Edit output error wrong input type
-            pass
+            raise TypeError("Wrong input type")
     elif np.iscomplex(x_in):
         if isinstance(x_out, tuple):
-            pass
+            x_out0even = Symmetry(x_out[0], 'even')
+            x_out1odd = Symmetry(x_out[1], 'odd')
+            # make complex array
+            if (x_out0even & x_out1odd):
+                x_out = x_out[0] + 1j*x_out[0]
+                H_0 = x_in / x_out
         elif np.iscomplex(x_out):
-            pass
-        elif np.isnumeric(X_out):
-            pass
+            H_0 = x_in / x_out
+        elif np.isnumeric(x_out):
+            X_OUT = FFT(x_out, fs)
+            H_0 = x_in / X_OUT
         else:
-            # Edit output error wrong input type
-            pass
+            raise TypeError("Wrong input type")
     elif np.isnumeric(x_in):
+        X_IN = FFT(x_in, fs)
         if isinstance(x_out, tuple):
-            pass
+            x_out0even = Symmetry(x_out[0], 'even')
+            x_out1odd = Symmetry(x_out[1], 'odd')
+            # make complex array
+            if (x_out0even & x_out1odd):
+                x_out = x_out[0] + 1j*x_out[0]
+                H_0 = X_IN / x_out
         elif np.iscomplex(x_out):
-            pass
-        elif np.isnumeric(X_out):
-            pass
+            H_0 = X_IN / x_out
+        elif np.isnumeric(x_out):
+            X_OUT = FFT(x_out, fs)
+            H_0 = X_IN / X_OUT
         else:
-            # Edit output error wrong input type
-            pass
+            raise TypeError("Wrong input type")
     else:
-        # print error wrong input type
-        pass
-    X_IN = FFT(x_in, fs)
-    X_OUT = FFT(x_out, fs)
-    H_0 = X_IN / X_OUT
+        raise TypeError("Wrong input type")
     return(H_0)
 
 
