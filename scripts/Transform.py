@@ -17,7 +17,7 @@ Created on Tue Feb  9 15:25:42 2016
 
 import scipy.fftpack as ft
 import numpy as np
-import MeasError, MeasWarning
+from scripts import MeasError  # , MeasWarning
 
 
 def NFFT(x):
@@ -36,7 +36,6 @@ def Symmetry(x, Stype):
                 pass
                 # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
             else:
-                # print(False)
                 return (False)
                 break
     elif Stype == 'odd':
@@ -45,7 +44,6 @@ def Symmetry(x, Stype):
                 pass
                 # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
             else:
-                # print(False)
                 return (False)
                 break
     else:
@@ -134,22 +132,78 @@ def FFT(x, fs, *args, **kwargs):
     return(F, X)
 
 
+# http://stackoverflow.com/questions/2598734/numpy-creating-a-complex-array-from-2-real-ones
 def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     """transfer function is in case of in = microphone and out is ref signal:
         in signal     in1    in2     blackbox out
     H = ---------- --> --- or --- is ------------
         out signal     out    out     blackbox in
-    
     2 Do:
         - Check complex values
         - check equal sized
         - if complex than no FFT"""
-    X_IN = FFT(x_in, fs)
-    X_OUT = FFT(x_out, fs)
-    H_0 = X_IN / X_OUT
+    # Tuple = FFT or wrong input
+    # Compex valued signals = FFT
+    # Nummeric is real valued and neeed FFT!!
+    # else is wrong valued type and give error
+    if isinstance(x_in, tuple):
+        x_in0even = Symmetry(x_in[0], 'even')
+        x_in1odd = Symmetry(x_in[0], 'odd')
+        print(x_in0even,x_in1odd)
+        # make complex array
+        if (x_in0even & x_in1odd):
+            x_in = x_in[0] + 1j*x_in[0]
+        if isinstance(x_out, tuple):
+            x_out0even = Symmetry(x_out[0], 'even')
+            x_out1odd = Symmetry(x_out[1], 'odd')
+            # make complex array
+            if (x_out0even & x_out1odd):
+                x_out = x_out[0] + 1j*x_out[0]
+                H_0 = x_in / x_out
+        elif np.iscomplexobj(x_out):
+            H_0 = x_in / x_out
+        elif np.isrealobj(x_out):
+            X_OUT = FFT(x_out, fs)
+            H_0 = x_in / X_OUT
+        else:
+            raise TypeError("Wrong input type")
+    elif np.iscomplexobj(x_in):
+        if isinstance(x_out, tuple):
+            x_out0even = Symmetry(x_out[0], 'even')
+            x_out1odd = Symmetry(x_out[1], 'odd')
+            # make complex array
+            if (x_out0even & x_out1odd):
+                x_out = x_out[0] + 1j*x_out[0]
+                H_0 = x_in / x_out
+        elif np.iscomplexobj(x_out):
+            H_0 = x_in / x_out
+        elif np.isrealobj(x_out):
+            (X_OUT, F) = FFT(x_out, fs)
+            H_0 = x_in / X_OUT
+        else:
+            raise TypeError("Wrong input type")
+    elif np.isrealobj(x_in):
+        (X_IN, F) = FFT(x_in, fs)
+        if isinstance(x_out, tuple):
+            x_out0even = Symmetry(x_out[0], 'even')
+            x_out1odd = Symmetry(x_out[1], 'odd')
+            # make complex array
+            if (x_out0even & x_out1odd):
+                x_out = x_out[0] + 1j*x_out[0]
+                H_0 = X_IN / x_out
+        elif np.iscomplexobj(x_out):
+            H_0 = X_IN / x_out
+        elif np.isnumeric(x_out):
+            (X_OUT, F) = FFT(x_out, fs)
+            H_0 = X_IN / X_OUT
+        else:
+            raise TypeError("Wrong input type")
+    else:
+        raise TypeError("Wrong input type")
     return(H_0)
 
-
+# make complex array
+# x_out = x_out[0] + 1j*x_out[0]
 def ImpulseResponse(H, F):
     print("""This function works only correct when:
             - no smoothing or averaging is applied
