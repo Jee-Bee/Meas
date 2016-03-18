@@ -201,7 +201,8 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         raise TypeError("Wrong input type")
     return(H_0)
 
-
+# make complex array
+# x_out = x_out[0] + 1j*x_out[0]
 def ImpulseResponse(H, F):
     print("""This function works only correct when:
             - no smoothing or averaging is applied
