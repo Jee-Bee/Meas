@@ -2,7 +2,7 @@
 
 import numpy as np
 import scripts.SigGen as sg
-from scripts import Transform, Interface, Conversion
+from scripts import Transform, Interface, Conversion, Weighting
 #from importlib.machinery import SourceFileLoader
 import sounddevice as sd
 import matplotlib.pyplot as plt
@@ -35,11 +35,20 @@ else:
 
     # sd.stop()
     rect = rec.T[0]
-    [F, REC1] = Transform.FFT(rect, fs)
+    (F, REC1) = Transform.FFT(rect, fs)
     # Transfer function:
-    [F, SIGOUT] = Transform.FFT(sigout, fs)
+    (F, SIGOUT) = Transform.FFT(sigout, fs)   
+    
     (F, H1) = Transform.Transfer(rec1, sigout, fs)  # Rebuild Transfer for ...
     # ... adding two allready calculated spectra
+
+    # Weighted FFT
+    AW = Weightin(REC1)
+    AW_REC1 = A-Weighting(REC1)
+
+    # Impulse Response:
+    (IR, fs_dummy, T_dummy) = Transform.ImpulseResponse(H, F1)
+    # Create Var out from IR in To Do List!!
 
     plt.figure()
     timeplt = defaultFigures(t, rec, [])
