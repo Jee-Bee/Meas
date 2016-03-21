@@ -4,7 +4,7 @@ import sys
 import numpy as np
 import sounddevice as sd
 import scripts.MeasError
-import scripts.MeasWarning
+from scripts.MeasWarning import InterfaceWarning
 
 
 def InterfaceIO():
@@ -29,13 +29,14 @@ def InterfaceIO():
         devopt = np.append(devopt, np.where(nzout == nzin[idx]))
 
     if len(devopt) != 0:
-        raise MeasWarning.InterfaceWarning('This are full dupplex interfaces under all circumstances:')
+        raise InterfaceWarning('This are full dupplex interfaces under all circumstances:')
+#        raise Interface
         for idx in devopt:
             temp = devinfo[np.int(idx)]
             print(idx, temp['name'])
     else:
         if sys.platform.startswith('linux'):
-            raise MeasWarning.InterfaceWarning('This are full dupplex interfaces under all circumstances:')
+            raise InterfaceWarning('This are full dupplex interfaces under all circumstances:')
             print('Inputs:')
             for idx in nzin:
                 temp = devinfo[np.int(idx)]
@@ -46,11 +47,11 @@ def InterfaceIO():
                 print(idx, temp['name'])
             devopt = (nzin, nzout)
         elif sys.platform.startswith('win32'):
-            raise MeasError.InterfaceError(str(devopt),'No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
+            raise InterfaceError(str(devopt),'No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
         elif sys.platform.startswith('cygwin'):
-            raise MeasError.InterfaceError(str(devopt),'No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
+            raise InterfaceError(str(devopt),'No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
         elif sys.platform.startswith('darwin'):
-            raise MeasWarning.InterfaceWarning('No full dupplex interfaces are availlable. Any valid combination of interfaces will work :')
+            raise InterfaceWarning('No full dupplex interfaces are availlable. Any valid combination of interfaces will work :')
             print('Inputs:')
             for idx in int(nzin):
                 temp = devinfo[np.int(idx)]

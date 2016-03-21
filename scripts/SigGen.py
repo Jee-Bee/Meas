@@ -4,7 +4,8 @@ Created on Wed Mar  9 19:06:07 2016
 
 @author: Jee-Bee for Jbae (c) 2016
 """
-import MeasError, MeasWarning
+#import MeasWarning
+import scripts.MeasError
 
 
 def varlist(var, length):
