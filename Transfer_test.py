@@ -76,6 +76,63 @@ plt.plot(F,np.real(X),F,np.imag(X))
 plt.figure()
 plt.plot(F, H0_1, F, H0_2, F, H0_3)
 
+#
+# ----- Part 2 of test
+#
+
+from scripts import Transform, Window, DefaultFigures
+import numpy as np
+from scipy.signal import chirp
+import sounddevice as sd
+
+# signal generation
+# allready exist
+N = 2 ** 15
+fs = 2 ** 12
+overlap = 50  # [%]
+t = np.arange(0, 1 / fs, N / fs)
+x = chirp(t, 20, N / fs - 1 / fs, 2000, phi=90)
+x = np.append(x, np.zeros(fs))  # silece for tail of real live sound
+
+y = sd.playrec(x, samplerate=fs)
+
+# averaging multiple signals
+# pass  # for later on
+
+
+# window + multi fft
+Nw = fs
+hann = Window.hanning(Nw)
+
+S_1 = np.sum(hann)
+S_2 = np.sum(hann ** 2)
+NENBW = Nw * S_2 / (S_1 ** 2)
+ENBW = fs * S_2 / (S_1 ** 2)  # = NENBW * fs/N
+
+print(NENBW, ENBW)
+
+idxl = 0
+idxu = N
+Y = []
+while idxu <= len(y):
+    (F, Y) = np.append(Y, Transform.FFT(y[idxl:idxu] * hann), axis=1)
+    idxl += (Nw - overlap * Nw)
+    idxu += (Nw - overlap * Nw)
+Y /= S_1
+twind = np.arange(len(Y, axis=1))
+
+## Later on fix
+## now not volt_rms so PS, PSD, LS and LSD are just V and not V_rms 
+## PS_rms = 2 * np.abs(y_m)/S1 equation 23
+#PS_rms = 2 * np.abs(WIND_nf)/S_1
+#
+## PSD_rms = PS_rms/ENBW equation 24
+#PSD_rms = 2 * np.abs(WIND_nf)**2/(fs*S_2)
+
+
+# spectogram
+DefaultFigures.Default3D(Y, F, twind)
+
 
 #
 # ---TEST-----------TEST------------TEST----------TEST----
