@@ -2,12 +2,6 @@
 
 import numpy as np
 import scripts.SigGen as sg
-from scripts import Transform, Interface, Conversion, Weighting
-#from importlib.machinery import SourceFileLoader
-import sounddevice as sd
-import matplotlib.pyplot as plt
-#from scripts.DefaultFigures import Time, SpecMag, SpecPh
-from scripts.DefaultFigures import *  # defaultFigures
 
 
 T = 10  # [s] T= Time in seconds
@@ -18,15 +12,21 @@ f = np.array(f)
 (sigout, t) = sg.SigGen('Chirp', f, T, fs)  # before testing signals etc
 sigout = Conversion.input_check(sigout)
 
-# Signal to soundcard
-# Soundcard information
-(devinfo, devopt) = Interface.InterfaceIO()
-print(devinfo, devopt)
+try:
+    from scripts import Transform, Interface, Conversion, Weighting
+    #from importlib.machinery import SourceFileLoader
+    import matplotlib.pyplot as plt
+    #from scripts.DefaultFigures import Time, SpecMag, SpecPh
+    from scripts.DefaultFigures import *  # defaultFigures
+    import sounddevice as sd
 
-print(devopt)
-if len(devopt) == 0:
-    print('play and record a signal at the same time is not possible')
-else:
+    # Signal to soundcard
+    # Soundcard information
+    (devinfo, devopt) = Interface.InterfaceIO()
+    print(devinfo, devopt)
+ 
+    print(devopt)
+    
     # sd.default.device = 6  # [6, 1]
     # Simultanious play/ recording
     rec = sd.playrec(sigout, fs, channels=2)
@@ -56,6 +56,9 @@ else:
     plt.figure()
     specplt = defaultFigures(F, REC, [])
     specplt.SpecMag()
+except Exeption as len(devopt) == 0:
+    print('play and record a signal at the same time is not possible')
+
 
 # 2Do
 # https://pypi.python.org/pypi/kaching/0.3
