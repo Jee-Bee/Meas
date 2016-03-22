@@ -23,9 +23,9 @@
 # |_ multitone          1
 # |_ Polychirp          1
 # Plots (class?)
-# |_ time plot          5
-# |_ Freq plot/ bode    5
-# |_ spectrum time      4
+# |_ time plot          5     22 Mar 2016 50%
+# |_ Freq plot/ bode    5     22 Mar 2016 50%
+# |_ spectrum time      4     22 Mar 2016 50% (Spectogram)
 # |_ Waterfall          4
 # |_ 1/n oct bar plot   0     
 # |_ zero poles         1
@@ -48,7 +48,7 @@
 #    |_ STFT
 # |_ Laplace/ Z-trans   0
 # |_ Transferfunction   2    12 Feb 2016 (No exeptions or extra parameters)
-# |_ Impulse response   2    24 Feb 2016
+# |_ Impulse response   2    13 Mar 2016
 # |_ Cepstrum           0
 # |_ more options Discrete (Co)Sine Transform (DCT/DST) Hilbert transform ...
 # ... Whas it tilbert an realtransform
@@ -79,9 +79,10 @@
 # |_ peak finder        2
 # |_ interpolation      2
 # |_ avereiging         3
-#   |_ SMA
-#   |_ CMA
-#   |_
+#   |_ SMA (Simple Moving Avg)  05 Feb 2016
+#   |_ CMA (Cumalative)         22 Feb 2016
+#   |_ WMA (Weighted)
+#   |_ EMA (Exponential)
 # |_ Windowfunction     4
 #   |_ Overlap (spectrum)
 #   |_ (Overlap correlation)   3 Mar 2016
@@ -89,6 +90,8 @@
 #   |_ Frequency bin calculations
 #   |_ WOSA (Welch’s Overlapped Segmented Average) (See Window >> 395068.pdf)
 # |_ Smoothing          3
+
+
 
 # multi signal analysis ((sub class of transform/spectra))
 # Mel Cepstrum Coefficents
@@ -102,7 +105,7 @@
 # (peak to peak versus avg noise)
 # |_ THD
 # |_ SNR
-# |_ LSB (Least Significant Bit)
+# |_ LSB (Least Significant Bit) 15 Feb 2016
 
 # Diverse
 # Dimesions             4 [Volt/ g/ Hz/ Pa/ mV etc Nob = Number of Bits]
@@ -116,12 +119,13 @@
 # Buffer
 # Filters ?
 # ERROR                 4
-# Linking folders       5
+# Linking folders       5   07 Feb 2016
 # git Repository        5   05 Feb 2016
 
+
 # GUI  (Make class??)
-# |_ layout             0
-# |_ button             0
+# |_ layout             4    13 Mar 2016
+# |_ Coupling Py        4
 # |_ graphs if needed   0
 # |_ Live update plot   2
 # Defaults              2
