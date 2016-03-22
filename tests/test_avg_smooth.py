@@ -1,15 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Jan 11 11:54:51 2016
-
-@author: enjbwink
-"""
-
-# -*- coding: utf-8 -*-
-"""
 Created on Wed Jan  6 10:34:31 2016
 
-@author: enjbwink
+@author: Jee-Bee for jBae (c) 2016
 """
 import numpy as np
 from scipy.fftpack import fft, fftshift
@@ -21,6 +14,10 @@ import matplotlib.pylab as plt
 #       1   P_m + P_(m-1) + ... P_(m-(n-1))   1   n-1
 # SMA = - * ------------------------------- = -   SUM p_(m-i)
 #       n                 n                   n   i=0
+
+# http://people.duke.edu/~rnau/411avg.htm
+# https://en.wikipedia.org/wiki/Exponential_smoothing
+
 
 def sma(x,npa):
     sma = np.zeros(len(x))    
