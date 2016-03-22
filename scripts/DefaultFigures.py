@@ -17,8 +17,7 @@ Created on Tue Dec 29 12:26:12 2015
 # |_                  0
 # |_ Live updating    2     (FuncAnimation in Matplotlib)
 
-import numpy as np
-import matplotlib.pylab as plt
+import matplotlib.pylab
 from mpl_toolkits.mplot3d import Axes3D
 #import matplotlib as mpl
 #http://matplotlib.org/api/mlab_api.html
@@ -49,17 +48,16 @@ from mpl_toolkits.mplot3d import Axes3D
 #plt.savefig("test.png")
 
 
-class defaultFigures():
+class defaultFigures(matplotlib.pylab):
 
-    def __init__(self, signalx, signaly, signalz):
-#        if len(unit) <= 3:
-#            self.unit = unit
-#        else:
-#            print ("Unit vector is too long")
+    def __init__(self):
+        pass
+
+class default2D(defaultfigures):
+    
+    def __init__(self, signalx, signaly):
         self.signalx = signalx
         self.signaly = signaly
-        self.signalz = signalz
-#        pass
 
     def Time(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
         plt.plot(self.signalx, self.signaly)
@@ -87,19 +85,31 @@ class defaultFigures():
 
     def Bode(self, dimension):  # Dimension is unit type as V(olt) W(att), etc
         [m, n] = np.size(self.signaly)
-#        magnitude
-        plt.subplot(2, 1, 1), plt.plot(self.signalx, self.signaly)
-        plt.xlabel('Frequency [Hz]')  # Or sample number
-        plt.ylabel('voltage [mV]')  # auto add unit here
-        plt.title(' ')  # set title
-        plt.grid(True)
-#        phase
-        plt.subplot(2, 1, 2), plt.plot(self.signalx, self.signaly)
-        plt.xlabel('Frequency [Hz]')  # Or sample number
-        plt.ylabel('Phase (deg)')  # Or Radians
-        plt.title(' ')  # set title
-        plt.grid(True)
-        plt.show()
+        if istuple(self.signalx) and istuple(self.signaly):
+            # magnitude
+            plt.subplot(2, 1, 1), plt.plot(self.signalx, self.signaly)
+            plt.xlabel('Frequency [Hz]')  # Or sample number
+            plt.ylabel('voltage [mV]')  # auto add unit here
+            plt.title(' ')  # set title
+            plt.grid(True)
+            # phase
+            plt.subplot(2, 1, 2), plt.plot(self.signalx, self.signaly)
+            plt.xlabel('Frequency [Hz]')  # Or sample number
+            plt.ylabel('Phase (deg)')  # Or Radians
+            plt.title(' ')  # set title
+            plt.grid(True)
+            plt.show()
+        else:
+            # raise 
+            print ("input need to be a tuple for proper working")
+
+
+class default3D(defaultfigures):
+    
+    def __init__(self, signalx, signaly, signalz):
+        self.signalx = signalx
+        self.signaly = signaly
+        self.signalz = signalz
 
     def Spect(self, dimension):  # Dimension is unit type as V(olt) W(att), etc
         Axes3D.plot_surface(self.signalx, self.signaly, self.signalz)
