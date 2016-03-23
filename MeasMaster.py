@@ -16,19 +16,28 @@ import sys
 # main window is child. this file mother file!!
 class Meas(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
-        #QtGui.QWidget.__init__(self, parent)
-        super(Meas, self).__init__(parent)
+        #QtGui.QWidget.__init__(self, parent)  # PyQt4
+        super(Meas, self).__init__(parent)  #pyQt5
         self.ui = Ui_MeasMain()
         self.ui.setupUi(self)
+        self.ui.setupUi
+        #self.ui.setupUi(MeasMain)
+        self.ui.retranslateUi(self)
+
         # self.ui.setWindowIcon(QtWidgets.QIcon('MeasLogoSm.png'))
+        # self.ui.setWindowTitle("Meas Sound Measurement Tool")
+
+        self.ui.progressBar.setProperty("value", 1)
+        
+        # measExit = self.ui.menuJBae_Meas.addAction(self.ui.actionExit)
+        # measExit.triggered.connect(self.Exit)
 
 #    def showmeas(self):
 #        self.child_wind = Ui_MeasMain()
-#        self.ui_MeasMain.setupUi.actionExit = QtWidgets.QAction(MeasMain)
 #        self.ui_MeasMain.retranslateUI.setWindowTitle("Meas Sound Measurement Tool")
 #        self.child_wind.show()
 
-    def exit(self):
+    def Exit(self):
         choice = QtGui.QMessageBox.question(self, 'Exit Meas',
                     "Are You sure to Leave Meas?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if choice == QtGui.QMessageBox.Yes:
