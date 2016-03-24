@@ -62,6 +62,7 @@ def MagPh2ReIm(MAG, PHI):
 
 
 def FFT(x, fs, *args, **kwargs):
+    from scipy.fftpack import fft 
     """ sig, fs,Window_Type, Window_size, smoothing,
     spectrum = complex(=real+imag)/amp+phase, Shift = True # removed: side = singele/ double sided
     fft of the form:
@@ -71,8 +72,9 @@ def FFT(x, fs, *args, **kwargs):
     Therefore fft * 1/N to correct amplitude """
     nfft = NFFT(x)
     N = len(x)  # Temporary solution
+    print(N, NFFT)
     if len(args) == 0:
-        X = ft.fft(x, nfft) / N
+        X = fft(x, nfft) / N
         N = nfft
     elif len(args) <= 3:
         if len(args) == 3:
@@ -148,11 +150,11 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     # else is wrong valued type and give error
     if isinstance(x_in, tuple):
         x_in0even = Symmetry(x_in[0], 'even')
-        x_in1odd = Symmetry(x_in[0], 'odd')
-        print(x_in0even,x_in1odd)
+        x_in1odd = Symmetry(x_in[1], 'odd')
+        print(x_in0even, x_in1odd)
         # make complex array
         if (x_in0even & x_in1odd):
-            x_in = x_in[0] + 1j*x_in[0]
+            x_in = x_in[0] + 1j*x_in[1]
         if isinstance(x_out, tuple):
             x_out0even = Symmetry(x_out[0], 'even')
             x_out1odd = Symmetry(x_out[1], 'odd')

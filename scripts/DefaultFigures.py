@@ -17,7 +17,7 @@ Created on Tue Dec 29 12:26:12 2015
 # |_                  0
 # |_ Live updating    2     (FuncAnimation in Matplotlib)
 
-import matplotlib.pylab
+import matplotlib.pylab as plt
 from mpl_toolkits.mplot3d import Axes3D
 #import matplotlib as mpl
 #http://matplotlib.org/api/mlab_api.html
@@ -48,12 +48,12 @@ from mpl_toolkits.mplot3d import Axes3D
 #plt.savefig("test.png")
 
 
-class defaultFigures(matplotlib.pylab):
-
+class defaultFigures():
+        
     def __init__(self):
         pass
 
-class default2D(defaultfigures):
+class default2D(defaultFigures):
     
     def __init__(self, signalx, signaly):
         self.signalx = signalx
@@ -104,14 +104,14 @@ class default2D(defaultfigures):
             print ("input need to be a tuple for proper working")
 
 
-class default3D(defaultfigures):
-    
+class default3D(defaultFigures):
+
     def __init__(self, signalx, signaly, signalz):
         self.signalx = signalx
         self.signaly = signaly
         self.signalz = signalz
 
-    def Spect(self, dimension):  # Dimension is unit type as V(olt) W(att), etc
+    def Spect(self):  #, dimension):  # Dimension is unit type as V(olt) W(att), etc
         Axes3D.plot_surface(self.signalx, self.signaly, self.signalz)
         plt.xlabel('time [s]')  # Or Sample number
         plt.ylabel('Frequency [Hz]')  # Or Freq Bins number
