@@ -37,6 +37,7 @@ class Meas(QtWidgets.QMainWindow):
 #        self.ui_MeasMain.retranslateUI.setWindowTitle("Meas Sound Measurement Tool")
 #        self.child_wind.show()
 
+<<<<<<< d6a800c100fb796e3a29b203c83f51c7d5e17793
 <<<<<<< 21256eea7d52e994e65e95429fa712972887e8f1
     def Exit(self):
         choice = QtGui.QMessageBox.question(self, 'Exit Meas',
@@ -46,6 +47,8 @@ class Meas(QtWidgets.QMainWindow):
         else:
             pass
 =======
+=======
+>>>>>>> Update Exit definition and add link to stackoverflow
 # http://stackoverflow.com/questions/36180552/linking-pyqt-files-dont-relate/
     def Exit(self):
         choice = QtWidgets.QMessageBox.question(self, 'Exit Meas',
@@ -53,7 +56,11 @@ class Meas(QtWidgets.QMainWindow):
                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if choice == QtWidgets.QMessageBox.Yes:
             self.close()
+<<<<<<< d6a800c100fb796e3a29b203c83f51c7d5e17793
 >>>>>>> change exit function for better method see link
+=======
+
+>>>>>>> Update Exit definition and add link to stackoverflow
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
