@@ -37,7 +37,6 @@ class Meas(QtWidgets.QMainWindow):
 #        self.ui_MeasMain.retranslateUI.setWindowTitle("Meas Sound Measurement Tool")
 #        self.child_wind.show()
 
-<<<<<<< HEAD
 # http://stackoverflow.com/questions/36180552/linking-pyqt-files-dont-relate/
     def Exit(self):
         choice = QtWidgets.QMessageBox.question(self, 'Exit Meas',
@@ -45,15 +44,7 @@ class Meas(QtWidgets.QMainWindow):
                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if choice == QtWidgets.QMessageBox.Yes:
             self.close()
-=======
-    def Exit(self):
-        choice = QtGui.QMessageBox.question(self, 'Exit Meas',
-                    "Are You sure to Leave Meas?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if choice == QtGui.QMessageBox.Yes:
-            sys.exit()
-        else:
-            pass
->>>>>>> 03fab56f96e6d4c042d72a799acf70c690e690e3
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
