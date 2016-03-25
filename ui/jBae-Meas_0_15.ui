@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>844</width>
+    <width>885</width>
     <height>600</height>
    </rect>
   </property>
@@ -46,6 +46,9 @@
     </property>
     <property name="locale">
      <locale language="English" country="UnitedKingdom"/>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
     </property>
    </widget>
    <widget class="QToolButton" name="testSig">
@@ -115,7 +118,7 @@
        <string>Meas Comment here</string>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>1</x>
@@ -351,7 +354,6 @@
       </layout>
      </widget>
      <zorder>layoutWidget</zorder>
-     <zorder>PlotBottom</zorder>
      <zorder>lineEdit</zorder>
     </widget>
     <widget class="QWidget" name="LoadTab">
@@ -398,13 +400,13 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>80</y>
+        <y>70</y>
         <width>211</width>
-        <height>241</height>
+        <height>261</height>
        </rect>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="measurement">
        <property name="geometry">
@@ -412,7 +414,7 @@
          <x>0</x>
          <y>0</y>
          <width>211</width>
-         <height>225</height>
+         <height>37</height>
         </rect>
        </property>
        <attribute name="label">
@@ -424,8 +426,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>211</width>
-         <height>125</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <attribute name="label">
@@ -437,8 +439,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>211</width>
-         <height>21</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <attribute name="label">
@@ -450,8 +452,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>211</width>
-         <height>21</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
        <attribute name="label">
@@ -459,21 +461,53 @@
        </attribute>
       </widget>
       <widget class="QWidget" name="measurement5">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>100</width>
+         <height>30</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Page 5</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="measurement6">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>100</width>
+         <height>30</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Page 6</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="measurement7">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>100</width>
+         <height>30</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Page 7</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="measurement8">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>100</width>
+         <height>30</height>
+        </rect>
+       </property>
        <attribute name="label">
         <string>Page 8</string>
        </attribute>
@@ -486,7 +520,7 @@
      <rect>
       <x>260</x>
       <y>520</y>
-      <width>481</width>
+      <width>521</width>
       <height>27</height>
      </rect>
     </property>
@@ -522,7 +556,7 @@
      <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Sunken</enum>
     </property>
    </widget>
    <widget class="QGraphicsView" name="PlotBottom">
@@ -647,20 +681,19 @@
    <zorder>layoutWidget</zorder>
    <zorder>PlotBottom</zorder>
    <zorder>layoutWidget</zorder>
-   <zorder>verticalSpacer_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>844</width>
-     <height>23</height>
+     <width>885</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuJBae_Meas">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
@@ -686,7 +719,10 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>&amp;Quite</string>
+    <string>&amp;Quit</string>
+   </property>
+   <property name="iconText">
+    <string>Quit</string>
    </property>
    <property name="toolTip">
     <string>Exit Meas</string>
@@ -697,6 +733,9 @@
   </action>
   <action name="actionSave">
    <property name="text">
+    <string>&amp;Save</string>
+   </property>
+   <property name="iconText">
     <string>&amp;Save</string>
    </property>
    <property name="toolTip">
@@ -719,6 +758,9 @@
   </action>
   <action name="actionPreferences">
    <property name="text">
+    <string>&amp;Preferences</string>
+   </property>
+   <property name="iconText">
     <string>&amp;Preferences</string>
    </property>
    <property name="toolTip">
@@ -745,10 +787,22 @@
    <property name="text">
     <string>&amp;Open</string>
    </property>
+   <property name="iconText">
+    <string>&amp;Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionNew">
    <property name="text">
     <string>&amp;New</string>
+   </property>
+   <property name="iconText">
+    <string>&amp;New</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
  </widget>
