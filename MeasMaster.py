@@ -20,19 +20,22 @@ class Meas(QtWidgets.QMainWindow):
         super(Meas, self).__init__(parent)  #pyQt5
         self.ui = Ui_MeasMain()
         self.ui.setupUi(self)
-        self.ui.setupUi
-        #self.ui.setupUi(MeasMain)
         self.ui.retranslateUi(self)
-
-        # self.ui.setWindowIcon(QtWidgets.QIcon('MeasLogoSm.png'))
+        
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("../resources/icons/MeasLogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Meas.QtWidgets.QMainWindow.setWindowTitle("Meas Sound Measurement Tool")
+        #Meas.setWindowIcon(icon)
         # self.ui.setWindowTitle("Meas Sound Measurement Tool")
-
+        
+#        self.ui.JbaeLogo
         self.ui.progressBar.setProperty("value", 1)
         
         # measExit = self.ui.menuJBae_Meas.addAction(self.ui.actionExit)
-        # measExit.triggered.connect(self.Exit)
+        self.ui.actionExit.triggered.connect(self.Exit)
+        #self.ui.actionExit.setText(_translate("MeasMain", "&Quit"))
 
-#    def showmeas(self):
+#    def Home(QtWidget):
 #        self.child_wind = Ui_MeasMain()
 #        self.ui_MeasMain.retranslateUI.setWindowTitle("Meas Sound Measurement Tool")
 #        self.child_wind.show()
@@ -64,6 +67,6 @@ class Meas(QtWidgets.QMainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-    measapp = Meas()
-    measapp.show()
+    measgui = Meas()
+    measgui.show()
     sys.exit(app.exec_())
