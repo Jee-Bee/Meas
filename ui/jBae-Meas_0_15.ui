@@ -47,6 +47,9 @@
     <property name="locale">
      <locale language="English" country="UnitedKingdom"/>
     </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
     <property name="frameShadow">
      <enum>QFrame::Raised</enum>
     </property>
@@ -124,7 +127,7 @@
         <x>1</x>
         <y>50</y>
         <width>231</width>
-        <height>271</height>
+        <height>274</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout_3">
@@ -414,7 +417,7 @@
          <x>0</x>
          <y>0</y>
          <width>211</width>
-         <height>37</height>
+         <height>29</height>
         </rect>
        </property>
        <attribute name="label">
@@ -688,7 +691,7 @@
      <x>0</x>
      <y>0</y>
      <width>885</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuJBae_Meas">

@@ -192,7 +192,7 @@ class Ui_MeasMain(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.progressBar = QtWidgets.QProgressBar(self.layoutWidget)
-        self.progressBar.setProperty("value", 24)
+#        self.progressBar.setProperty("value", 24)
         self.progressBar.setObjectName("progressBar")
         self.horizontalLayout.addWidget(self.progressBar)
         self.dateTimeEdit = QtWidgets.QDateTimeEdit(self.layoutWidget)
