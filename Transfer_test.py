@@ -120,14 +120,21 @@ idxu = Nw
 Y = []
 while idxu <= len(y):
     (F, Yd) = Transform.FFT(y[idxl:idxu] * hann, fs)
-    Y = np.concatenate((Y, Yd), axis=0)
+    #np.concatenate([a[None,:],b[None,:]])
+#    http://stackoverflow.com/questions/21887754/numpy-concatenate-two-arrays-vertically?rq=1
+    if Y == []:
+        Y = np.append(Y,  Yd)
+    else:
+        Y = np.vstack((Y, Yd))
     #(F, Y) = np.append(Y, Transform.FFT(y[idxl:idxu] * hann,fs), axis=1)
     idxl += (Nw - overlap)
     idxu += (Nw - overlap)
 Y /= S_1
-Y = np.reshape(Y,(Nw,len(Y)/Nw))
-(m, n) = np.shape(Y)
+#Y = np.reshape(Y,(Nw,len(Y)/Nw))
 twind = np.arange(0,16.5,0.5)
+twind, F = np.meshgrid(twind, F)
+if np.shape(F) != np.shape(Y):
+    Y = Y.T
 
 ## Later on fix
 ## now not volt_rms so PS, PSD, LS and LSD are just V and not V_rms 
@@ -142,10 +149,26 @@ twind = np.arange(0,16.5,0.5)
 #DefaultFigures.Default3D(Y, F, twind)
 import matplotlib.pylab as plt
 from mpl_toolkits.mplot3d import Axes3D
-plt.figure()
+
+from matplotlib import cm
+from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
+
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+surf = ax.plot_surface(twind, F, abs(Y), rstride=1, cstride=1, cmap=cm.coolwarm,
+                       linewidth=0, antialiased=False)
+#ax.set_zlim(-1.01, 1.01)
+
+#ax.zaxis.set_major_locator(LinearLocator(10))
+#ax.zaxis.set_major_formatter(FormatStrFormatter('%.02f'))
+
+fig.colorbar(surf, shrink=0.5, aspect=5)
+
+plt.show()
+
 #spectfig = DefaultFigures.default3D(twind, F, Y)
 #spectfig.Spect()
-Axes3D.plot_surface(twind, F, abs(Y))
 
 #
 # ---TEST-----------TEST------------TEST----------TEST----
