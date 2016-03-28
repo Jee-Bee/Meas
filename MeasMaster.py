@@ -60,7 +60,7 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.sigTypeSel.addItem("multitone")
         self.ui.sigTypeSel.addItem("ChirpPoly")
 #        self.ui.sigTypeSel.addItem("")
-
+        #comboBox.activated[str].connect(self.style_choice)
 
         self.ui.lengthSelect.addItem("128")
         self.ui.lengthSelect.addItem("256")
@@ -68,6 +68,7 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.lengthSelect.addItem("1024")
         self.ui.lengthSelect.addItem("2048")
 #        self.ui.lengthSelect.addItem("1024")
+        #comboBox.activated[str].connect(self.style_choice)
         
         self.ui.SweepsSelect.addItem("1")
         self.ui.SweepsSelect.addItem("2")
@@ -75,6 +76,7 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.SweepsSelect.addItem("5")
         self.ui.SweepsSelect.addItem("7")
         self.ui.SweepsSelect.addItem("9")
+        # comboBox.activated[str].connect(self.style_choice)
         
         self.ui.progressBar.setProperty("value", 1)
         self.ui.dateTimeEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
