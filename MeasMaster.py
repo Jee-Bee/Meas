@@ -24,22 +24,37 @@ class Meas(QtWidgets.QMainWindow):
         
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../resources/icons/MeasLogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Meas.QtWidgets.QMainWindow.setWindowTitle("Meas Sound Measurement Tool")
+        #Meas.QtWidgets.QMainWindow.setWindowTitle("Meas Sound Measurement Tool")
         #Meas.setWindowIcon(icon)
         # self.ui.setWindowTitle("Meas Sound Measurement Tool")
         
 #        self.ui.JbaeLogo
         self.ui.progressBar.setProperty("value", 1)
         
-        # measExit = self.ui.menuJBae_Meas.addAction(self.ui.actionExit)
+        # Menu bar
+        self.ui.actionNew.triggered.connect(self.new_file)
+        #self.ui.actionOpen.setText(_translate("MeasMain", "&Open"))
+        self.ui.actionOpen.triggered.connect(self.open_file)
+        #self.ui.actionOpen.setText(_translate("MeasMain", "&Open"))
+        self.ui.actionSave.triggered.connect(self.save_file)
+        #self.ui.actionSave.setText(_translate("MeasMain", "&Save"))
+        self.ui.actionSave.triggered.connect(self.saveas_file)
+        #self.ui.actionSave_as.setText(_translate("MeasMain", "&Save as"))
+        self.ui.actionSave_All.triggered.connect(self.saveall_file)
+        #self.ui.actionSave_All.setText(_translate("MeasMain", "&Save all"))
+        self.ui.actionPreferences.triggeref.connect(self.Preference_menu)
+        #self.ui.actionPreferences.setText(_translate("MeasMain", "&Preferences"))
         self.ui.actionExit.triggered.connect(self.Exit)
         #self.ui.actionExit.setText(_translate("MeasMain", "&Quit"))
+
+
 
 #    def Home(QtWidget):
 #        self.child_wind = Ui_MeasMain()
 #        self.ui_MeasMain.retranslateUI.setWindowTitle("Meas Sound Measurement Tool")
 #        self.child_wind.show()
 
+<<<<<<< d5a010b1da627195f94115bffd91020e3e23bec7
 <<<<<<< d6a800c100fb796e3a29b203c83f51c7d5e17793
 <<<<<<< 21256eea7d52e994e65e95429fa712972887e8f1
     def Exit(self):
@@ -52,6 +67,48 @@ class Meas(QtWidgets.QMainWindow):
 =======
 =======
 >>>>>>> Update Exit definition and add link to stackoverflow
+=======
+# Menu:
+    def new_file(self):
+        pass
+
+# Save is now same as Save as. Futerure release Save change after known file
+# else save goes thru save as
+    def save_file(self):
+        name = QtWidgets.QFileDialog.getSaveFileName(self, 'save File')
+        file = open(name, 'w')
+        # text = self.textEdit.toPlainText()
+        # file.write(text)
+        file.close()
+
+    def saveas_file(self):
+        name = QtWidgets.QFileDialog.getSaveFileName(self, 'save File')
+        file = open(name, 'w')
+        # text = self.textEdit.toPlainText()
+        # file.write(text)
+        file.close()
+
+    def saveall_file(self):
+        name = QtWidgets.QFileDialog.getSaveFileName(self, 'save File')
+        file = open(name, 'w')
+        # text = self.textEdit.toPlainText()
+        # file.write(text)
+        file.close()
+
+    def open_file(self):
+        name = QtWidgets.QFileDialog.getOpenFileName(self, 'open File')
+        file = open(name, 'r')
+
+#        self.editor()
+#
+#        with file:
+#            text = file.read()
+#            self.textEdit.setText(text)
+
+    def Preference_menu(self):
+        pass
+
+>>>>>>> add menu structure of File Menu
 # http://stackoverflow.com/questions/36180552/linking-pyqt-files-dont-relate/
     def Exit(self):
         choice = QtWidgets.QMessageBox.question(self, 'Exit Meas',
