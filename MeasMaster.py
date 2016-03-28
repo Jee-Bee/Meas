@@ -28,9 +28,6 @@ class Meas(QtWidgets.QMainWindow):
         #Meas.setWindowIcon(icon)
         # self.ui.setWindowTitle("Meas Sound Measurement Tool")
         
-#        self.ui.JbaeLogo
-        self.ui.progressBar.setProperty("value", 1)
-        
         # Menu bar
         self.ui.actionNew.triggered.connect(self.new_file)
         #self.ui.actionOpen.setText(_translate("MeasMain", "&Open"))
@@ -42,17 +39,47 @@ class Meas(QtWidgets.QMainWindow):
         #self.ui.actionSave_as.setText(_translate("MeasMain", "&Save as"))
         self.ui.actionSave_All.triggered.connect(self.saveall_file)
         #self.ui.actionSave_All.setText(_translate("MeasMain", "&Save all"))
-        self.ui.actionPreferences.triggeref.connect(self.Preference_menu)
+        self.ui.actionPreferences.triggered.connect(self.Preference_menu)
         #self.ui.actionPreferences.setText(_translate("MeasMain", "&Preferences"))
         self.ui.actionExit.triggered.connect(self.Exit)
         #self.ui.actionExit.setText(_translate("MeasMain", "&Quit"))
 
+# http://stackoverflow.com/questions/8687723/pyqthow-do-i-display-a-image-properly
+#        self.ui.JbaeIcon = QtGui.QGraphicsPixmapItem()
 
 
-#    def Home(QtWidget):
-#        self.child_wind = Ui_MeasMain()
-#        self.ui_MeasMain.retranslateUI.setWindowTitle("Meas Sound Measurement Tool")
-#        self.child_wind.show()
+        self.ui.sigTypeSel.addItem("Sine")
+        self.ui.sigTypeSel.addItem("Sawtooth")
+        self.ui.sigTypeSel.addItem("Square")
+        self.ui.sigTypeSel.addItem("Triangle")
+        self.ui.sigTypeSel.addItem("ChirpLin")
+        self.ui.sigTypeSel.addItem("ChirpLog")
+        self.ui.sigTypeSel.addItem("Wnoise")
+        self.ui.sigTypeSel.addItem("Pnoise")
+        self.ui.sigTypeSel.addItem("bnoise")
+        self.ui.sigTypeSel.addItem("multitone")
+        self.ui.sigTypeSel.addItem("ChirpPoly")
+#        self.ui.sigTypeSel.addItem("")
+
+
+        self.ui.lengthSelect.addItem("128")
+        self.ui.lengthSelect.addItem("256")
+        self.ui.lengthSelect.addItem("512")
+        self.ui.lengthSelect.addItem("1024")
+        self.ui.lengthSelect.addItem("2048")
+#        self.ui.lengthSelect.addItem("1024")
+        
+        self.ui.SweepsSelect.addItem("1")
+        self.ui.SweepsSelect.addItem("2")
+        self.ui.SweepsSelect.addItem("3")
+        self.ui.SweepsSelect.addItem("5")
+        self.ui.SweepsSelect.addItem("7")
+        self.ui.SweepsSelect.addItem("9")
+        
+        self.ui.progressBar.setProperty("value", 1)
+        self.ui.dateTimeEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
+        self.ui.dateTimeEdit.setDate(QtCore.QDate.currentDate())
+        self.ui.dateTimeEdit.setTime(QtCore.QTime.currentTime())
 
 # Menu:
     def new_file(self):
@@ -101,6 +128,10 @@ class Meas(QtWidgets.QMainWindow):
                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if choice == QtWidgets.QMessageBox.Yes:
             self.close()
+
+# http://codeprogress.com/python/libraries/pyqt/showPyQTExample.php?key=QLCDNumberDigitalClock&index=409
+
+
 
 
 if __name__ == "__main__":
