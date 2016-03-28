@@ -17,10 +17,12 @@ Created on Tue Dec 29 12:26:12 2015
 # |_                  0
 # |_ Live updating    2     (FuncAnimation in Matplotlib)
 
+import numpy as np
 import matplotlib.pylab as plt
 from mpl_toolkits.mplot3d import Axes3D
 #import matplotlib as mpl
 #http://matplotlib.org/api/mlab_api.html
+import MeasError
 
 # what variable needed:
 # Signal x axis (t[sec]/ t_samples[-]/ F[Hz]/ Freuencynr[-] / Quefrecy[?])
@@ -113,6 +115,50 @@ class default3D(defaultFigures):
 
     def Spect(self):  #, dimension):  # Dimension is unit type as V(olt) W(att), etc
         Axes3D.plot_surface(self.signalx, self.signaly, self.signalz)
+        if self.signalx.shape == self.signaly.shape == self.signalz.shape:
+            pass
+        elif self.signalx.shape == (len(self.signalx), ) or self.signaly.shape == (len(self.signaly), ):
+        # Check for 1D array both
+            if self.signalx.shape == (len(self.signalx), ) and self.signaly.shape == (len(self.signaly), ):
+                self.signalx, self.signaly = np.meshgrid(self.signalx, self.signaly)
+                nx, mx = np.shape(self.signalx)
+                nz, mz = np.shape(self.signalz)
+                if nx == nz and mx == mz:
+                    pass
+                elif nx == mz and mx == nz:
+                    self.signalz = np.rot90(self.signalz, 1) 
+                    # find out if it has to be 1 or 3
+            elif self.signalx.shape == (len(self.signalx), ):
+                pass
+            elif self.signaly.shape == (len(self.signaly), ):
+                pass
+        if self.signalx.shape == self.signaly.shape != self.signalz.shape:
+            nx, mx = np.shape(self.signalx)
+                nz, mz = np.shape(self.signalz)
+                if nx == nz and mx == mz:
+                    pass
+                elif nx == mz and mx == nz:
+                    self.signalz = np.rot90(self.signalz, 1) 
+                    # find out if it has to be 1 or 3
+        elif self.signalx.shape == self.signalz.shape != self.signaly.shape:
+            nx, mx = np.shape(self.signalx)
+                ny, my = np.shape(self.signalz)
+                if nx == ny and mx == my:
+                    pass
+                elif nx == my and mx == ny:
+                    self.signaly = np.rot90(self.signaly, 1) 
+                    # find out if it has to be 1 or 3
+        elif self.signaly.shape == self.signalz.shape != self.signalx.shape:
+            ny, my = np.shape(self.signaly)
+                nx, mx = np.shape(self.signalx)
+                if ny == nx and my == mx:
+                    pass
+                elif ny == mx and my == nx:
+                    self.signalz = np.rot90(self.signalz, 1) 
+                    # find out if it has to be 1 or 3
+        else:
+            raise MeasError.DataError("No Valid data found in at least one of the axis")
+        
         plt.xlabel('time [s]')  # Or Sample number
         plt.ylabel('Frequency [Hz]')  # Or Freq Bins number
         plt.zlabel('voltage [mV]')  # auto add unit here
