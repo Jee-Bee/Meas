@@ -71,7 +71,7 @@ def SigGen(gentype, f, T, fs, *arg):
         else:
             Sig = []
             raise MeasError.EmptyError(sig, 'Nothing to return')
-    elif gentype == 'Chirp':
+    elif gentype == 'ChirpLin':
         if varlist(f, 2) == (True, True):
             f0 = f[0]
             f1 = f[1]
@@ -83,7 +83,20 @@ def SigGen(gentype, f, T, fs, *arg):
         else:
             Sig = []
             raise MeasError.EmptyError(sig, 'Nothing to return')
-        # http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.signal.chirp.html
+        # http://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.signal.chirp.html
+    elif gentype == 'ChirpLog':
+        if varlist(f, 2) == (True, True):
+            f0 = f[0]
+            f1 = f[1]
+            Sig = sig.chirp(t, f0, T, f1, 'logarithmic', 90)
+        elif varlist(f, 2) == (False, True):
+            f0 = f[0]
+            f1 = f[1]
+            Sig = sig.chirp(t, f0, T, f1, 'logarithmic', 90)
+        else:
+            Sig = []
+            raise MeasError.EmptyError(sig, 'Nothing to return')
+        # http://docs.scipy.org/doc/scipy-0.17.0/
     elif gentype == 'Wnoise':  # White Noise
         Sig = np.random.normal(0, 1, len(t))
     elif gentype == 'Pnoise':  # Pink noise
@@ -98,7 +111,7 @@ def SigGen(gentype, f, T, fs, *arg):
     elif gentype == 'ChirpPoly':
         raise MeasError.FunctionError('ChirpPoly', 'Signal generator Not Implemented (Yet)')
         #poly= scipy.signal.sweep_poly(t, poly, phi=0)[source]
-        # http://docs.scipy.org/doc/scipy-0.14.0/reference/generated/scipy.signal.sweep_poly.html#scipy.signal.sweep_poly
+        # http://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.signal.sweep_poly.html#scipy.signal.sweep_poly
     else:
         raise MeasError.FunctionError([], 'No Valid Signal generator')
     return(Sig, t)

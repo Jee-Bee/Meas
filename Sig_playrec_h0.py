@@ -9,7 +9,7 @@ f = (20, 20000)  # [Hz] Frequency signal generation
 fs = 44100  # [Hz] fs = Samplerate
 
 f = np.array(f)
-(sigout, t) = sg.SigGen('Chirp', f, T, fs)  # before testing signals etc
+(sigout, t) = sg.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
 sigout = Conversion.input_check(sigout)
 
 try:
