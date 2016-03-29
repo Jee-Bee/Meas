@@ -44,6 +44,9 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.actionExit.triggered.connect(self.Exit)
         #self.ui.actionExit.setText(_translate("MeasMain", "&Quit"))
 
+        self.ui.actionDelete.triggered.connect(self.Delete_Measurement)
+        #self.ui.actionDelete.setText(_translate("MeasMain", "&Delete"))
+
 # http://stackoverflow.com/questions/8687723/pyqthow-do-i-display-a-image-properly
 #        self.ui.JbaeIcon = QtGui.QGraphicsPixmapItem()
 
@@ -60,7 +63,7 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.sigTypeSel.addItem("multitone")
         self.ui.sigTypeSel.addItem("ChirpPoly")
 #        self.ui.sigTypeSel.addItem("")
-        #comboBox.activated[str].connect(self.style_choice)
+        comboBox.activated[str].connect(self.signal)
 
         self.ui.lengthSelect.addItem("128")
         self.ui.lengthSelect.addItem("256")
@@ -68,7 +71,7 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.lengthSelect.addItem("1024")
         self.ui.lengthSelect.addItem("2048")
 #        self.ui.lengthSelect.addItem("1024")
-        #comboBox.activated[str].connect(self.style_choice)
+        comboBox.activated[str].connect(self.sweep_length)
         
         self.ui.SweepsSelect.addItem("1")
         self.ui.SweepsSelect.addItem("2")
@@ -76,13 +79,22 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.SweepsSelect.addItem("5")
         self.ui.SweepsSelect.addItem("7")
         self.ui.SweepsSelect.addItem("9")
-        # comboBox.activated[str].connect(self.style_choice)
-        
+        comboBox.activated[str].connect(self.sweep_iterations)
+
+#        self.ui.ViewPropTop.clicked.connect(ViewProp_Top)
+#        self.ui.ZoomTop.clicked.connect(Zoom_Top)
+#        self.ui.toolTop.clicked.connect(Tool_Top)        
+#
+#        self.ui.ViewPropBottom.clicked.connect(ViewProp_Bottom)
+#        self.ui.ZoomBottom.clicked.connect(Zoom_Bottom)
+#        self.ui.toolBottom.clicked.connect(Tool_Bottom)        
+
         self.ui.progressBar.setProperty("value", 1)
         self.ui.dateTimeEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.ui.dateTimeEdit.setDate(QtCore.QDate.currentDate())
         self.ui.dateTimeEdit.setTime(QtCore.QTime.currentTime())
 
+<<<<<<< decf4668f561e57ea2b52cdd75741cfd7958ca88
 <<<<<<< d5a010b1da627195f94115bffd91020e3e23bec7
 <<<<<<< d6a800c100fb796e3a29b203c83f51c7d5e17793
 <<<<<<< 21256eea7d52e994e65e95429fa712972887e8f1
@@ -97,9 +109,16 @@ class Meas(QtWidgets.QMainWindow):
 =======
 >>>>>>> Update Exit definition and add link to stackoverflow
 =======
+=======
+
+
+
+
+>>>>>>> Update Menu + QMessageBox implementation Message
 # Menu:
     def new_file(self):
-        pass
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
 # Save is now same as Save as. Futerure release Save change after known file
 # else save goes thru save as
@@ -135,7 +154,8 @@ class Meas(QtWidgets.QMainWindow):
 #            self.textEdit.setText(text)
 
     def Preference_menu(self):
-        pass
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
 >>>>>>> add menu structure of File Menu
 # http://stackoverflow.com/questions/36180552/linking-pyqt-files-dont-relate/
@@ -153,6 +173,21 @@ class Meas(QtWidgets.QMainWindow):
 >>>>>>> Update Exit definition and add link to stackoverflow
 =======
 # http://codeprogress.com/python/libraries/pyqt/showPyQTExample.php?key=QLCDNumberDigitalClock&index=409
+
+    def Delete_Measurement(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
+
+    def signal(self):
+        pass #Signal_Selection = ...
+
+    def sweep_length(self):
+        pass #Signal_Selection = ...
+
+    def sweep_iterations(self):
+        pass #Signal_Selection = ...
+
 
 
 
