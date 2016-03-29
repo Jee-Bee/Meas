@@ -29,9 +29,9 @@ try:
     
     # sd.default.device = 6  # [6, 1]
     # Simultanious play/ recording
-    rec = sd.playrec(sigout, fs, channels=2)
+    rec1 = sd.playrec(sigout, fs, channels=2)
     sd.wait()
-    rec = Conversion.input_check(rec)
+    rec1 = Conversion.input_check(rec)
 
     # sd.stop()
     rect = rec.T[0]
@@ -49,6 +49,10 @@ try:
     # Impulse Response:
     (IR, fs_dummy, T_dummy) = Transform.ImpulseResponse(H, F1)
     # Create Var out from IR in To Do List!!
+
+    if len(t)> 100000:
+#    mpl.RcParams()
+    plt.rcParams['agg.path.chunksize'] = 10000
 
     plt.figure()
     timeplt = defaultFigures(t, rec, [])
