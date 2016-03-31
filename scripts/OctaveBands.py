@@ -20,6 +20,7 @@ Created on Wed Feb 17 11:48:31 2016
 #Update to 1/n method
 
 import numpy as np
+import MeasError
 
 
 def Octave(Measurement, F):
@@ -104,13 +105,68 @@ def Octave3(Measurement, F):
     return (Freq_pref, bands)
 
 
-def OctaveN(Measurement, F, n):
-#    prefered n = 1, 2, 3, 6, 12, 24, 48 and 96
+def OctaveN(Measurement, F, *args, **kwargs):
+#    prefered args = n = 1, 3, 6, 12, 24, 48 and 96
+    if len(args) == 0:
+        n = 3
+    elif len(args) == 1:
+        if isinstance(args[0], int):
+            print("n = int")
+            n = np.int(args[0])
+        elif isinstance(args[0], float):
+            if args[0] % 1 == 0:
+                print("n = float")
+                n = np.int(args[0])
+            else:
+                raise ValueError("Input Value have to be int or float with hole numbers")
+        else:
+            print("ended wrong instance")
+            raise ValueError("Input Value have to be int or float with hole numbers")
+    else:
+        raise MeasError.SizeError("Length of input var n have worng size")
+    # kwargs centerfrequency=int
+    if kwargs == {}:
+        c = 1000
+    else:
+        c = kwargs[1]
+
     rangeF = np.log2(F[-1] / F[0])
-    pass
+    rangeFc = np.log2(c / F[0])
+    freqn = np.zeros(rangeF * n)
+    bandsn = np.zeros((2, rangeF * n))
+    print(np.shape(bandsn))
+    for a in range(len(freqn)):
+        freqn[a] = (c * ((2 ** (1 / n))) ** (a - rangeFc * n))
+        print(a, freqn[a], n, c, rangeFc)
+        bandsn[0][a] = freqn[a] / 2 ** (1 / (2 * n))
+        bandsn[1][a] = freqn[a] * 2 ** (1 / (2 * n))
+    # Compute the acoustic absorption coefficient per 1/n octave band
+    bands = []
+    for a in range(np.size(bandsn, 1)):
+        bands = np.append(bands, [0])
+        idx = np.where((F >= bandsn[0][a]) & (F < bandsn[1][a]))
+        idx = idx[0]
+#        If we have no 'measurement' point in this band:
+        if (len(idx) == 0):
+            print('Warning: no point found in band centered at %4.0f\n' % freqn[a])
+#        If we have only 1 'measurement' point in this band:
+        elif (len(idx) == 1):
+            print('Warning: only one point found in band centered at %4.0f\n' % freqn[a])
+            bands[a] = Measurement[idx[0]]
+#        If we have more than 1 'measurement' point in this band:
+        elif (len(idx) > 1):
+            for b in range(len(idx)):
+                bands[a] = bands[a] + (F[idx[0] + b] - F[idx[0] + b - 1]) * abs(Measurement[idx[0] + b] + Measurement[idx[0] + b - 1]) / 2
+            bands[a] = bands[a] / (F[idx[len(idx) - 1]] - F[idx[0]])
+    return (Freq_pref, bands)
 
 
 
+#np.abs(np.array(np.random.rand(T * fs / 2)))
+T = 5
+fs = 44100
+F = np.arange(1/T, fs/2, 1 / T )
+oct_array = OctaveN(np.abs(np.array(np.random.rand(T * fs / 2))), F)
 
 #Small tests - delete later on:
 #    a = np.array([[1 ,2], [3, 4], [5,6]])
