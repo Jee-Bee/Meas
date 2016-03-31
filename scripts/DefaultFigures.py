@@ -176,6 +176,27 @@ class default3D(defaultFigures):
         plt.grid(True)
         plt.show()
 
+class Overlap_Characterestics(defaultFigures):
+    
+    def __init__(self, percent, afval, ocval, WindowType):
+        self.precent = percent
+        self.afval = afval
+        self.ocval = ocval
+        if isinstance(WindowType, str):
+                self.WindowType = WindowType
+        else:
+                raise TypeError("Wrong input type have to be str")
+        
+
+    def OC(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
+        plt.plot(self.percent, self.afval, self.percent, self.afval)
+        plt.xlabel('percent [%]')  # or sample number
+        plt.ylabel('unit [-]')  # auto add unit here
+        plttitle = 'Overlab Characteristics, Window Type: %s' % self.WindowType)
+        plt.title(plttitle)
+        plt.grid(True)
+        plt.show()
+
 
 #def zero (zeeroar,signal,dimension):
 #    plot(zeroar, signal)    
