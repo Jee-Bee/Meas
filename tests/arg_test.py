@@ -14,6 +14,7 @@ def test_var_args(f_arg, *argv):
     print (len(argv))    
     print (argv[1])
     for arg in argv:
+        print(arg)
         print ("another arg through *argv :", arg)
 
 test_var_args('yasoob','python','eggs','test')
