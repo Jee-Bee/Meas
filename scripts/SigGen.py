@@ -9,7 +9,7 @@ import scripts.MeasError
 
 
 class SigGen(object):
-    def __init__():
+    def __init__(self):
         pass
 
     def varlist(var, length):
@@ -36,51 +36,51 @@ class SigGen(object):
         f = np.array(f)
         t = np.linspace(0, T - (1 / fs), T * fs)
         if gentype == "Sine":
-            if varlist(f, 1) == (True, True):
+            if SigGen.varlist(f, 1) == (True, True):
                 f0 = f
                 Sig = np.sin(2 * np.pi * f0 * t)
-            elif varlist(f, 1) == (False, True):
+            elif SigGen.varlist(f, 1) == (False, True):
                 f0 = f[0]
                 Sig = np.sin(2 * np.pi * f0 * t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == "Sawtooth":
-            if varlist(f, 1) == (True, True):
+            if SigGen.varlist(f, 1) == (True, True):
                 f0 = f
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t)
-            elif varlist(f, 1) == (False, True):
+            elif SigGen.varlist(f, 1) == (False, True):
                 f0 = f[0]
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'Square':
-            if varlist(f, 1) == (True, True):
+            if SigGen.varlist(f, 1) == (True, True):
                 f0 = f
                 Sig = sig.Square(2 * np.pi * f0 * t)
-            elif varlist(f, 1) == (False, True):
+            elif SigGen.varlist(f, 1) == (False, True):
                 f0 = f[0]
                 Sig = sig.Square(2 * np.pi * f0 * t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'Triangle':
-            if varlist(f, 1) == (True, True):
+            if SigGen.varlist(f, 1) == (True, True):
                 f0 = f
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
-            elif varlist(f, 1) == (False, True):
+            elif SigGen.varlist(f, 1) == (False, True):
                 f0 = f[0]
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'ChirpLin':
-            if varlist(f, 2) == (True, True):
+            if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
                 Sig = sig.chirp(t, f0, T, f1, 'linear', 90)
-            elif varlist(f, 2) == (False, True):
+            elif SigGen.varlist(f, 2) == (False, True):
                 f0 = f[0]
                 f1 = f[1]
                 Sig = sig.chirp(t, f0, T, f1, 'linear', 90)
@@ -89,11 +89,11 @@ class SigGen(object):
                 raise MeasError.EmptyError(sig, 'Nothing to return')
             # http://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.signal.chirp.html
         elif gentype == 'ChirpLog':
-            if varlist(f, 2) == (True, True):
+            if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
                 Sig = sig.chirp(t, f0, T, f1, 'logarithmic', 90)
-            elif varlist(f, 2) == (False, True):
+            elif SigGen.varlist(f, 2) == (False, True):
                 f0 = f[0]
                 f1 = f[1]
                 Sig = sig.chirp(t, f0, T, f1, 'logarithmic', 90)
