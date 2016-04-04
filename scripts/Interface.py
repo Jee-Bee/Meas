@@ -29,7 +29,7 @@ def InterfaceIO():
         devopt = np.append(devopt, np.where(nzout == nzin[idx]))
 
     if len(devopt) != 0:
-        raise InterfaceWarning('This are full dupplex interfaces under all circumstances:')
+#        raise InterfaceWarning('This are full dupplex interfaces under all circumstances:', 'Interface.py', 32)
 #        raise Interface
         for idx in devopt:
             temp = devinfo[np.int(idx)]
