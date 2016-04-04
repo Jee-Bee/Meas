@@ -1,48 +1,45 @@
 import sys
 import numpy as np
 import matplotlib.pylab as plt
-
-#fs = 512
-#t = plt.arange(0.0, 2.0, 1/fs)
-#s = plt.sin(250*plt.pi*t)
-#plt.plot(t, s)
-#
-#plt.xlabel('time (s)')
-#plt.ylabel('voltage (mV)')
-#plt.title('About as simple as it gets, folks')
-#plt.grid(True)
-## plt.savefig("test.png")
-#plt.show()
-
-#
-# ----------- From Here Overlab characteristics function ---------------------
-#
-
-def genhamwind(N, alpha, beta):
-    w = np.zeros(N)
-    x = np.zeros(N)
-    for idx in range(N):
-        w[idx] = alpha - beta * np.cos((2 * np.pi * idx) / (N - 1))
-        x[idx] = idx
-    return (x, w)
+import Window.Window as wind
+from Window import Window
 
 
-def hanwind(N):
-    alpha = beta = 0.5
-    [x, w] = genhamwind(N, alpha, beta)
-    return (x, w)
-
-
-def OC(Window_Type, percent, **kwargs):
+def OC(Window_Type, percent, *args, **kwargs):
     # See: http://www.recordingblogs.com/sa/tabid/88/Default.aspx?topic=Overlap+correlation
     r = percent/100
     N = 1024
     if kwargs == {}:
-        (dummy, w) = hanwind(N)
+        if Window_Type == "coswind":
+            dummy, w = Window.coswind(N)
+        elif Window_Type == "gausswind":
+            dummy, w = Window.gausswind(N)
+        elif Window_Type == "gengausswind":
+            if len(args) == 2:
+                dummy, w = Window.gengausswind(N, args[1], args[2])
+            else:
+                raise("2 Adidional args are needed but not given")
+        elif Window_Type == "genhamwind":
+            if len(args) == 2:
+                dummy, w = Window.genhamwind(N, args[1], args[2])
+            else:
+                raise("2 Adidional args are needed but not given")
+        elif Window_Type == "hamwind":
+            dummy, w = Window.hamwind(N)
+        elif Window_Type == "hanwind":
+            dummy, w = Window.hanwind(N)
+        elif Window_Type == "partzwind":
+            dummy, w = Window.partzwind(N)
+        elif Window_Type == "rectwind":
+            dummy, w = Window.rectwind(N)
+        elif Window_Type == "triwind":
+            dummy, w = Window.triwind(N)
+        elif Window_Type == "Tukeywind":
+            dummy, w = Window.Tukeywind(N)
     elif kwargs['WindowSet'] == 'window':
         w = Window_Type
     else:
-        (dummy, w) = hanwind(N)
+        (dummy, w) = Window.hanwind(N)
     oc_num = []
     for idx in range(int(r * len(w))):
         oc_num = np.append(oc_num, w[idx] * w[idx + (1 - r) * len(w)])
