@@ -5,7 +5,8 @@ Created on Sun Mar  6 13:04:25 2016
 @author: Jee-Bee for jBae (c) 2016
 """
 from PyQt5 import QtCore, QtGui, QtWidgets
-from ui.jBae_Meas_0_15 import Ui_MeasMain
+#from ui.jBae_Meas_0_15 import Ui_MeasMain
+from ui.jBae_Meas_0_15_test import Ui_MeasMain
 from resources.icons import *
 import sys
 
@@ -23,10 +24,17 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.retranslateUi(self)
         
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("../resources/icons/MeasLogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        #Meas.QtWidgets.QMainWindow.setWindowTitle("Meas Sound Measurement Tool")
-        #Meas.setWindowIcon(icon)
-        # self.ui.setWindowTitle("Meas Sound Measurement Tool")
+        icon.addPixmap(QtGui.QPixmap("./resources/icons/MeasLogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.setWindowIcon(icon)
+        self.setWindowTitle("Meas Sound Measurement Tool")
+
+        # logo jBae:
+        #jBae = QtGui.QIcon()
+        jBae = QtGui.QPixmap('./resources/icons/jBaeLogo_0_1.png')
+        jBae_Scaled = jBae.scaled(self.ui.jBaeLogo.size(), QtCore.Qt.KeepAspectRatio)
+        self.ui.jBaeLogo.setPixmap(jBae)
+        #self.ui.jBaeLogo.scaledContents(True)
+        self.ui.jBaeLogo.show()
         
         # Menu bar
         self.ui.actionNew.triggered.connect(self.new_file)
@@ -44,8 +52,8 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.actionExit.triggered.connect(self.Exit)
         #self.ui.actionExit.setText(_translate("MeasMain", "&Quit"))
 
-        self.ui.actionDelete.triggered.connect(self.Delete_Measurement)
-        #self.ui.actionDelete.setText(_translate("MeasMain", "&Delete"))
+        self.ui.actionDelete_Measurement.triggered.connect(self.Delete_Measurement)
+        #self.ui.actionDelete_Measurement.setText(_translate("MeasMain", "&Delete"))
 
 # http://stackoverflow.com/questions/8687723/pyqthow-do-i-display-a-image-properly
 #        self.ui.JbaeIcon = QtGui.QGraphicsPixmapItem()
@@ -63,7 +71,7 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.sigTypeSel.addItem("multitone")
         self.ui.sigTypeSel.addItem("ChirpPoly")
 #        self.ui.sigTypeSel.addItem("")
-        comboBox.activated[str].connect(self.signal)
+        self.ui.sigTypeSel.activated[str].connect(self.signal)
 
         self.ui.lengthSelect.addItem("128")
         self.ui.lengthSelect.addItem("256")
@@ -71,7 +79,7 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.lengthSelect.addItem("1024")
         self.ui.lengthSelect.addItem("2048")
 #        self.ui.lengthSelect.addItem("1024")
-        comboBox.activated[str].connect(self.sweep_length)
+        self.ui.lengthSelect.activated[str].connect(self.sweep_length)
         
         self.ui.SweepsSelect.addItem("1")
         self.ui.SweepsSelect.addItem("2")
@@ -79,21 +87,24 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.SweepsSelect.addItem("5")
         self.ui.SweepsSelect.addItem("7")
         self.ui.SweepsSelect.addItem("9")
-        comboBox.activated[str].connect(self.sweep_iterations)
+        self.ui.SweepsSelect.activated[str].connect(self.sweep_iterations)
 
+
+        # Window buttons:
 #        self.ui.ViewPropTop.clicked.connect(ViewProp_Top)
 #        self.ui.ZoomTop.clicked.connect(Zoom_Top)
-#        self.ui.toolTop.clicked.connect(Tool_Top)        
+#        self.ui.toolTop.clicked.connect(Tool_Top)
 #
 #        self.ui.ViewPropBottom.clicked.connect(ViewProp_Bottom)
 #        self.ui.ZoomBottom.clicked.connect(Zoom_Bottom)
-#        self.ui.toolBottom.clicked.connect(Tool_Bottom)        
+#        self.ui.toolBottom.clicked.connect(Tool_Bottom
+
+
 
         self.ui.progressBar.setProperty("value", 1)
         self.ui.dateTimeEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.ui.dateTimeEdit.setDate(QtCore.QDate.currentDate())
         self.ui.dateTimeEdit.setTime(QtCore.QTime.currentTime())
-
 
 
 
@@ -154,7 +165,7 @@ class Meas(QtWidgets.QMainWindow):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
-
+    # Signal Parameters
     def signal(self):
         pass #Signal_Selection = ...
 
@@ -162,7 +173,7 @@ class Meas(QtWidgets.QMainWindow):
         pass #Signal_Selection = ...
 
     def sweep_iterations(self):
-        pass #Signal_Selection = ...
+        pass # Signal_Selection = ...
 
 
 
