@@ -14,10 +14,10 @@ Created on Tue Feb  9 15:25:42 2016
 # |_ Impulse response   0
 # |_ Cepstrum           0
 
-
+import sys
 import scipy.fftpack as ft
 import numpy as np
-from scripts import MeasError  # , MeasWarning
+#from ..script import MeasError #as ME # , MeasWarning
 
 
 def NFFT(x):
@@ -72,7 +72,7 @@ def FFT(x, fs, *args, **kwargs):
     Therefore fft * 1/N to correct amplitude """
     nfft = NFFT(x)
     N = len(x)  # Temporary solution
-    print(N, NFFT)
+    # print(N, nfft)
     if len(args) == 0:
         X = fft(x, nfft) / N
         N = nfft
@@ -120,7 +120,7 @@ def FFT(x, fs, *args, **kwargs):
             else:
                 raise TypeError("not the right input type")
     else:
-        raise MeasError.SizeError(args, "not the right number of parameters")
+#        raise ME.SizeError(args, "not the right number of parameters")
         print(args)
     if len(kwargs) == 0:
         pass
@@ -136,18 +136,21 @@ def FFT(x, fs, *args, **kwargs):
 
 # http://stackoverflow.com/questions/2598734/numpy-creating-a-complex-array-from-2-real-ones
 def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
-    """transfer function is in case of in = microphone and out is ref signal:
+    """
+    transfer function is in case of in = microphone and out is ref signal:
         in signal     in1    in2     blackbox out
     H = ---------- --> --- or --- is ------------
         out signal     out    out     blackbox in
     2 Do:
         - Check complex values
         - check equal sized
-        - if complex than no FFT"""
+        - if complex than no FFT
+    """
     # Tuple = FFT or wrong input
     # Compex valued signals = FFT
     # Nummeric is real valued and neeed FFT!!
     # else is wrong valued type and give error
+        
     if isinstance(x_in, tuple):
         x_in0even = Symmetry(x_in[0], 'even')
         x_in1odd = Symmetry(x_in[1], 'odd')
@@ -195,7 +198,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
                 H_0 = X_IN / x_out
         elif np.iscomplexobj(x_out):
             H_0 = X_IN / x_out
-        elif np.isnumeric(x_out):
+        elif np.isrealobj(x_out):
             (X_OUT, F) = FFT(x_out, fs)
             H_0 = X_IN / X_OUT
         else:
