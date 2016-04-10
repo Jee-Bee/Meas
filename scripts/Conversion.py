@@ -15,32 +15,17 @@ Created on Mon Feb  1 13:45:23 2016
 # check for floating values or int values in floating array
 
 import numpy as np
-import scripts.MeasWarning
+#from scripts import MeasWarning
+#MeasWarning.
 
 
 def input_type(data):
     """ Check number type for required scaling """
-    if np.ndim(data) > 0:
-        if isinstance(data[0], np.float):
+    if np.ndim(data) == 0:
+        print("=0")
+        if isinstance(data, np.float()):
             return(data)
-        elif isinstance(data[0], np.int64):
-            data = data.astype(float) / (2 ** (64 - 1))
-            return(data)
-        elif isinstance(data[0], np.int32):
-            data = data.astype(float) / (2 ** (32 - 1))
-            return(data)
-        elif isinstance(data[0], np.int16):
-            data = data.astype(float) / (2 ** (16 - 1))
-            return(data)
-        elif isinstance(data[0], np.int8):
-            data = data.astype(float) / (2 ** (8 - 1))
-            return(data)
-        else:
-            raise TypeError('wrong input type')
-    elif np.ndim(data) == 0:
-        if isinstance(data, np.float):
-            return(data)
-        elif isinstance(data, np.int64):
+        elif isinstance(data, np.int64()):
             data = data.astype(float) / (2 ** (64 - 1))
             return(data)
         elif isinstance(data, np.int32):
@@ -55,6 +40,53 @@ def input_type(data):
         else:
             raise TypeError('wrong input type')
 
+    if np.ndim(data) == 1:
+        print("=1")
+        print(data.T[1])
+        if isinstance(data.T[0], np.float):
+            return(data)
+        elif isinstance(data.T[0], np.float_):
+            return(data)
+        elif isinstance(data.T[0], np.int64):
+            data = data.astype(float) / (2 ** (64 - 1))
+            return(data)
+        elif isinstance(data.T[0], np.int32):
+            data = data.astype(float) / (2 ** (32 - 1))
+            return(data)
+        elif isinstance(data.T[0], np.int16):
+            data = data.astype(float) / (2 ** (16 - 1))
+            return(data)
+        elif isinstance(data.T[0], np.int8):
+            data = data.astype(float) / (2 ** (8 - 1))
+            return(data)
+        else:
+            raise TypeError('wrong input type')
+
+    elif np.ndim(data) == 2:
+        print("=2")
+        print(data.T[1])
+        if isinstance(data.T[0][0], np.float):
+            return(data)
+        elif isinstance(data.T[0][0], np.float_):
+            return(data)
+        elif isinstance(data.T[0][0], np.int64):
+            data = data.astype(float) / (2 ** (64 - 1))
+            return(data)
+        elif isinstance(data.T[0][0], np.int32):
+            data = data.astype(float) / (2 ** (32 - 1))
+            return(data)
+        elif isinstance(data.T[0][0], np.int16):
+            data = data.astype(float) / (2 ** (16 - 1))
+            return(data)
+        elif isinstance(data.T[0][0], np.int8):
+            data = data.astype(float) / (2 ** (8 - 1))
+            return(data)
+        else:
+            raise TypeError('wrong input type')
+
+    else:
+        raise TypeError('wrong input type')
+
 
 def input_check(data):
     """ Check size and if floating value od input signals 
@@ -64,14 +96,14 @@ def input_check(data):
         if isinstance(data[0], np.float):
             return(True)
         else:
-            raise MeasWarning.TypeWarning('wrong input type')
+            #raise TypeWarning('wrong input type')
             return(False)
     elif np.ndim(data) == 0:
         if isinstance(data, np.float):
             return(True)
         else:
             return(False)
-            raise MeasWarning.TypeWarning('wrong input type')
+            #raise MeasWarning.TypeWarning('wrong input type')
 
 
 def LSB(data, n):
