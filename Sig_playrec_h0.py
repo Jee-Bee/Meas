@@ -16,50 +16,53 @@ try:
     import matplotlib.pyplot as plt
     #from scripts.DefaultFigures import Time, SpecMag, SpecPh
     from scripts.DefaultFigures import *  # defaultFigures
-    
-    
-    T = 10  # [s] T= Time in seconds
-    f = (20, 20000)  # [Hz] Frequency signal generation
+
+
+    T = 5  # [s] T= Time in seconds
+    f = (10, 350)  # [Hz] Frequency signal generation
     fs = 44100  # [Hz] fs = Samplerate
-    
+
     f = np.array(f)
     (sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
     sigout = Conversion.input_type(sigout)
-    
+
+    np.fft.ifft(H1)
+
     # Signal to soundcard
-    
+
     # sd.default.device = 6  # [6, 1]
     # Simultanious play/ recording
     rec1 = sd.playrec(sigout, fs, channels=2)
     sd.wait()
-    rec1 = Conversion.input_check(rec)
-    
+#    print(dtype(rec1))
+    rec1 = Conversion.input_type(rec1)  # @ Comment till fixed...
+
+    rec1 = rec1.T[0]
     # sd.stop()
-    rect = rec.T[0]
-    (F, REC1) = Transform.FFT(rect, fs)
+    (F, REC1) = Transform.FFT(rec1, fs)
     # Transfer function:
     (F, SIGOUT) = Transform.FFT(sigout, fs)
-    
-    (F, H1) = Transform.Transfer(rec1, sigout, fs)  # Rebuild Transfer for ...
+
+    (H1) = Transform.Transfer(rec1, sigout, fs)  # Rebuild Transfer for ...
     # ... adding two allready calculated spectra
-    
+
     # Weighted FFT
-    AW = Weightin(REC1)
-    AW_REC1 = A-Weighting(REC1)
-    
+    AW = Weighting.AWeighting()
+    AW_REC1 = AW.A_Weighting(F, REC1)
+
     # Impulse Response:
-    (IR, fs_dummy, T_dummy) = Transform.ImpulseResponse(H, F1)
+    (IR, fs_dummy, T_dummy) = Transform.ImpulseResponse(H1, F)
     # Create Var out from IR in To Do List!!
-    
+
     if len(t) > 100000:
         # mpl.RcParams()
         plt.rcParams['agg.path.chunksize'] = 10000
-    
+
     plt.figure()
-    timeplt = defaultFigures(t, rec, [])
+    timeplt = defaultFigures(t, rec1, [])
     timeplt.Time()
     plt.figure()
-    specplt = defaultFigures(F, REC, [])
+    specplt = defaultFigures(F, REC1, [])
     specplt.SpecMag()
 except MeasError.InterfaceError:
     InterfaceWarning("cant play and record at same time")  #, "Sigplayrec.py", 64):
