@@ -168,7 +168,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         elif np.iscomplexobj(x_out):
             H_0 = x_in / x_out
         elif np.isrealobj(x_out):
-            X_OUT = FFT(x_out, fs)
+            X_OUT, F = FFT(x_out, fs)
             H_0 = x_in / X_OUT
         else:
             raise TypeError("Wrong input type")
@@ -183,12 +183,12 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         elif np.iscomplexobj(x_out):
             H_0 = x_in / x_out
         elif np.isrealobj(x_out):
-            (X_OUT, F) = FFT(x_out, fs)
+            (F, X_OUT) = FFT(x_out, fs)
             H_0 = x_in / X_OUT
         else:
             raise TypeError("Wrong input type")
     elif np.isrealobj(x_in):
-        (X_IN, F) = FFT(x_in, fs)
+        (F, X_IN) = FFT(x_in, fs)
         if isinstance(x_out, tuple):
             x_out0even = Symmetry(x_out[0], 'even')
             x_out1odd = Symmetry(x_out[1], 'odd')
@@ -199,7 +199,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         elif np.iscomplexobj(x_out):
             H_0 = X_IN / x_out
         elif np.isrealobj(x_out):
-            (X_OUT, F) = FFT(x_out, fs)
+            (F, X_OUT) = FFT(x_out, fs)
             H_0 = X_IN / X_OUT
         else:
             raise TypeError("Wrong input type")
@@ -237,7 +237,7 @@ def ImpulseResponse(H, F):
         else:
             raise MeasError.DataError(H, 'No valid frequency array')
     else:
-        if np.iscomplex(H):
+        if np.any(np.iscomplex(H)):
             IR = ft.ifft(H)
         else:
             raise TypeError('Not right input type')
