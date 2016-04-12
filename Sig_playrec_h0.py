@@ -26,8 +26,6 @@ try:
     (sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
     sigout = Conversion.input_type(sigout)
 
-    np.fft.ifft(H1)
-
     # Signal to soundcard
 
     # sd.default.device = 6  # [6, 1]
@@ -59,10 +57,13 @@ try:
         plt.rcParams['agg.path.chunksize'] = 10000
 
     plt.figure()
-    timeplt = defaultFigures(t, rec1, [])
+    timeplt = default2D(t, sigout)
     timeplt.Time()
+    timeplt = default2D(t, rec1)
+    timeplt.Time()
+    plt.axis([4.98, 5,-1, 1])
     plt.figure()
-    specplt = defaultFigures(F, REC1, [])
+    specplt = default2D(F, REC1)
     specplt.SpecMag()
 except MeasError.InterfaceError:
     InterfaceWarning("cant play and record at same time")  #, "Sigplayrec.py", 64):
