@@ -77,15 +77,6 @@ except MeasError.InterfaceError:
 
 # http://python-sounddevice.readthedocs.org/en/0.3.0/#
 
-# playback array
-#sd.play(sig, fs)
-#sd.wait()
-
-# Record audio
-#duration = 10  # seconds
-#myrecording = sd.rec(duration * fs, samplerate=fs, channels=2)
-
-
 # Question stack overflow
 # /usr/local/lib/python3.4/dist-packages2.7
 # http://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path
