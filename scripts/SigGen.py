@@ -34,44 +34,91 @@ class SigGen(object):
         import numpy as np
         import scipy.signal as sig
         f = np.array(f)
-        t = np.linspace(0, T - (1 / fs), T * fs)
         if gentype == "Sine":
             if SigGen.varlist(f, 1) == (True, True):
                 f0 = f
+                ps = fs / f  # samples per period
+                periods = np.ceil(T * fs / ps)
+                T = periods * ps / fs
+
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = np.sin(2 * np.pi * f0 * t)
+                return(Sig, t)
             elif SigGen.varlist(f, 1) == (False, True):
                 f0 = f[0]
+                ps = fs / f  # samples per period
+                periods = np.ceil(T * fs / ps)
+                T = periods * ps / fs
+
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = np.sin(2 * np.pi * f0 * t)
+                return(Sig, t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == "Sawtooth":
             if SigGen.varlist(f, 1) == (True, True):
                 f0 = f
+                ps = fs / f  # samples per period
+                periods = np.ceil(T * fs / ps)
+                T = periods * ps / fs
+
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t)
+                return(Sig, t)
             elif SigGen.varlist(f, 1) == (False, True):
                 f0 = f[0]
+                ps = fs / f  # samples per period
+                periods = np.ceil(T * fs / ps)
+                T = periods * ps / fs
+
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t)
+                return(Sig, t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'Square':
             if SigGen.varlist(f, 1) == (True, True):
                 f0 = f
+                ps = fs / f  # samples per period
+                periods = np.ceil(T * fs / ps)
+                T = periods * ps / fs
+
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.Square(2 * np.pi * f0 * t)
+                return(Sig, t)
             elif SigGen.varlist(f, 1) == (False, True):
                 f0 = f[0]
+                ps = fs / f  # samples per period
+                periods = np.ceil(T * fs / ps)
+                T = periods * ps / fs
+
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.Square(2 * np.pi * f0 * t)
+                return(Sig, t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'Triangle':
             if SigGen.varlist(f, 1) == (True, True):
                 f0 = f
+                ps = fs / f  # samples per period
+                periods = np.ceil(T * fs / ps)
+                T = periods * ps / fs
+
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
+                return(Sig, t)
             elif SigGen.varlist(f, 1) == (False, True):
                 f0 = f[0]
+                ps = fs / f  # samples per period
+                periods = np.ceil(T * fs / ps)
+                T = periods * ps / fs
+
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
+                return(Sig, t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
@@ -79,11 +126,15 @@ class SigGen(object):
             if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.chirp(t, f0, T, f1, 'linear', 90)
+                return(Sig, t)
             elif SigGen.varlist(f, 2) == (False, True):
                 f0 = f[0]
                 f1 = f[1]
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.chirp(t, f0, T, f1, 'linear', 90)
+                return(Sig, t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
@@ -92,17 +143,23 @@ class SigGen(object):
             if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.chirp(t, f0, T, f1, 'logarithmic', 90)
+                return(Sig, t)
             elif SigGen.varlist(f, 2) == (False, True):
                 f0 = f[0]
                 f1 = f[1]
+                t = np.linspace(0, T - (1 / fs), T * fs)
                 Sig = sig.chirp(t, f0, T, f1, 'logarithmic', 90)
+                return(Sig, t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
             # http://docs.scipy.org/doc/scipy-0.17.0/
         elif gentype == 'Wnoise':  # White Noise
+            t = np.linspace(0, T - (1 / fs), T * fs)
             Sig = np.random.normal(0, 1, len(t))
+            return(Sig, t)
         elif gentype == 'Pnoise':  # Pink noise
             raise MeasError.FunctionError('Pnoise', 'Signal generator Not Implemented (Yet)')
             pass
@@ -118,7 +175,6 @@ class SigGen(object):
             # http://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.signal.sweep_poly.html#scipy.signal.sweep_poly
         else:
             raise MeasError.FunctionError([], 'No Valid Signal generator')
-        return(Sig, t)
 
 # SigGen.py
 # Created by Jee-Bee for jBae 2015(c)
