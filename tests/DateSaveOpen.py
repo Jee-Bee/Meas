@@ -5,6 +5,9 @@ Created on Tue Mar  8 12:26:11 2016
 @author: Jee-Bee for jBae (c) 2016
 """
 
+# Check garbage collector interface:
+# https://docs.python.org/3.4/library/gc.html
+
 # test datum
 import datetime as dt
 import numpy as np
