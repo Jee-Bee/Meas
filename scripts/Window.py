@@ -71,11 +71,9 @@ class Window():
 #
 
     def genhamwind(self, alpha, beta):
-        w = np.zeros(self.N)
-        x = np.zeros(self.N)
-        for idx in range(int(self.N)):
-            w[idx] = alpha - beta * np.cos((2 * np.pi * idx) / (self.N - 1))
-            x[idx] = idx
+        # w = np.zeros(self.N)
+        x = np.arange(self.N)
+        w = alpha - beta * np.cos((2 * np.pi * x) / (self.N - 1))
         return (x, w)
 
     def hanwind(self):

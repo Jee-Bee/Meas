@@ -5,7 +5,9 @@ Created on Wed Mar  9 19:06:07 2016
 @author: Jee-Bee for Jbae (c) 2016
 """
 #import MeasWarning
-import scripts.MeasError
+import os, sys
+#sys.path.append(os.path.dirname(os.path.realpath(__file__)), '../scripts/')
+from scripts.MeasError import MeasError
 
 
 class SigGen(object):
@@ -16,10 +18,10 @@ class SigGen(object):
         from numpy import array
         if len(array(var)) > length:
     #        msg =
-            raise MeasWarning.DimWarning (length, 'list is to long only first ' + str(length) + ' paramerets will be used' )
+            # raise MeasWarning.DimWarning (length, 'list is to long only first ' + str(length) + ' paramerets will be used' )
             return(False, True)
         elif len(array(var)) < length:
-            raise MeasWarning.DimWarning(length, 'list is to short ' + str(length) + ' is less than required')
+            # raise MeasWarning.DimWarning(length, 'list is to short ' + str(length) + ' is less than required')
             return(False, False)
         else:
             return(True, True)
@@ -123,38 +125,101 @@ class SigGen(object):
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'ChirpLin':
+            from scripts.Window import Window
             if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
-                t = np.linspace(0, T - (1 / fs), T * fs)
-                Sig = sig.chirp(t, f0, T, f1, 'linear', 90)
-                return(Sig, t)
             elif SigGen.varlist(f, 2) == (False, True):
                 f0 = f[0]
                 f1 = f[1]
-                t = np.linspace(0, T - (1 / fs), T * fs)
-                Sig = sig.chirp(t, f0, T, f1, 'linear', 90)
-                return(Sig, t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
+            t = np.linspace(0, T - (1 / fs), T * fs)
+            Sig_unw = sig.chirp(t, f0, T, f1, 'linear', 90)  # unwindowed Signal
+            # phi = (f0 * (f1 / f0) ** (t[-4:] / T)) % np.pi
+            factor_f = fs/f1  # factor fs/f1
+            if factor_f < 2:
+                # print error
+                raise ValueError('variable f1 < as fs/2')
+            elif round(factor_f, 0) < 3:
+                wl = 2  # window lenght
+                # overlap = 0.5
+            elif round(factor_f, 0) < 6:
+                wl = 4  # window lenght
+                # overlap = 0.5
+            elif round(factor_f, 0) < 13:
+                wl = 8  # window lenght
+                # overlap = 0.5
+            else:
+               wl = 16  # window lenght
+               # overlap = 0.5
+            hanwindow = Window(wl)  # window
+            dummy, W = hanwindow.hanwind()
+            dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+            if dsample == 0:
+                Sig = np.zeros(len(Sig_unw))
+                ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
+                it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
+                for idx in it:
+                    Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
+            else:
+                Sig_unw = np.append(Sig_unw, np.zeros(wl - dsample))
+                Sig = np.zeros(len(Sig_unw))
+                ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
+                it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
+                for idx in it:
+                    Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
+            return(Sig, t)
             # http://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.signal.chirp.html
         elif gentype == 'ChirpLog':
+            # http://dsp.stackexchange.com/questions/30245/clicks-at-end-of-chirp-signal
+            from scripts.Window import Window
             if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
-                t = np.linspace(0, T - (1 / fs), T * fs)
-                Sig = sig.chirp(t, f0, T, f1, 'logarithmic', 90)
-                return(Sig, t)
             elif SigGen.varlist(f, 2) == (False, True):
                 f0 = f[0]
                 f1 = f[1]
-                t = np.linspace(0, T - (1 / fs), T * fs)
-                Sig = sig.chirp(t, f0, T, f1, 'logarithmic', 90)
-                return(Sig, t)
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
+            t = np.linspace(0, T - (1 / fs), T * fs)
+            Sig_unw = sig.chirp(t, f0, T, f1, 'logarithmic', 90)  # unwindowed Signal
+            # phi = (f0 * (f1 / f0) ** (t[-4:] / T)) % np.pi
+            factor_f = fs/f1  # factor fs/f1
+            if factor_f < 2:
+                # print error
+                raise ValueError('variable f1 < as fs/2')
+            elif round(factor_f, 0) < 3:
+                wl = 2  # window lenght
+                # overlap = 0.5
+            elif round(factor_f, 0) < 6:
+                wl = 4  # window lenght
+                # overlap = 0.5
+            elif round(factor_f, 0) < 13:
+                wl = 8  # window lenght
+                # overlap = 0.5
+            else:
+                wl = 16  # window lenght
+                # overlap = 0.5
+            hanwindow = Window(wl)  # window
+            dummy, W = hanwindow.hanwind()
+            dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+            if dsample == 0:
+                Sig = np.zeros(len(Sig_unw))
+                ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
+                it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
+                for idx in it:
+                    Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
+            else:
+                Sig_unw = np.append(Sig_unw, np.zeros(wl - dsample))
+                Sig = np.zeros(len(Sig_unw))
+                ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
+                it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
+                for idx in it:
+                    Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
+            return(Sig, t)
             # http://docs.scipy.org/doc/scipy-0.17.0/
         elif gentype == 'Wnoise':  # White Noise
             t = np.linspace(0, T - (1 / fs), T * fs)
