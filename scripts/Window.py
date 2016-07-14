@@ -17,21 +17,25 @@ class Window():
 #        self.gamma = gamma
 #        self.p = p
 
-#1. Compute the average of the whole time series (before splitting it into segments) and
-#subtract that average from all data points.
-#2. Compute a straight line between the first and last data point of the whole time series
-#(before splitting it into segments) and subtract that line from all data points.
-#3. Compute an average trend via linear regression of the whole time series (before splitting
-#it into segments) and subtract that line from all data points.
-#4. Compute the average of each segment (before applying the window function) and subtract
-#that average from the data points.
-#5. Compute a straight line between the first and last data point of each segment (before
-#applying the window function) and subtract that line from the data points.
-#6. Compute an average trend via linear regression of each segment (before applying the
-#window function) and subtract that line from the data points.
-#7. Pass the input time series through a digital high-pass filter.
+# 1. Compute the average of the whole time series (before splitting it into
+# segments) and subtract that average from all data points.
+# 2. Compute a straight line between the first and last data point of the whole
+# time series (before splitting it into segments) and subtract that line from
+# all data points.
+# 3. Compute an average trend via linear regression of the whole time series
+# (before splitting it into segments) and subtract that line from all data points.
+# 4. Compute the average of each segment (before applying the window function)
+# and subtract that average from the data points.
+# 5. Compute a straight line between the first and last data point of each
+# segment (before applying the window function) and subtract that line from the
+# data points.
+# 6. Compute an average trend via linear regression of each segment (before
+# applying the #window function) and subtract that line from the data points.
+# 7. Pass the input time series through a digital high-pass filter.
 
     def segment_avg(self, Signal):
+        """ TODO:
+        - create function. making average over window segement"""
         pass
 
 # B slpine Windows:
@@ -40,11 +44,29 @@ class Window():
 # Parzen: k = 4 (th order)
 
     def rectwind(self):
+        """ Recatangular window also 1st order B-spline window
+        Input:
+            N = [-] lenght of window
+        Output:
+            w = Window
+            x = coresponing values at x axis
+        create window of rectangular form( straight line)
+        TODO:
+        - remove x from output not needed"""
         w = np.ones(self.N)
         x = np.arange(0, self.N - 1, 1)
         return(w, x)
 
     def triwind(self):
+        """ Triangular window also 2nd order B-spline window
+        Input:
+            N = [-] lenght of window
+        Output:
+            w = Window
+            x = coresponing values at x axis
+        create window of triangular form( straight line to midle and than to 0)
+        TODO:
+        - remove x from output not needed"""
         w = np.zeros(self.N)
         x = np.zeros(self.N)
         for idx in range(int(self.N)):
@@ -53,6 +75,15 @@ class Window():
         return (w, x)
 
     def partzwind(self):
+        """ Partzian window also 4th order B-spline window
+        Input:
+            N = [-] lenght of window
+        Output:
+            w = Window
+            x = coresponing values at x axis
+
+        TODO:
+        - remove x from output not needed"""
         w = np.zeros(int(self.N / 2))
         x = np.zeros(int(self.N / 2))
         for idx in range(int(self.N/2)):
@@ -71,12 +102,34 @@ class Window():
 #
 
     def genhamwind(self, alpha, beta):
+        """ gennerazied hamming window
+        Input:
+            N = [-] lenght of window
+            alpha = coeffiient for shaping bell
+            beta = coefficient for shaping bell
+        Output:
+            w = Window
+            x = coresponing values at x axis
+
+        TODO:
+        - remove x from output not needed"""
         # w = np.zeros(self.N)
         x = np.arange(self.N)
         w = alpha - beta * np.cos((2 * np.pi * x) / self.N)
         return (x, w)
 
     def hanwind(self):
+        """ hanning window named after Julius von Hann
+        Input:
+            N = [-] lenght of window
+            alpha = coeffiient for shaping bell = 0.5
+            beta = coefficient for shaping bell = 0.5
+        Output:
+            w = Window
+            x = coresponing values at x axis
+
+        TODO:
+        - remove x from output not needed"""
         alpha = beta = 0.5
         N = self.N
         gh = Window(N)
@@ -84,6 +137,17 @@ class Window():
         return (x, w)
 
     def hamwind(self):
+        """ hamming window named after Richard W Hamming
+        Input:
+            N = [-] lenght of window
+            alpha = coeffiient for shaping bell = 25/46
+            beta = coefficient for shaping bell = 21/46
+        Output:
+            w = Window
+            x = coresponing values at x axis
+
+        TODO:
+        - remove x from output not needed"""
         alpha = 0.53836
         beta = 1 - alpha
         N = self.N
@@ -96,6 +160,18 @@ class Window():
 #
 
     def coswind(self):
+        """ cosine window or power of cosine window.
+        With alpha = 0 rectangular window; alpha = 1 cosine window and with 
+        alpha = 2 hann window is also part of family
+        Input:
+            N = [-] lenght of window
+            alpha = coeffiient for power = 1
+        Output:
+            w = Window
+            x = coresponing values at x axis
+
+        TODO:
+        - remove x from output not needed"""
         w = np.zeros(self.N)
         x = np.zeros(self.N)
         alpha = 1  # rectangular window alpha = 0; cos window alpha = 1; Hann window alpha =2.
@@ -109,6 +185,18 @@ class Window():
 #
 
     def gengausswind(self, sigma, p):
+        """ generalized Gausian normal window
+        Gausian window have as fft also an gausian window.
+        Input:
+            N = [-] lenght of window
+            sigma = coeffiient for shaping bell
+            p = coefficient for shaping bell
+        Output:
+            w = Window
+            x = coresponing values at x axis
+
+        TODO:
+        - remove x from output not needed"""
         w = np.zeros(self.N)
         x = np.zeros(self.N)
         for idx in range(int(self.N)):
@@ -119,6 +207,19 @@ class Window():
         return (x, w)
 
     def gausswind(self):
+        """ generalized Gausian normal window
+        Gausian window have as fft also an gausian window.
+        Input:
+            N = [-] lenght of window
+            sigma = coeffiient for shaping bell = 0.5
+            p = coefficient for shaping bell = 2
+        Output:
+            w = Window
+            x = coresponing values at x axis
+        When P goes to infty the gausian window become rectangular
+
+        TODO:
+        - remove x from output not needed"""
         sigma = 0.5
         p = 2
         N = self.N
@@ -131,6 +232,20 @@ class Window():
 #
 
     def Tukeywind(self):
+        """ Tukey window also known as tapered cosine window
+        The tukey window can be regarded as sidelobs of cosine window
+        convoluted with a rectangular window.
+        Input:
+            N = [-] lenght of window
+            alpha = coeffiient for shaping bell
+        Output:
+            w = Window
+            x = coresponing values at x axis
+        with alpha = 0 it becomes a rectangular window and with alpha = 1 it
+        becomes a hann window.
+
+        TODO:
+        - remove x from output not needed"""
         w = np.zeros(self.N)
         x = np.zeros(self.N)
         alpha = 0.5
@@ -152,13 +267,13 @@ class Window():
 
 # Frome here calculate Overlab carcteristics:
     def Overlap_Characterestics(self, Window_type, accurency):
-#        Calculate AF = Min/Max
-#        Calculate PF
-#        Calculate OC
-#        See 395068 Window Document:
-#            Spectrum and spectral density estimation by the Discrete Fourier
-#            transform (DFT), including a comprehensive list of window
-#            functions and some new at-top windows.
+        # Calculate AF = Min/Max
+        # Calculate PF
+        # Calculate OC
+        # See 395068 Window Document:
+        #     Spectrum and spectral density estimation by the Discrete Fourier
+        #     transform (DFT), including a comprehensive list of window
+        #     functions and some new at-top windows.
         pass
 
     def ROV(self, Window_type):

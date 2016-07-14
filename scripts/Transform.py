@@ -20,18 +20,33 @@ import numpy as np
 
 
 def NFFT(x):
-    """ Calculate Next higher 2^N order for FFT"""
+    """ 
+    Input:
+        x = length of array
+        or
+        x = array - TODO
+    Output:
+        nfft = Next higher value of 2 ^ n for FFT
+    
+    Calculate Next higher 2^N order for FFT"""
     log2val = np.ceil(np.log2(len(x)))
     nfft = 2 ** log2val
     return(nfft)
 
 
-def Symmetry(x, Stype):
-    """ Check for symmetry in given Signals"""
-    N = len(x)
+def Symmetry(spec, Stype):
+    """
+    inputs:
+        spec = input array of unknown values.
+        Stype = symetry type \'even\' or \'odd\'
+    Output:
+        Symetry check = True or False boolean
+
+    Check for symmetry in given Signals"""
+    N = len(spec)
     if Stype == 'even':
         for idx in range(int(N / 2 - 1)):
-            if round(x[idx + 1], 6) == round(x[(N - 1) - idx], 6):
+            if round(spec[idx + 1], 6) == round(spec[(N - 1) - idx], 6):
                 pass
                 # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
             else:
@@ -39,7 +54,7 @@ def Symmetry(x, Stype):
                 break
     elif Stype == 'odd':
         for idx in range(int(N / 2 - 1)):
-            if round(x[idx + 1], 6) == - round(x[(N - 1) - idx], 6):
+            if round(spec[idx + 1], 6) == - round(spec[(N - 1) - idx], 6):
                 pass
                 # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
             else:
@@ -51,13 +66,23 @@ def Symmetry(x, Stype):
     return(True)
 
 
-def MagPh2ReIm(MAG, PHI):
-    """ Calculate back the Real and imaginary Values
+def MagPh2ReIm(Mag, Phi, output='ReIm'):
+    """
+    Inputs:
+        MAG = Magnitude spectrum *
+        PHI = phase spectrum *
+    Outputs:
+        RE = real vallued output
+        IM = Imaginear vallued output
+
+    * at this moment only to Real and Imaginaire vallues later on also Complex
+
+    Calculate back the Real and imaginary Values
     To Do:
         - Make Real + Imag to Complex values - If required """
-    RE = MAG * np.cos(PHI)
-    IM = MAG * np.sin(PHI)
-    return(RE, IM)
+    Re = Mag * np.cos(Phi)
+    Im = Mag * np.sin(Phi)
+    return(Re, Im)
 
 
 def FFT(x, fs, *args, **kwargs):
@@ -77,9 +102,9 @@ def FFT(x, fs, *args, **kwargs):
         F = Frequencie bands
         X = spectrum
     fft of the form:
-         N-1                      m*k
-    y_m =sum x_k * exp ( -2pi * i ----)
-         k=0                       N
+         n-1                      m*k
+    A_k =sum a_m * exp ( -2pi * i ----)    for k = 0, ..., n-1
+         m=0                       n
     Therefore fft * 1/N to correct amplitude 
     
     TODO:
@@ -193,6 +218,18 @@ def FFT(x, fs, *args, **kwargs):
 # http://stackoverflow.com/questions/2598734/numpy-creating-a-complex-array-from-2-real-ones
 def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     """
+    Inputs:
+        x_in = input signal or recorded signal
+        x_out = output signal or calculated signal
+        fs = [Hz] sample frequency
+    Output: 
+        H_0 = derived signal X_in / x_out
+
+    Before makeing the transfer the input data is checked if it exist out the
+    right information. This means the data have to be frequency specific data.
+    This data exist out of amplitude and phase info from the form \' Real\'
+    and \'Imaginair\' or complex data.
+
     transfer function is in case of in = microphone and out is ref signal:
         in signal     in1    in2     blackbox out
     H = ---------- --> --- or --- is ------------
@@ -266,6 +303,27 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
 # make complex array
 # x_out = x_out[0] + 1j*x_out[0]
 def ImpulseResponse(H, F):
+    """
+    Input:
+        H = existing transferfunction spectrum
+        F = [Hz] Frequency bins array
+    output:
+        IR = [sec] time signal of resultin impulse respose
+        T = time of the total impusle response inluding silence
+        fs = measured sample frequency
+
+    Impulse response makes use of ifft method to calculate a time signal back
+    from the transferfunction.
+    fft of the form:
+               n-1                      m*k
+    a_m =1/n * sum A_k * exp ( -2pi * i ----)    for m = 0, ..., n-1
+               k=0                       n
+    Therefore fft * 1/N to correct amplitude 
+    
+    TODO:
+    - correction for N
+    - Silence removal
+    """
     print("""This function works only correct when:
             - no smoothing or averaging is applied
             - full spectrum data is returned!""")
@@ -293,13 +351,11 @@ def ImpulseResponse(H, F):
                 pass
         else:
             raise MeasError.DataError(H, 'No valid frequency array')
+    elif np.any(np.iscomplex(H)):
+        IR = ifft(H)
     else:
-        if np.any(np.iscomplex(H)):
-            IR = ifft(H)
-        else:
-            raise TypeError('Not right input type')
+        raise TypeError('Not right input type')
     IR = ifft(H)
-    print(len(F), len(H), len(IR))
     dF = F[1]-F[0]
     fs = np.round(len(F) * dF)
     T = len(F) * 1 / fs
