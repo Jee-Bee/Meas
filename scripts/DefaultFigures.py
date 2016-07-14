@@ -65,12 +65,12 @@ class default2D(defaultFigures):
         plt.plot(self.signalx, self.signaly)
         plt.xlabel('time [s]')  # or sample number
         plt.ylabel('voltage [mV]')  # auto add unit here
-        plt.title('')
+        plt.title(' ')
         plt.grid(True)
         plt.show()
 
     def SpecMag(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
-        plt.plot(plt.plot(self.signalx, self.signaly))
+        plt.plot(self.signalx, self.signaly)
         plt.xlabel('frequency [Hz]')  # or frequency bin
         plt.ylabel('voltage [mV]')  # auto add unit here
         plt.title(' ')  # set title
@@ -78,7 +78,7 @@ class default2D(defaultFigures):
         plt.show()
 
     def SpecPh(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
-        plt.plot(plt.plot(self.signalx, self.signaly))
+        plt.plot(self.signalx, self.signaly)
         plt.xlabel('frequency [Hz]')  # or frequency bin
         plt.ylabel('phase [deg]')  # or add radians
         plt.title(' ')  # Set title
@@ -101,6 +101,8 @@ class default2D(defaultFigures):
             plt.title(' ')  # set title
             plt.grid(True)
             plt.show()
+        elif np.iscomplex(self.signaly):
+            print ("input need to be a tuple for proper working \n complex valued signal not implemented yet")
         else:
             # raise 
             print ("input need to be a tuple for proper working")
