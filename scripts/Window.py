@@ -48,7 +48,7 @@ class Window():
         w = np.zeros(self.N)
         x = np.zeros(self.N)
         for idx in range(int(self.N)):
-            w[idx] = 1 - abs((idx - ((self.N - 1) / 2))/(self.N / 2))
+            w[idx] = 1 - abs((idx - (self.N / 2))/(self.N / 2))
             x[idx] = idx
         return (w, x)
 
@@ -73,7 +73,7 @@ class Window():
     def genhamwind(self, alpha, beta):
         # w = np.zeros(self.N)
         x = np.arange(self.N)
-        w = alpha - beta * np.cos((2 * np.pi * x) / (self.N - 1))
+        w = alpha - beta * np.cos((2 * np.pi * x) / self.N)
         return (x, w)
 
     def hanwind(self):
@@ -100,7 +100,7 @@ class Window():
         x = np.zeros(self.N)
         alpha = 1  # rectangular window alpha = 0; cos window alpha = 1; Hann window alpha =2.
         for idx in range(int(self.N)):
-            w[idx] = np.cos((np.pi * idx / (self.N - 1)) - np.pi / 2) ** alpha
+            w[idx] = np.cos((np.pi * idx / self.N) - np.pi / 2) ** alpha
             x[idx] = idx
         return (x, w)
 
@@ -112,7 +112,7 @@ class Window():
         w = np.zeros(self.N)
         x = np.zeros(self.N)
         for idx in range(int(self.N)):
-            num = idx-(self.N-1)/2
+            num = idx-self.N/2
             denum = sigma*(self.N-1)/2
             w[idx] = np.e ** ((-1 / 2) * (num / denum) ** p)
             x[idx] = idx
@@ -141,7 +141,7 @@ class Window():
             elif idx >= int(alpha * (self.N - 1) / 2) and idx <= int((self.N - 1) * (1 - alpha / 2)):
                 w[idx] = 1
                 x[idx] = idx
-            elif idx >= int((self.N - 1) * (1 - alpha / 2)) and idx <= (self.N - 1):
+            elif idx >= int(self.N * (1 - alpha / 2)) and idx <= (self.N - 1):
                 w[idx] = 1 / 2 * (1 + np.cos(np.pi * (2 * idx / (alpha * (self.N - 1)) - 2 / alpha + 1)))
                 x[idx] = idx
         return (x, w)

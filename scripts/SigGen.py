@@ -43,7 +43,7 @@ class SigGen(object):
                 periods = np.ceil(T * fs / ps)
                 T = periods * ps / fs
 
-                t = np.linspace(0, T - (1 / fs), T * fs)
+                t = np.arange(0, T * fs)/fs
                 Sig = np.sin(2 * np.pi * f0 * t)
                 return(Sig, t)
             elif SigGen.varlist(f, 1) == (False, True):
@@ -52,7 +52,7 @@ class SigGen(object):
                 periods = np.ceil(T * fs / ps)
                 T = periods * ps / fs
 
-                t = np.linspace(0, T - (1 / fs), T * fs)
+                t = np.arange(0, T * fs)/fs
                 Sig = np.sin(2 * np.pi * f0 * t)
                 return(Sig, t)
             else:
@@ -65,7 +65,7 @@ class SigGen(object):
                 periods = np.ceil(T * fs / ps)
                 T = periods * ps / fs
 
-                t = np.linspace(0, T - (1 / fs), T * fs)
+                t = np.arange(0, T * fs)/fs
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t)
                 return(Sig, t)
             elif SigGen.varlist(f, 1) == (False, True):
@@ -74,7 +74,7 @@ class SigGen(object):
                 periods = np.ceil(T * fs / ps)
                 T = periods * ps / fs
 
-                t = np.linspace(0, T - (1 / fs), T * fs)
+                t = np.arange(0, T * fs)/fs
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t)
                 return(Sig, t)
             else:
@@ -87,7 +87,7 @@ class SigGen(object):
                 periods = np.ceil(T * fs / ps)
                 T = periods * ps / fs
 
-                t = np.linspace(0, T - (1 / fs), T * fs)
+                t = np.arange(0, T * fs)/fs
                 Sig = sig.Square(2 * np.pi * f0 * t)
                 return(Sig, t)
             elif SigGen.varlist(f, 1) == (False, True):
@@ -96,7 +96,7 @@ class SigGen(object):
                 periods = np.ceil(T * fs / ps)
                 T = periods * ps / fs
 
-                t = np.linspace(0, T - (1 / fs), T * fs)
+                t = np.arange(0, T * fs)/fs
                 Sig = sig.Square(2 * np.pi * f0 * t)
                 return(Sig, t)
             else:
@@ -109,7 +109,7 @@ class SigGen(object):
                 periods = np.ceil(T * fs / ps)
                 T = periods * ps / fs
 
-                t = np.linspace(0, T - (1 / fs), T * fs)
+                t = np.arange(0, T * fs)/fs
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
                 return(Sig, t)
             elif SigGen.varlist(f, 1) == (False, True):
@@ -118,7 +118,7 @@ class SigGen(object):
                 periods = np.ceil(T * fs / ps)
                 T = periods * ps / fs
 
-                t = np.linspace(0, T - (1 / fs), T * fs)
+                t = np.arange(0, T * fs)/fs
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
                 return(Sig, t)
             else:
@@ -135,41 +135,49 @@ class SigGen(object):
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
-            t = np.linspace(0, T - (1 / fs), T * fs)
+            t = np.arange(0, T * fs)/fs
+
+            factor_f = fs/f1  # factor fs/f1
+            T = T - (np.ceil(factor_f) + 1) / fs
             Sig_unw = sig.chirp(t, f0, T, f1, 'linear', 90)  # unwindowed Signal
             # phi = (f0 * (f1 / f0) ** (t[-4:] / T)) % np.pi
-            factor_f = fs/f1  # factor fs/f1
+
             if factor_f < 2:
                 # print error
                 raise ValueError('variable f1 < as fs/2')
             elif round(factor_f, 0) < 3:
                 wl = 2  # window lenght
+                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             elif round(factor_f, 0) < 6:
                 wl = 4  # window lenght
+                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             elif round(factor_f, 0) < 13:
                 wl = 8  # window lenght
+                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             else:
-               wl = 16  # window lenght
-               # overlap = 0.5
+                wl = 16  # window lenght
+                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+                dW = wl/2 # dW = delta Window
+                # overlap = 0.5
             hanwindow = Window(wl)  # window
             dummy, W = hanwindow.hanwind()
             dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
             if dsample == 0:
                 Sig = np.zeros(len(Sig_unw))
-                ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
-                it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
-                for idx in it:
-                    Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
+                # ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
             else:
                 Sig_unw = np.append(Sig_unw, np.zeros(wl - dsample))
+                t = np.arange(0, len(Sig_unw))/fs
                 Sig = np.zeros(len(Sig_unw))
-                ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
-                it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
-                for idx in it:
-                    Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
+            ul = np.arange((len(Sig_unw) - (wl - 1)) / dW) * dW # dW = delta Window
+            it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
+            for idx in it:
+                Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
             return(Sig, t)
             # http://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.signal.chirp.html
         elif gentype == 'ChirpLog':
@@ -184,45 +192,53 @@ class SigGen(object):
             else:
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
-            t = np.linspace(0, T - (1 / fs), T * fs)
-            Sig_unw = sig.chirp(t, f0, T, f1, 'logarithmic', 90)  # unwindowed Signal
-            # phi = (f0 * (f1 / f0) ** (t[-4:] / T)) % np.pi
+            t = np.arange(0, T * fs)/fs
+
             factor_f = fs/f1  # factor fs/f1
+            T = T - (np.ceil(factor_f) + 1) / fs
+            Sig_unw = sig.chirp(t, f0, T, f1, 'linear', 90)  # unwindowed Signal
+            # phi = (f0 * (f1 / f0) ** (t[-4:] / T)) % np.pi
+
             if factor_f < 2:
                 # print error
                 raise ValueError('variable f1 < as fs/2')
             elif round(factor_f, 0) < 3:
                 wl = 2  # window lenght
+                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             elif round(factor_f, 0) < 6:
                 wl = 4  # window lenght
+                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             elif round(factor_f, 0) < 13:
                 wl = 8  # window lenght
+                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             else:
                 wl = 16  # window lenght
+                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             hanwindow = Window(wl)  # window
             dummy, W = hanwindow.hanwind()
             dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
             if dsample == 0:
                 Sig = np.zeros(len(Sig_unw))
-                ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
-                it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
-                for idx in it:
-                    Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
+                # ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
             else:
                 Sig_unw = np.append(Sig_unw, np.zeros(wl - dsample))
+                t = np.arange(0, len(Sig_unw))/fs
                 Sig = np.zeros(len(Sig_unw))
-                ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2
-                it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
-                for idx in it:
-                    Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
+            ul = np.arange((len(Sig_unw) - (wl - 1)) / dW) * dW # dW = delta Window
+            it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
+            for idx in it:
+                Sig[idx:idx + wl] += Sig_unw[idx:idx + wl] * W
             return(Sig, t)
             # http://docs.scipy.org/doc/scipy-0.17.0/
         elif gentype == 'Wnoise':  # White Noise
-            t = np.linspace(0, T - (1 / fs), T * fs)
+            t = np.arange(0, T * fs)/fs
             Sig = np.random.normal(0, 1, len(t))
             return(Sig, t)
         elif gentype == 'Pnoise':  # Pink noise

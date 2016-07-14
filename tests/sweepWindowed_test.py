@@ -15,17 +15,18 @@ f1 = 10000  # frequency end
 fs = 44100  # frequency sample
 T = 5  # time max
 t = np.arange(0, T*fs)/fs  # time array
-T = T - (np.ceil(fs / f1) + 1) / fs
 
+# Define Window length and window:
+factor_f = fs/f1  # factor fs/f1
+T = T - (np.ceil(factor_f) + 1) / fs
 
-x = np.sin(2 * np.pi * 100 * t) + 0.7 * np.sin(2 * np.pi * 880 * t) + 0.2 * np.sin(2 * np.pi * 2400 * t)
 #x = signal.chirp(t, f0, T, f1, 'log', 90)
+x = np.sin(2 * np.pi * 100 * t) + 0.7 * np.sin(2 * np.pi * 880 * t) + 0.2 * np.sin(2 * np.pi * 2400 * t)
+
 bitDept = 16
 phi = (f0 * (f1 / f0) ** (t[-4:] / T)) % np.pi
 #if all phi >= -1/(2 ** (bitDepth - 1 - 4)) and all phi <= 1/(2 ** (bitDepth - 1 - 4)):
 
-# Define Window length and window:
-factor_f = fs/f1  # factor fs/f1
 if factor_f < 2:
     # print error
     pass

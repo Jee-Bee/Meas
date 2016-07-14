@@ -6,7 +6,7 @@ from scripts.MeasWarning import InterfaceWarning
 
 # Soundcard information
 (devinfo, devopt) = Interface.InterfaceIO()
-print(devinfo, devopt)
+# print(devinfo, devopt)
 
 try:
     import numpy as np
@@ -37,34 +37,52 @@ try:
 
     rec1 = rec1.T[0]
     # sd.stop()
-    (F, REC1) = Transform.FFT(rec1, fs)
+    (F_amph, REC1_amp, REC1_phi) = Transform.FFT(rec1, fs, spectrum='AmPh')
+    #(F, REC1) = Transform.FFT(rec1, fs)
+    
     # Transfer function:
+#    (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
     (F, SIGOUT) = Transform.FFT(sigout, fs)
 
     (H1) = Transform.Transfer(rec1, sigout, fs)  # Rebuild Transfer for ...
     # ... adding two allready calculated spectra
 
     # Weighted FFT
-    AW = Weighting.AWeighting()
-    AW_REC1 = AW.A_Weighting(F, REC1)
+    AW = Weighting.AWeighting()  # temporary off
+    AW_REC1 = AW.A_Weighting(F_amph, REC1_amp)   # temporary off
 
     # Impulse Response:
-    (IR, fs_dummy, T_dummy) = Transform.ImpulseResponse(H1, F)
+    (IR, fs_ir, T_ir) = Transform.ImpulseResponse(H1, F)  # temporary off
     # Create Var out from IR in To Do List!!
 
     if len(t) > 100000:
         # mpl.RcParams()
         plt.rcParams['agg.path.chunksize'] = 10000
 
+    # Time plot
     plt.figure()
     timeplt = default2D(t, sigout)
     timeplt.Time()
     timeplt = default2D(t, rec1)
     timeplt.Time()
-    plt.axis([4.98, 5,-1, 1])
+    plt.axis([4.98, 5, -1, 1])
+
+    # plot half frequency spectrum
     plt.figure()
-    specplt = default2D(F, REC1)
+    specplt = default2D(F_amph, REC1_amp)
     specplt.SpecMag()
+
+    # plot full transferfunction
+    plt.figure()
+    specplt = default2D(F, H1)
+    specplt.SpecMag()
+
+    # Impulse response plot
+    # check this on proper recording!!
+    t_ir = np.arange(0,T_ir,1/fs)
+    plt.figure()
+    timeplt = default2D(t_ir, IR)
+    timeplt.Time()
 except MeasError.InterfaceError:
     InterfaceWarning("cant play and record at same time")  #, "Sigplayrec.py", 64):
 

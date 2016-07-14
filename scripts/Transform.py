@@ -15,7 +15,6 @@ Created on Tue Feb  9 15:25:42 2016
 # |_ Cepstrum           0
 
 import sys
-import scipy.fftpack as ft
 import numpy as np
 #from ..script import MeasError #as ME # , MeasWarning
 
@@ -53,7 +52,7 @@ def Symmetry(x, Stype):
 
 
 def MagPh2ReIm(MAG, PHI):
-    """ Calculate vack the Real and imaginary Values
+    """ Calculate back the Real and imaginary Values
     To Do:
         - Make Real + Imag to Complex values - If required """
     RE = MAG * np.cos(PHI)
@@ -62,20 +61,36 @@ def MagPh2ReIm(MAG, PHI):
 
 
 def FFT(x, fs, *args, **kwargs):
-    from scipy.fftpack import fft 
-    """ sig, fs,Window_Type, Window_size, smoothing,
-    spectrum = complex(=real+imag)/amp+phase, Shift = True # removed: side = singele/ double sided
+    from scipy.fftpack import fft, fftshift, fftfreq
+    """
+    Inputs:
+        sig = [sec] time domain signal
+        fs = [Hz] sample frequency
+        Window_Type = [string] name window
+        Window_size = [N] number of samples window
+        smoothing - canceled - moved to own function 
+    Options:
+        shift = True/ False
+        spectrum = complex(=real+imag)/AmPh0(amp+phase + 0)/AmPh(amp+phase)
+        side - canceled= singele/ double sided
+    Output:
+        F = Frequencie bands
+        X = spectrum
     fft of the form:
          N-1                      m*k
     y_m =sum x_k * exp ( -2pi * i ----)
          k=0                       N
-    Therefore fft * 1/N to correct amplitude """
+    Therefore fft * 1/N to correct amplitude 
+    
+    TODO:
+    - remove smoothing and make solo function from it
+    - fix right place of F(frequency bins)"""
     nfft = NFFT(x)
     N = len(x)  # Temporary solution
     # print(N, nfft)
     if len(args) == 0:
         X = fft(x, nfft) / N
-        N = nfft
+        N = np.int(nfft)
     elif len(args) <= 3:
         if len(args) == 3:
             if isinstance(args[1], str):
@@ -122,16 +137,57 @@ def FFT(x, fs, *args, **kwargs):
     else:
 #        raise ME.SizeError(args, "not the right number of parameters")
         print(args)
-    if len(kwargs) == 0:
+    
+    if ('shift' in kwargs) and ('spectrum' in kwargs):
         pass
+    elif 'shift' in kwargs:
+        if kwargs['shift'] == 'True' or 'true' or True:
+            X = fftshift(X)
+            F = np.linspace(0, (N-1)/2, N/2)
+            F = np.append(F,np.linspace(-N/2, -1, N/2))
+            F = F/(N/fs)
+            return(F, X)
+        elif kwargs['shift'] == 'False' or 'false' or False:
+            F = np.linspace(0, (N-1)/2, N/2)
+            F = np.append(F,np.linspace(-N/2, -1, N/2))
+            F = F/(N/fs)
+            return(F, X)
+        else:
+            raise ValueError('Wrong ')
+    elif 'spectrum' in kwargs:
+        if kwargs['spectrum'] == 'complex':
+            # F = np.arange(0, fs, 1 / (N / fs))  # alternate frequency array
+            F = np.linspace(0, (N-1)/2, N/2)
+            F = np.append(F,np.linspace(-N/2, -1, N/2))
+            F = F/(N/fs)
+            return(F, X)
+        elif kwargs['spectrum'] == 'AmPh0':
+            F = np.linspace(0, (N-1)/2, N/2)
+            F = F/(N/fs)
+            Amp = abs(X[0:N/2])
+            phi = np.arctan(np.real(X[0:N / 2]) / np.imag(X[0:N / 2]))
+            return(F, Amp,phi)
+        elif kwargs['spectrum'] == 'AmPh':
+            F = np.linspace(1, (N-1)/2, N/2 - 1)
+            F = F/(N/fs)
+            Amp = abs(X[1:N/2])
+            phi = np.arctan(np.real(X[1:N / 2])/np.imag(X[1:N / 2]))
+            return(F, Amp, phi)
+        else:
+            raise ValueError('The element % don\'t exist for the keyword \'spectrum\'' % kwargs['spectrum'])
+    elif len(kwargs) == 0:
+        F = np.linspace(0, (N-1)/2, N/2)
+        F = np.append(F,np.linspace(-N/2, -1, N/2))
+        F = F/(N/fs)
+        return(F, X)
     else:
         print(kwargs)
     # X = ft.fft(x, nfft) / N
-    F = np.arange(0, fs, 1 / (N / fs))
-#    F = np.arange(-fs / 2, fs / 2, 1 / (N / fs))
+    # F = np.arange(0, fs, 1 / (N / fs))
+    # F = np.arange(-fs / 2, fs / 2, 1 / (N / fs))
     # fft shift = True: -fs / 2, fs / 2
     # fft shift = False: 0, fs
-    return(F, X)
+    # return(F, X)
 
 
 # http://stackoverflow.com/questions/2598734/numpy-creating-a-complex-array-from-2-real-ones
@@ -213,6 +269,7 @@ def ImpulseResponse(H, F):
     print("""This function works only correct when:
             - no smoothing or averaging is applied
             - full spectrum data is returned!""")
+    from scipy.fftpack import ifft, fftshift, fftfreq
     # 2DO Check for full Spectrum
     if isinstance(H, tuple):  # could also use assert
         # Check arrays for type of signal
@@ -238,14 +295,14 @@ def ImpulseResponse(H, F):
             raise MeasError.DataError(H, 'No valid frequency array')
     else:
         if np.any(np.iscomplex(H)):
-            IR = ft.ifft(H)
+            IR = ifft(H)
         else:
             raise TypeError('Not right input type')
-    IR = ft.ifft(H)
+    IR = ifft(H)
+    print(len(F), len(H), len(IR))
     dF = F[1]-F[0]
-    T = 1 / dF
-    F_Upper = len(F)/2 * dF
-    fs = 2 * F_Upper
+    fs = np.round(len(F) * dF)
+    T = len(F) * 1 / fs
     return(IR, fs, T)
 
 
