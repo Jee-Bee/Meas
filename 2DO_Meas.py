@@ -56,6 +56,9 @@
 # |_ Add Class??
 # |_ play/rec audio     5    30 Jan 2016
 # |_ play/rec vibr      1
+#   |_ pyVISA
+#   |_ py-IVI
+#   |_ see: ivifoundation.org
 # |_Impact              1
 #   |_ buffer wait      0
 #   |_ gate
@@ -121,6 +124,7 @@
 # ERROR                 4
 # Linking folders       5   07 Feb 2016
 # git Repository        5   05 Feb 2016
+# Garbage Collector
 
 
 # GUI  (Make class??)
