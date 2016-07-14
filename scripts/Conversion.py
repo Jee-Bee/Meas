@@ -22,7 +22,7 @@ import numpy as np
 def input_type(data):
     """ Check number type for required scaling """
     if np.ndim(data) == 0:
-        print("=0")
+        # print("input ndim = 0")
         if isinstance(data, np.float()):
             return(data)
         elif isinstance(data, np.int64()):
@@ -41,9 +41,10 @@ def input_type(data):
             raise TypeError('wrong input type')
 
     if np.ndim(data) == 1:
-        print("=1")
-        print(data.T[1])
+        # print("input ndim = 1")
+        # print(data.T[1])
         if isinstance(data.T[0], np.float):
+            print('floating point data')
             return(data)
         elif isinstance(data.T[0], np.float_):
             return(data)
@@ -63,8 +64,8 @@ def input_type(data):
             raise TypeError('wrong input type')
 
     elif np.ndim(data) == 2:
-        print("=2")
-        print(data.T[1])
+        # print("input ndim = 2")
+        # print(data.T[1])
         if isinstance(data.T[0][0], np.float):
             return(data)
         elif isinstance(data.T[0][0], np.float_):

@@ -12,7 +12,7 @@ from scripts import MeasError #import MeasError
 # RX are the values of the different weightings
 class Weighting():
     """ Default Weighting Class
-    Hole class based on Wikipedia"""
+    Whole class based equations writen on Wikipedia 2016"""
     def __init__(self):
         pass
 
