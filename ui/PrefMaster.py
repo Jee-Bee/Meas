@@ -36,9 +36,14 @@ class Pref(QtWidgets.QDialog):
         # @ @ from function and from file
         self.ui.interfaceInput.addItem("None")
 
+        self.ui.interfaceInput.activated[str].connect(self.interfaceI_Sel)
+
+
         # Default outputs
         # @ @ from function and from file
         self.ui.interfaceOutput.addItem("None")
+        
+        self.ui.interfaceOutput.activated[str].connect(self.interfaceO_Sel)
 
         # standard bit depth options
         self.ui.bitDepth.addItem("8")
@@ -47,9 +52,11 @@ class Pref(QtWidgets.QDialog):
         self.ui.bitDepth.addItem("20")
         self.ui.bitDepth.addItem("24")
 
+        self.ui.bitDepth.activated[str].connect(self.bitDepth_Sel)
+
         # self.ui.bitDeptDither.checkState()  # for see if checkbox is checked
         self.ui.bitDeptDither.setChecked(False)
-        #self.ui.bitDeptDither.isChecked()  # .connect(self.dither)
+        # self.ui.bitDeptDither.isChecked()  # .connect(self.dither)
         self.ui.bitDeptDither.clicked.connect(self.dither)
 
         # Standard Fs  options
@@ -65,7 +72,8 @@ class Pref(QtWidgets.QDialog):
         self.ui.fsSel.addItem("176400")
         self.ui.fsSel.addItem("192000")
 
-        
+        self.ui.fsSel.activated[str].connect(self.fs_Sel)
+
         # self.ui.fsStandard.checkState()  # for see if checkbox is checked
         self.ui.fsStandard.setChecked(False)
         self.ui.fsStandard.clicked.connect(self.fs_Standaard)
@@ -83,6 +91,8 @@ class Pref(QtWidgets.QDialog):
         self.ui.buffSizeSel.addItem("2048")  # 2^11
         self.ui.buffSizeSel.addItem("4096")  # 2^12
 
+        self.ui.buffSizeSel.activated[str].connect(self.buffSize_sel)
+
         self.ui.OverlapTest.clicked.connect(self.overlap_Test)
 
         # Default Windows
@@ -97,6 +107,8 @@ class Pref(QtWidgets.QDialog):
         self.ui.WindowSel.addItem("Gaussian")
         self.ui.WindowSel.addItem("Tukey")
 
+        self.ui.WindowSel.activated[str].connect(self.window_sel)
+
         self.ui.defFreqMinEdit.setText("20")
         self.ui.defFreqMaxEdit.setText("20000")
 
@@ -104,7 +116,21 @@ class Pref(QtWidgets.QDialog):
         self.ui.styleSheetSel.addItem("Standard")
         self.ui.styleSheetSel.addItem("None")
 
+        self.ui.styleSheetSel.activated[str].connect(self.styleSheet_sel)
+
+    def interfaceI_Sel(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
+    def interfaceO_Sel(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
     def interface_Update(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
+    def bitDepth_Sel(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
@@ -113,14 +139,32 @@ class Pref(QtWidgets.QDialog):
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.bitDeptDither.setChecked(False)
 
+    def fs_Sel(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
+    def buffSize_sel(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
+
     def fs_Standaard(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.fsStandard.setChecked(False)
 
+    def window_sel(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
     def overlap_Test(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
+    def styleSheet_sel(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
 
 if __name__ == "__main__":
     import sys
