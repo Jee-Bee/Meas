@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>411</width>
-    <height>761</height>
+    <width>440</width>
+    <height>741</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,11 +27,11 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>391</width>
-        <height>712</height>
+        <width>420</width>
+        <height>688</height>
        </rect>
       </property>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="File_loc_box1">
        <property name="geometry">
         <rect>
          <x>30</x>
@@ -41,7 +41,7 @@
         </rect>
        </property>
       </widget>
-      <widget class="QLineEdit" name="lineEdit_2">
+      <widget class="QLineEdit" name="File_loc_box2">
        <property name="geometry">
         <rect>
          <x>160</x>
@@ -51,17 +51,17 @@
         </rect>
        </property>
       </widget>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="File_loc">
        <property name="geometry">
         <rect>
          <x>30</x>
          <y>10</y>
-         <width>71</width>
+         <width>141</width>
          <height>16</height>
         </rect>
        </property>
        <property name="text">
-        <string>Opslag lokatie</string>
+        <string>Default File Location</string>
        </property>
       </widget>
       <widget class="QWidget" name="layoutWidget">
@@ -73,23 +73,23 @@
          <height>85</height>
         </rect>
        </property>
-       <layout class="QGridLayout" name="gridLayout">
+       <layout class="QGridLayout" name="fsLayout">
         <item row="0" column="0">
-         <widget class="QLabel" name="selFsLab">
+         <widget class="QLabel" name="fsSelLab">
           <property name="text">
            <string>Select Fs</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1" rowspan="3">
-         <widget class="QCheckBox" name="standardFs">
+         <widget class="QCheckBox" name="fsStandard">
           <property name="text">
            <string>Standard Fs</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QComboBox" name="FsSel">
+         <widget class="QComboBox" name="fsSel">
           <property name="minimumSize">
            <size>
             <width>162</width>
@@ -109,7 +109,7 @@
          <x>20</x>
          <y>350</y>
          <width>191</width>
-         <height>41</height>
+         <height>52</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -132,7 +132,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QCheckBox" name="Dither">
+      <widget class="QCheckBox" name="bitDeptDither">
        <property name="geometry">
         <rect>
          <x>220</x>
@@ -151,19 +151,19 @@
          <x>20</x>
          <y>150</y>
          <width>191</width>
-         <height>41</height>
+         <height>52</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_6">
         <item>
-         <widget class="QLabel" name="bitLab">
+         <widget class="QLabel" name="bitDeptLab">
           <property name="text">
            <string>Bit Depth</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="Bit_depth">
+         <widget class="QComboBox" name="bitDepth">
           <property name="minimumSize">
            <size>
             <width>162</width>
@@ -189,7 +189,7 @@
         <rect>
          <x>230</x>
          <y>340</y>
-         <width>75</width>
+         <width>91</width>
          <height>23</height>
         </rect>
        </property>
@@ -203,10 +203,10 @@
          <x>20</x>
          <y>520</y>
          <width>191</width>
-         <height>41</height>
+         <height>52</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QVBoxLayout" name="styleSheet">
         <item>
          <widget class="QLabel" name="styleSheetLab">
           <property name="text">
@@ -232,10 +232,10 @@
          <x>219</x>
          <y>459</y>
          <width>191</width>
-         <height>41</height>
+         <height>52</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QVBoxLayout" name="defFreqMax">
         <item>
          <widget class="QLabel" name="defFreqMaxLab">
           <property name="text">
@@ -261,10 +261,10 @@
          <x>20</x>
          <y>460</y>
          <width>191</width>
-         <height>41</height>
+         <height>52</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QVBoxLayout" name="defFreqMin">
         <item>
          <widget class="QLabel" name="defFreqMinLab">
           <property name="text">
@@ -280,6 +280,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="text">
+           <string/>
+          </property>
          </widget>
         </item>
        </layout>
@@ -290,10 +293,10 @@
          <x>20</x>
          <y>290</y>
          <width>191</width>
-         <height>41</height>
+         <height>52</height>
         </rect>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
+       <layout class="QVBoxLayout" name="buffSize">
         <item>
          <widget class="QLabel" name="buffSizeLab">
           <property name="text">
@@ -318,27 +321,27 @@
         <rect>
          <x>20</x>
          <y>61</y>
-         <width>281</width>
-         <height>73</height>
+         <width>295</width>
+         <height>93</height>
         </rect>
        </property>
-       <layout class="QFormLayout" name="formLayout">
+       <layout class="QFormLayout" name="interfaceLayout">
         <item row="0" column="0">
-         <widget class="QLabel" name="selInterfaceLab">
+         <widget class="QLabel" name="interfaceSelLab">
           <property name="text">
            <string>select interface</string>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QToolButton" name="updateInterface">
+         <widget class="QToolButton" name="interfaceUpdate">
           <property name="text">
            <string>Update interface</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QComboBox" name="InputSel">
+         <widget class="QComboBox" name="interfaceInput">
           <property name="minimumSize">
            <size>
             <width>162</width>
@@ -348,14 +351,14 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QLabel" name="selInterfaceLab_2">
+         <widget class="QLabel" name="interfaceInputLab">
           <property name="text">
            <string>select Input</string>
           </property>
          </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QComboBox" name="OutputSel_2">
+         <widget class="QComboBox" name="interfaceOutput">
           <property name="minimumSize">
            <size>
             <width>162</width>
@@ -365,7 +368,7 @@
          </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QLabel" name="selInterfaceLab_3">
+         <widget class="QLabel" name="interfaceOutputLab">
           <property name="text">
            <string>select Output</string>
           </property>
@@ -379,7 +382,7 @@
          <x>20</x>
          <y>610</y>
          <width>191</width>
-         <height>41</height>
+         <height>52</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -418,23 +421,26 @@
   </layout>
  </widget>
  <tabstops>
-  <tabstop>updateInterface</tabstop>
-  <tabstop>InputSel</tabstop>
-  <tabstop>OutputSel_2</tabstop>
-  <tabstop>Bit_depth</tabstop>
-  <tabstop>Dither</tabstop>
-  <tabstop>FsSel</tabstop>
-  <tabstop>standardFs</tabstop>
+  <tabstop>File_loc_box1</tabstop>
+  <tabstop>File_loc_box2</tabstop>
+  <tabstop>interfaceUpdate</tabstop>
+  <tabstop>interfaceInput</tabstop>
+  <tabstop>interfaceOutput</tabstop>
+  <tabstop>bitDepth</tabstop>
+  <tabstop>bitDeptDither</tabstop>
+  <tabstop>fsSel</tabstop>
+  <tabstop>fsStandard</tabstop>
   <tabstop>fsEdit</tabstop>
   <tabstop>buffSizeSel</tabstop>
   <tabstop>WindowSel</tabstop>
+  <tabstop>OverlapTest</tabstop>
+  <tabstop>overlapPercent</tabstop>
   <tabstop>defFreqMinEdit</tabstop>
   <tabstop>defFreqMaxEdit</tabstop>
   <tabstop>styleSheetSel</tabstop>
-  <tabstop>lineEdit</tabstop>
   <tabstop>comboBox_7</tabstop>
+  <tabstop>buttonBox</tabstop>
   <tabstop>scrollArea</tabstop>
-  <tabstop>lineEdit_2</tabstop>
  </tabstops>
  <resources/>
  <connections>
