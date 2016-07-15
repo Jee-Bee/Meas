@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>410</width>
-    <height>444</height>
+    <width>430</width>
+    <height>447</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,249 +24,177 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>390</width>
-        <height>395</height>
+        <width>410</width>
+        <height>394</height>
        </rect>
       </property>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>180</y>
-         <width>164</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="xUnitLab">
-          <property name="text">
-           <string>Unit X-label</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="xUnitSel">
-          <property name="minimumSize">
-           <size>
-            <width>162</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="layoutWidget_2">
-       <property name="geometry">
-        <rect>
-         <x>200</x>
-         <y>180</y>
-         <width>164</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
-         <widget class="QLabel" name="yUnitLab">
-          <property name="text">
-           <string>Unit Y-label</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="yUnitSel">
-          <property name="minimumSize">
-           <size>
-            <width>162</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QCheckBox" name="weightingCheck">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>300</y>
-         <width>70</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Weighting</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>80</y>
-         <width>164</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QLabel" name="plotTypeLab">
-          <property name="text">
-           <string>Plot Type</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="plotTypeSel">
-          <property name="minimumSize">
-           <size>
-            <width>162</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="layoutWidget_3">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>130</y>
-         <width>164</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
-         <widget class="QLabel" name="SpecTypeLab">
-          <property name="text">
-           <string>Spectrum Type</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="specTypeSel">
-          <property name="minimumSize">
-           <size>
-            <width>162</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="layoutWidget_4">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>240</y>
-         <width>164</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_5">
-        <item>
-         <widget class="QLabel" name="smoothingLab">
-          <property name="text">
-           <string>Smoothing</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="smoothingSel">
-          <property name="minimumSize">
-           <size>
-            <width>162</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QCheckBox" name="phaseCheck">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>360</y>
-         <width>81</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Phase Wrap</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="phaseCheck_2">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>360</y>
-         <width>111</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Full/ Half Spectrum</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="phaseCheck_3">
-       <property name="geometry">
-        <rect>
-         <x>270</x>
-         <y>360</y>
-         <width>111</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Lin/ Log spectrum</string>
-       </property>
-      </widget>
-      <widget class="QCheckBox" name="phaseCheck_4">
-       <property name="geometry">
-        <rect>
-         <x>30</x>
-         <y>330</y>
-         <width>151</width>
-         <height>17</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Mag - Phase/ Real - Imag</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="">
-       <property name="geometry">
-        <rect>
-         <x>20</x>
-         <y>20</y>
-         <width>351</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_6">
-        <item>
-         <widget class="QLabel" name="titleLab">
-          <property name="text">
-           <string>Title Adition</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="titleEdit">
-          <property name="minimumSize">
-           <size>
-            <width>240</width>
-            <height>0</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0" colspan="4">
+          <layout class="QVBoxLayout" name="titleLayout">
+           <item>
+            <widget class="QLabel" name="titleLab">
+             <property name="text">
+              <string>Title Adition</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="titleEdit">
+             <property name="minimumSize">
+              <size>
+               <width>240</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <layout class="QVBoxLayout" name="plotTypeLayout">
+           <item>
+            <widget class="QLabel" name="plotTypeLab">
+             <property name="text">
+              <string>Plot Type</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="plotTypeSel">
+             <property name="minimumSize">
+              <size>
+               <width>162</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <layout class="QVBoxLayout" name="xUnitLayout">
+           <item>
+            <widget class="QLabel" name="xUnitLab">
+             <property name="text">
+              <string>Unit X-label</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="xUnitSel">
+             <property name="minimumSize">
+              <size>
+               <width>162</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="3" column="2" colspan="2">
+          <layout class="QVBoxLayout" name="yUnitLayout">
+           <item>
+            <widget class="QLabel" name="yUnitLab">
+             <property name="text">
+              <string>Unit Y-label</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="yUnitSel">
+             <property name="minimumSize">
+              <size>
+               <width>162</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="4" column="0" colspan="2">
+          <layout class="QVBoxLayout" name="smoothingLayout">
+           <item>
+            <widget class="QLabel" name="smoothingLab">
+             <property name="text">
+              <string>Smoothing</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="smoothingSel">
+             <property name="minimumSize">
+              <size>
+               <width>162</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="6" column="0" colspan="2">
+          <widget class="QCheckBox" name="phaseCheck_4">
+           <property name="text">
+            <string>Mag - Phase/ Real - Imag</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="3">
+          <widget class="QCheckBox" name="phaseCheck_3">
+           <property name="text">
+            <string>Lin/ Log spectrum</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <layout class="QVBoxLayout" name="specTypeLayout">
+           <item>
+            <widget class="QLabel" name="specTypeLab">
+             <property name="text">
+              <string>Spectrum Type</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="specTypeSel">
+             <property name="minimumSize">
+              <size>
+               <width>162</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="5" column="0" colspan="2">
+          <widget class="QCheckBox" name="weightingCheck">
+           <property name="text">
+            <string>Weighting</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="3">
+          <widget class="QCheckBox" name="phaseCheck">
+           <property name="text">
+            <string>Phase Wrap</string>
+           </property>
+          </widget>
+         </item>
+         <item row="7" column="0" colspan="2">
+          <widget class="QCheckBox" name="phaseCheck_2">
+           <property name="text">
+            <string>Full/ Half Spectrum</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
