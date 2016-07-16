@@ -21,7 +21,10 @@ try:
     T = 5  # [s] T= Time in seconds
     f = (10, 350)  # [Hz] Frequency signal generation
     fs = 44100  # [Hz] fs = Samplerate
-    repeats = 3
+    repeats = 3 
+    RMS_res = True  # other option is 'False'
+    crest_res = True  # other option is 'False'
+    papr_res = True  # other option is 'False'
 
     f = np.array(f)
     (sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
@@ -43,12 +46,27 @@ try:
     # averaging from here:
     rec1_avg = Repeat.repAvg(rec1, repeats)
 
+    sigout, new_l = Repeat.repSig(sigout, 1, 2, fs, addzeros=True)
+    t = np.arange(0, len(sigout)) / fs
+
+    # add RMS Crest and PAPR as optional processing
+    if (RMS_res is True) or (crest is True) or (papr is true):
+        from scripts import RMS
+
+        if RMS_res is True:
+            sigout = RMS.RMS(sigout)   # return RMS value of stard signal
+            rec1_avg = RMS.RMS(rec1_avg)   # return RMS value of measurment
+        if crest_res is True:
+            sigout_crest = RMS.Crest(sigout_avg)
+            rec1_crest = RMS.Crest(rec1_avg)
+            print(asigout_crest, rec1_crest)
+        if papr_res is True:
+            sigout_papr = RMS.PAPR(sigout)
+            rec1_papr = RMS.PAPR(rec1_avg)
+
     # sd.stop()
     (F_amph, REC1_amp, REC1_phi) = Transform.FFT(rec1_avg, fs, spectrum='AmPh')
     # (F, REC1) = Transform.FFT(rec1, fs)
-
-    sigout, new_l = Repeat.repSig(sigout, 1, 2, fs, addzeros=True)
-    t = np.arange(0,len(sigout))/fs
 
     # Transfer function:
 #    (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
