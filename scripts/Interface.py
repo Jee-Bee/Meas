@@ -8,6 +8,18 @@ from scripts.MeasWarning import InterfaceWarning
 
 
 def InterfaceIO():
+    """
+    Input:
+        None
+    Output:
+        Printed Values = 
+        devinfo = device info. gives fulle info about audio devices
+        devopt = give list of indexes (not their names) witch contain full 
+        duplex devices.
+
+    read out info from port audio / sounddevice and filter this in readble 
+    information. 
+    """
     # Signal to soundcard
     # Soundcard information
     devinfo = sd.query_devices()
@@ -57,12 +69,12 @@ def InterfaceIO():
             print('This are full dupplex interfaces under all circumstances:')
             print('Inputs:')
             for idx in int(nzin):
-                temp = devinfo[np.int(idx)]
-                print(idx, temp['name'])
+                Interfaces_print = devinfo[np.int(idx)]
+                print(idx, Interfaces_print['name'])
             print('Outputs:')
             for idx in int(nzout):
-                temp = devinfo[np.int(idx)]
-                print(idx, temp['name'])
+                Interfaces_print = devinfo[np.int(idx)]
+                print(idx, Interfaces_print['name'])
             devopt = (nzin, nzout)
     return(devinfo, devopt)
 

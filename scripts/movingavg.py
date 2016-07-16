@@ -16,6 +16,20 @@ import numpy as np
 
 
 def sma(x, npa):  # npa: Number P_Average = length Center point
+    """
+    input:
+        x = an unavaraged array
+        npa = Number P_Average and contain length Center point
+    output:
+        sma = the avaraged signal by a simple moving avarage filter.
+
+    Simple Moving Average
+    https://en.wikipedia.org/wiki/Moving_average
+
+          1   P_m + P_(m-1) + ... P_(m-(n-1))   1   n-1
+    SMA = - * ------------------------------- = -   SUM p_(m-i)
+          n                 n                   n   i=0
+    """
     sma = np.zeros(len(x))
     if int(npa) % 2 == 0:
         npa = int(npa - 1)
@@ -34,17 +48,37 @@ def sma(x, npa):  # npa: Number P_Average = length Center point
 
 
 # Cumelative Moving Average
-def cma(x1, xn):
-    cma = np.zeros(len(x1))
-    n = len(x1)
-    cma = np.sum(x1)/n  # calculate mean/ average
-    if len(xn) == 0:
-        return(cma)
+def cma(x, n):
+    """
+    input:
+        x = an unavaraged array
+        n = length of n points over wich is avaraged
+    output:
+        cma = the avaraged signal by a cumelative moving avarage filter.
+
+    Cumulative Moving Average
+    https://en.wikipedia.org/wiki/Moving_average
+
+            x_1 + x_2 + ... x_(n-1) + x_n                 x_(n+1) + n * CMA_n
+    CMA_n = ----------------------------- and CMA_(n+1) = -------------------
+                        n                                          n
+    so
+                x_(n+1) + n * CMA_n            x_(n+1) - CMA_n
+    CMA_(n+1) = ------------------- or CMA_n + ---------------
+                        n + 1                        n + 1
+
+    TODO:
+    - add when n = 0 is added n is the length of x
+    """
+    cma = np.zeros(n)
+    cma_n = np.sum(x[0:n])/n  # calculate mean/ average
+    if n == 0:
+        print("this Have to be added later")
+        pass  # return(cma)
     else:
-        cman = np.zeros(len(xn))
-        for idx in range(len(xn)):
-            cman = (cma + n * xn[idx]) / (n + 1)
-        return (cman)
+        for idx in range(len(x)):
+            cma[idx] = cma_n + (x[idx] - cma_n) / (n + 1)
+        return (cma)
 
 # Weighted Moving Average
 

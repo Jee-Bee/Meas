@@ -20,7 +20,14 @@ import numpy as np
 
 
 def input_type(data):
-    """ Check number type for required scaling """
+    """
+    Input:
+        data = array of data recorded by input of audio/ vibration interface.
+    output:
+        data but nof floating point +/-1.
+
+    Check d-type or data type (class) of the input array. After this it
+    rescaled the data to floating point data array of +/- 1."""
     if np.ndim(data) == 0:
         # print("input ndim = 0")
         if isinstance(data, np.float()):
@@ -90,9 +97,18 @@ def input_type(data):
 
 
 def input_check(data):
-    """ Check size and if floating value od input signals 
-    2DO:
-        - Add Inputtype to function"""
+    """ 
+    Input:
+        data = array of one or more values
+    Output:
+        True/ False
+    Check ndim size of the data object. This can also be the a list or a tuple.
+    After this the function checks of the input data are floating point values.
+    It returns a True or a False
+    
+    TODO:
+        - Add Inputtype to function
+        - Check all data"""
     if np.ndim(data) > 0:
         if isinstance(data[0], np.float):
             return(True)
