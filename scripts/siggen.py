@@ -7,7 +7,7 @@ Created on Wed Mar  9 19:06:07 2016
 #import MeasWarning
 import os, sys
 #sys.path.append(os.path.dirname(os.path.realpath(__file__)), '../scripts/')
-from scripts.MeasError import MeasError
+from scripts.measerror import MeasError
 
 
 class SigGen(object):
@@ -125,7 +125,7 @@ class SigGen(object):
                 Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'ChirpLin':
-            from scripts.Window import Window
+            from scripts.window import Window
             if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
@@ -164,7 +164,7 @@ class SigGen(object):
                 dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
                 dW = wl/2 # dW = delta Window
                 # overlap = 0.5
-            hanwindow = Window(wl)  # window
+            hanwindow = window(wl)  # window
             dummy, W = hanwindow.hanwind()
             dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
             if dsample == 0:
@@ -182,7 +182,7 @@ class SigGen(object):
             # http://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.signal.chirp.html
         elif gentype == 'ChirpLog':
             # http://dsp.stackexchange.com/questions/30245/clicks-at-end-of-chirp-signal
-            from scripts.Window import Window
+            from scripts.window import Window
             if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
