@@ -1,86 +1,89 @@
 # Test Script for signal generation and recording:
 
-from scripts import Interface
+from scripts import interface, measerror
 import sounddevice as sd
-from scripts.MeasWarning import InterfaceWarning
+from scripts.measwarning import InterfaceWarning
 
 # Soundcard information
-(devinfo, devopt) = Interface.InterfaceIO()
+(devinfo, devopt) = interface.InterfaceIO()
 # print(devinfo, devopt)
 
 try:
     import numpy as np
-    import scripts.SigGen as sg
-    from scripts import Transform, Conversion, Weighting, Repeat
+    import scripts.siggen as sg
+    from scripts import transform, checks, weighting, repeat
     #from importlib.machinery import SourceFileLoader
     import matplotlib.pyplot as plt
     #from scripts.DefaultFigures import Time, SpecMag, SpecPh
-    from scripts.DefaultFigures import *  # defaultFigures
-
+    from scripts.defaultfigures import *  # defaultFigures
 
     T = 5  # [s] T= Time in seconds
     f = (10, 350)  # [Hz] Frequency signal generation
     fs = 44100  # [Hz] fs = Samplerate
-    repeats = 3 
+    repeats = 3
+    spectrum = 'AS'  # select spectrum type: AS; PS; SD and PSD respectivelijk
+    # for Amplitude Spectrum; Power Spectrum; Spectral Density; 
+    # Power Spectral Density
     RMS_res = True  # other option is 'False'
     crest_res = True  # other option is 'False'
     papr_res = True  # other option is 'False'
 
     f = np.array(f)
     (sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
-    sigout = Conversion.input_type(sigout)
+    sigout = checks.input_type(sigout)
 
     # Signal to soundcard
 
-    sigout_rep, new_l = Repeat.repSig(sigout, repeats, 2, fs, addzeros=True)
+    sigout_rep, new_l = repeat.repSig(sigout, repeats, 2, fs, addzeros=True)
 
     # sd.default.device = 6  # [6, 1]
     # Simultanious play/ recording
     rec1 = sd.playrec(sigout_rep, fs, channels=2)
     sd.wait()
 #    print(dtype(rec1))
-    rec1 = Conversion.input_type(rec1)  # @ Comment till fixed...
+    rec1 = checks.input_type(rec1)  # @ Comment till fixed...
 
     rec1 = rec1.T[0]
 
     # averaging from here:
-    rec1_avg = Repeat.repAvg(rec1, repeats)
+    rec1_avg = repeat.repAvg(rec1, repeats)
 
-    sigout, new_l = Repeat.repSig(sigout, 1, 2, fs, addzeros=True)
+    sigout, new_l = repeat.repSig(sigout, 1, 2, fs, addzeros=True)
     t = np.arange(0, len(sigout)) / fs
 
     # add RMS Crest and PAPR as optional processing
     if (RMS_res is True) or (crest is True) or (papr is true):
-        from scripts import RMS
+        from scripts import rms
 
         if RMS_res is True:
-            sigout = RMS.RMS(sigout)   # return RMS value of stard signal
-            rec1_avg = RMS.RMS(rec1_avg)   # return RMS value of measurment
+            sigout = rms.RMS(sigout)   # return RMS value of stard signal
+            rec1_avg = rms.RMS(rec1_avg)   # return RMS value of measurment
         if crest_res is True:
-            sigout_crest = RMS.Crest(sigout_avg)
-            rec1_crest = RMS.Crest(rec1_avg)
-            print(asigout_crest, rec1_crest)
+            sigout_crest = rms.Crest(sigout)
+            rec1_crest = rms.Crest(rec1_avg)
+            print(sigout_crest, rec1_crest)
         if papr_res is True:
-            sigout_papr = RMS.PAPR(sigout)
-            rec1_papr = RMS.PAPR(rec1_avg)
+            sigout_papr = rms.PAPR(sigout)
+            rec1_papr = rms.PAPR(rec1_avg)
+            print(sigout_papr, rec1_papr)
 
     # sd.stop()
-    (F_amph, REC1_amp, REC1_phi) = Transform.FFT(rec1_avg, fs, spectrum='AmPh')
+    (F_amph, REC1_amp, REC1_phi) = transform.FFT(rec1_avg, fs, spectrum='AmPh')
     # (F, REC1) = Transform.FFT(rec1, fs)
 
     # Transfer function:
 #    (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
-    (F, SIGOUT) = Transform.FFT(sigout, fs)
+    (F, SIGOUT) = transform.FFT(sigout, fs)
 
-    (H1) = Transform.Transfer(rec1_avg, sigout, fs)  # Rebuild Transfer for ...
+    (H1) = transform.Transfer(rec1_avg, sigout, fs)  # Rebuild Transfer for ...
     # ... adding two allready calculated spectra
 
     # Weighted FFT
-    AW = Weighting.AWeighting()  # temporary off
+    AW = weighting.AWeighting()  # temporary off
     AW_REC1 = AW.A_Weighting(F_amph, REC1_amp)   # temporary off
 
     # Impulse Response:
-    (IR, fs_ir, T_ir) = Transform.ImpulseResponse(H1, F)  # temporary off
+    (IR, fs_ir, T_ir) = transform.ImpulseResponse(H1, F)  # temporary off
     # Create Var out from IR in To Do List!!
 
     if len(t) > 100000:
@@ -111,7 +114,7 @@ try:
     plt.figure()
     timeplt = default2D(t_ir, IR)
     timeplt.Time()
-except MeasError.InterfaceError:
+except measerror.InterfaceError:
     InterfaceWarning("cant play and record at same time")  #, "Sigplayrec.py", 64):
 
 

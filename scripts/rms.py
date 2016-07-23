@@ -13,24 +13,38 @@ import numpy as np
 
 # http://samcarcagno.altervista.org/blog/basic-sound-processing-python/
 
-def zero_check(vals):
-    (rows,cols) = np.shape(vals)
-    delrows = []
-    for idx in range(rows):
-        for idy in range(cols):
-            if vals[idx][idy] == 0:
-                if len(delrows) == 0:
-                    delrows.append(idx)
-                    print(idx, idy)
-                elif delrows[-1] == idx:
-                    pass
-                else:
-                    delrows.append(idx)
-                    print(idx, idy)
-            else:
-                pass
-    vals_no0 = np.delete(vals, delrows, 0)
-    return(vals_no0)
+
+def zeroCheck(vals):
+    """
+    Inputs:
+        vals = (ndim) array of values
+    Output:
+        vals_no0 = same array of values when it contain no zeros otherwise
+                    new array without the zeros.
+
+    check for zeros in array. After this remove the vallues from array.
+    Or replace the value for another value.
+
+    TODO:
+     - replace the zero by given value"""
+    arrdims = np.shape(vals)
+    if len(arrdims) >= 3:
+        raise ValueError("dimensions of ndim array are bigger than 2")
+    elif len(arrdims) == 2:
+        valsno0 = ()
+        for idx in np.arange(arrdims[1]):
+            exec('vals' + str(idx) + ' = vals.T[' + str(idx) + ']')
+            delrows= np.where(eval('vals' + str(idx)) == 0)
+            exec('vals' + str(idx) + '= np.delete(vals' + str(idx) + ', delrows, 0)')
+            valsno0 = valsno0 + (eval('vals' + str(idx)),)
+        return(valsno0)
+    elif len(arrdims) == 1:
+        #valsno0 = np.array([])
+        delrows= np.where(vals == 0)
+        exec('vals0 = np.delete(vals, delrows, 0)')
+        valsno0 = eval('vals0')
+        return(valsno0)
+
 
 def RMS(sig):
     """
@@ -131,10 +145,18 @@ def Crest(sig):  # Crest Factor singe value from array
     C = --------
          x_rms
     """
-    rms = RMS(abs(sig))
-    peak = abs(sig)
-    C_zero = zero_check(abs(peak/rms))
-    C = sum(C_zero) / len(sig)  # peak/rms is bij 0/0 NAN... Fix this - done
+    rms = RMS(sig)
+    rms_zero = zeroCheck(rms)
+    peak_zero = zeroCheck(sig)
+    if isinstance(rms_zero, tuple):
+        print('nday array, more than one value')
+        C = np.zeros(len(rms_zero))
+        for idx in np.arange(len(rms_zero)):
+            C_zero = abs(peak_zero[idx]) / rms_zero[idx]
+            C[idx] = sum(C_zero) / len(C_zero)
+    elif isinstance(rms_zero, np.ndarray):
+        C_zero = abs(peak_zero)/rms_zero
+        C = sum(abs(C_zero)) / len(C_zero)
     return(C)
 
 
@@ -153,9 +175,18 @@ def PAPR(sig):  # Peak to Average Power Ratio
     PAPR = ---------- = C^2
             x_rms^2
     """
-    rms =np.sqrt((1 / len(sig)) * np.sum(sig ** 2))
-    papr_zero = zero_check((abs(sig) ** 2) / (rms ** 2))
-    papr = sum((papr_zero) / len(sig))
+    rms = RMS(sig)
+    rms2_zero = zeroCheck(rms ** 2)
+    peak2_zero = zeroCheck(sig ** 2)
+    if isinstance(rms2_zero, tuple):
+        print('nday array, more than one value')
+        papr = np.zeros(len(papr_zero))
+        for idx in np.arange(len(rms2_zero)):
+            papr_zero = abs(peak2_zero[idx])/rms2_zero[idx]
+            papr[idx] = sum(papr_zero) / len(papr_zero)
+    elif isinstance(rms2_zero,np.ndarray):
+        papr_zero = abs(peak2_zero)/rms2_zero
+        papr = sum(abs(papr_zero)) / len(papr_zero)
     return (papr)
 
 
@@ -176,10 +207,21 @@ def PAPR_dB(sig):  # Peak to Average Power Ratio
     
     PAPR_dB
     """
-    rms =np.sqrt((1 / len(sig)) * np.sum(sig ** 2))
-    papr_zero = zero_check((abs(sig) ** 2) / (rms ** 2))
-    papr_dB = 10 * np.log10(sum(papr_zero) / len(sig))
+    rms = RMS(sig)
+    rms2_zero = zeroCheck(rms ** 2)
+    peak2_zero = zeroCheck(sig ** 2)
+    if isinstance(rms2_zero, tuple):
+        print('nday array, more than one value')
+        papr_dB = np.zeros(len(papr_zero))
+        for idx in np.arange(len(papr_zero)):
+            papr_zero = abs(peak2_zero[idx])/rms2_zero[idx]
+            papr_dB[idx] = 10 * np.log10(sum(papr_zero) / len(papr_zero))
+    elif isinstace(rms2_zero,np.ndarray):
+        papr_zero = abs(peak2_zero)/rms2_zero
+        papr_dB = 10 * np.log10(sum(papr_zero) / len(papr_zero))
+    papr_dB = 10 * np.log10(sum(abs(papr_zero)) / len(sig))
     return(papr_dB)
+
 
 # par
 
