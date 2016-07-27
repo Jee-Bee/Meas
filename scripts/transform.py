@@ -16,54 +16,22 @@ Created on Tue Feb  9 15:25:42 2016
 
 import sys
 import numpy as np
-#from ..script import MeasError #as ME # , MeasWarning
+# from ..script import MeasError #as ME # , MeasWarning
 
 
 def NFFT(x):
-    """ 
+    """
     Input:
         x = length of array
         or
         x = array - TODO
     Output:
         nfft = Next higher value of 2 ^ n for FFT
-    
+
     Calculate Next higher 2^N order for FFT"""
     log2val = np.ceil(np.log2(len(x)))
     nfft = 2 ** log2val
     return(nfft)
-
-
-def Symmetry(spec, Stype):
-    """
-    inputs:
-        spec = input array of unknown values.
-        Stype = symetry type \'even\' or \'odd\'
-    Output:
-        Symetry check = True or False boolean
-
-    Check for symmetry in given Signals"""
-    N = len(spec)
-    if Stype == 'even':
-        for idx in range(int(N / 2 - 1)):
-            if round(spec[idx + 1], 6) == round(spec[(N - 1) - idx], 6):
-                pass
-                # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
-            else:
-                return (False)
-                break
-    elif Stype == 'odd':
-        for idx in range(int(N / 2 - 1)):
-            if round(spec[idx + 1], 6) == - round(spec[(N - 1) - idx], 6):
-                pass
-                # print(idx, x[idx + 1], round(x[idx + 1], 6), round(x[(N - 1) - idx]))  # pass
-            else:
-                return (False)
-                break
-    else:
-        raise TypeError('No valid input type or value')
-        return(False)
-    return(True)
 
 
 def MagPh2ReIm(Mag, Phi, output='ReIm'):
@@ -74,6 +42,8 @@ def MagPh2ReIm(Mag, Phi, output='ReIm'):
     Outputs:
         RE = real vallued output
         IM = Imaginear vallued output
+    Options:
+        output='complex'(default); other options are 'ReIm'
 
     * at this moment only to Real and Imaginaire vallues later on also Complex
 
@@ -92,8 +62,8 @@ def FFT(x, fs, *args, **kwargs):
         sig = [sec] time domain signal
         fs = [Hz] sample frequency
         Window_Type = [string] name window
-        Window_size = [N] number of samples window
-        smoothing - canceled - moved to own function 
+        window_length = [-] length of window in number of samples
+        smoothing - canceled - moved to own function
     Options:
         shift = True/ False
         spectrum = complex(=real+imag)/AmPh0(amp+phase + 0)/AmPh(amp+phase)
@@ -105,8 +75,8 @@ def FFT(x, fs, *args, **kwargs):
          n-1                      m*k
     A_k =sum a_m * exp ( -2pi * i ----)    for k = 0, ..., n-1
          m=0                       n
-    Therefore fft * 1/N to correct amplitude 
-    
+    Therefore fft * 1/N to correct amplitude
+
     TODO:
     - remove smoothing and make solo function from it
     - fix right place of F(frequency bins)"""
@@ -122,7 +92,7 @@ def FFT(x, fs, *args, **kwargs):
                 # Window_Type = argv[1]
                 pass
             else:
-                errorstr = "Window Type not right type: Has to be 'str'" 
+                errorstr = "Window Type not right type: Has to be 'str'"
                 raise TypeError(errorstr)
             # argv[2]print
             if isinstance(args[2], int) == True:
@@ -162,19 +132,19 @@ def FFT(x, fs, *args, **kwargs):
     else:
 #        raise ME.SizeError(args, "not the right number of parameters")
         print(args)
-    
+
     if ('shift' in kwargs) and ('spectrum' in kwargs):
         pass
     elif 'shift' in kwargs:
         if kwargs['shift'] == 'True' or 'true' or True:
             X = fftshift(X)
             F = np.linspace(0, (N-1)/2, N/2)
-            F = np.append(F,np.linspace(-N/2, -1, N/2))
+            F = np.append(F, np.linspace(-N/2, -1, N/2))
             F = F/(N/fs)
             return(F, X)
         elif kwargs['shift'] == 'False' or 'false' or False:
             F = np.linspace(0, (N-1)/2, N/2)
-            F = np.append(F,np.linspace(-N/2, -1, N/2))
+            F = np.append(F, np.linspace(-N/2, -1, N/2))
             F = F/(N/fs)
             return(F, X)
         else:
@@ -183,7 +153,7 @@ def FFT(x, fs, *args, **kwargs):
         if kwargs['spectrum'] == 'complex':
             # F = np.arange(0, fs, 1 / (N / fs))  # alternate frequency array
             F = np.linspace(0, (N-1)/2, N/2)
-            F = np.append(F,np.linspace(-N/2, -1, N/2))
+            F = np.append(F, np.linspace(-N/2, -1, N/2))
             F = F/(N/fs)
             return(F, X)
         elif kwargs['spectrum'] == 'AmPh0':
@@ -191,7 +161,7 @@ def FFT(x, fs, *args, **kwargs):
             F = F/(N/fs)
             Amp = abs(X[0:N/2])
             phi = np.arctan(np.real(X[0:N / 2]) / np.imag(X[0:N / 2]))
-            return(F, Amp,phi)
+            return(F, Amp, phi)
         elif kwargs['spectrum'] == 'AmPh':
             F = np.linspace(1, (N-1)/2, N/2 - 1)
             F = F/(N/fs)
@@ -202,7 +172,7 @@ def FFT(x, fs, *args, **kwargs):
             raise ValueError('The element % don\'t exist for the keyword \'spectrum\'' % kwargs['spectrum'])
     elif len(kwargs) == 0:
         F = np.linspace(0, (N-1)/2, N/2)
-        F = np.append(F,np.linspace(-N/2, -1, N/2))
+        F = np.append(F, np.linspace(-N/2, -1, N/2))
         F = F/(N/fs)
         return(F, X)
     else:
@@ -222,7 +192,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         x_in = input signal or recorded signal
         x_out = output signal or calculated signal
         fs = [Hz] sample frequency
-    Output: 
+    Output:
         H_0 = derived signal X_in / x_out
 
     Before makeing the transfer the input data is checked if it exist out the
@@ -243,17 +213,24 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     # Compex valued signals = FFT
     # Nummeric is real valued and neeed FFT!!
     # else is wrong valued type and give error
-        
+    from scripts.checks import even, odd, oddphase, phasecheck
+
     if isinstance(x_in, tuple):
-        x_in0even = Symmetry(x_in[0], 'even')
-        x_in1odd = Symmetry(x_in[1], 'odd')
-        print(x_in0even, x_in1odd)
+        if phasecheck(x_in[1]) == True:
+            x_in0even = even(x_in[0])  # even symmetry
+            x_in1phodd = oddphase(x_in[1])  # odd symmetry
+        else:
+            x_in0even = even(x_in[0])  # even symmetry
+            x_in1odd = odd(x_in[1])  # odd symmetry
+            print(x_in0even, x_in1odd)
         # make complex array
         if (x_in0even & x_in1odd):
             x_in = x_in[0] + 1j*x_in[1]
+        elif (x_in0even & x_in1phodd):
+            x_in = x_in[0]*np.sin(x_in[1]) + 1j * x_in[0]*np.cos(x_in[1])
         if isinstance(x_out, tuple):
-            x_out0even = Symmetry(x_out[0], 'even')
-            x_out1odd = Symmetry(x_out[1], 'odd')
+            x_out0even = even(x_out[0])
+            x_out1odd = odd(x_out[1])
             # make complex array
             if (x_out0even & x_out1odd):
                 x_out = x_out[0] + 1j*x_out[0]
@@ -300,6 +277,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         raise TypeError("Wrong input type")
     return(H_0)
 
+
 # make complex array
 # x_out = x_out[0] + 1j*x_out[0]
 def ImpulseResponse(H, F):
@@ -318,8 +296,8 @@ def ImpulseResponse(H, F):
                n-1                      m*k
     a_m =1/n * sum A_k * exp ( -2pi * i ----)    for m = 0, ..., n-1
                k=0                       n
-    Therefore fft * 1/N to correct amplitude 
-    
+    Therefore fft * 1/N to correct amplitude
+
     TODO:
     - correction for N
     - Silence removal

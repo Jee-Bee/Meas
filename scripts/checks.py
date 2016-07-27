@@ -19,6 +19,26 @@ import numpy as np
 #MeasWarning.
 
 
+def even(x):
+    """
+    inputs:
+        spec = input array of unknown values.
+    Output:
+        Symetry check = True or False boolean
+
+    Check for symmetry in given Signals
+    - Real signals have \'even\' symmerty
+    - Imaginair signals have \'odd\' symmetry
+    - Magnitute signals have \'even\' symmetry
+    - phase signals have \'odd\' symmetry +/- pi"""
+    N = np.int(len(x))
+    if (x[1: N/2] == np.flipud(x[-N/2 + 1:])).all():
+        evenvals = True
+    else:
+        evenvals = False
+    return(evenvals)
+
+
 def input_type(data):
     """
     Input:
@@ -97,7 +117,7 @@ def input_type(data):
 
 
 def input_check(data):
-    """ 
+    """
     Input:
         data = array of one or more values
     Output:
@@ -105,7 +125,7 @@ def input_check(data):
     Check ndim size of the data object. This can also be the a list or a tuple.
     After this the function checks of the input data are floating point values.
     It returns a True or a False
-    
+
     TODO:
         - Add Inputtype to function
         - Check all data"""
@@ -113,18 +133,95 @@ def input_check(data):
         if isinstance(data[0], np.float):
             return(True)
         else:
-            #raise TypeWarning('wrong input type')
+            # raise TypeWarning('wrong input type')
             return(False)
     elif np.ndim(data) == 0:
         if isinstance(data, np.float):
             return(True)
         else:
             return(False)
-            #raise MeasWarning.TypeWarning('wrong input type')
+            # raise MeasWarning.TypeWarning('wrong input type')
+
+
+def istuple(var):
+    """
+    Input:
+        var = [-] variable
+    Output:
+        return a True or False value if it is a tuple
+    """
+    return(isinstance(var, tuple))
+
+
+def odd(x):
+    """
+    inputs:
+        spec = input array of unknown values.
+    Output:
+        Symetry check = True or False boolean
+
+    Check for symmetry in given Signals
+    - Real signals have \'even\' symmerty
+    - Imaginair signals have \'odd\' symmetry
+    - Magnitute signals have \'even\' symmetry
+    - phase signals have \'odd\' symmetry +/- pi"""
+    N = np.int(len(x))
+    if (x[1: N/2] == - np.flipud(x[-N/2 +1 :])).all():
+        oddvals = True
+    else:
+        oddvals = False    
+    return(oddvals)
+
+
+def oddphase(x):
+    """
+    inputs:
+        spec = input array of unknown values.
+    Output:
+        Symetry check = True or False boolean
+
+    Check for symmetry in given Signals
+    - Real signals have \'even\' symmerty
+    - Imaginair signals have \'odd\' symmetry
+    - Magnitute signals have \'even\' symmetry
+    - phase signals have \'odd\' symmetry +/- pi"""
+    N = np.int(len(x))
+    phx_1 = np.round(x[1:N/2], decimals=7)  # first half spectrum
+    phplus = np.round(np.flipud(-x[-N/2 + 1:] + np.pi), decimals=7)  # 2nd + pi
+    phmin = np.round(np.flipud(-x[-N/2 + 1:] - np.pi), decimals=7)  # 2nd - pi
+    if ((phx_1 == phplus) | (phx_1 == phmin)).all():
+        oddvals=True
+    else:
+        oddvals=False
+    return(oddvals)
+
+
+def phasecheck(x):
+    """
+    Input:
+        x = 
+    Output:
+        True/ False Boolean
+    check for:
+    - -pi to pi
+    - -180 to 180 deg
+    TODO:
+    - unwraped -pi to pi
+    - unwrapped -180 to 180 
+    """
+    from numpy import pi
+    minval = np.amin(x)
+    maxval = np.amax(x)
+    if (minval < -0.9 * pi and minval >= -pi ) and (maxval > 0.9 * pi and maxval <= pi):
+        return(True)
+    elif (minval < -160 and minval >= -180 ) and (maxval > 160 and maxval <= 180):
+        return(True)
+    else:
+        return(False)
 
 
 def LSB(data, n):
-    """ Calculate single LSB value- Least Significant Bit 
+    """ Calculate single LSB value- Least Significant Bit
     Inputs:
     data = signal value or signal array
     n  = number of bits depth"""
@@ -135,7 +232,7 @@ def LSB(data, n):
 
 
 def iLSB(data, n):
-    """ Calculate single inverse LSB value - Least Significant Bit 
+    """ Calculate single inverse LSB value - Least Significant Bit
     Inputs:
     data = signal value or signal array
     n  = number of bits depth"""
