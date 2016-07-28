@@ -93,6 +93,7 @@
 #   |_ Frequency bin calculations
 #   |_ WOSA (Welch’s Overlapped Segmented Average) (See Window >> 395068.pdf)
 # |_ Smoothing          3
+# |_ Masking (Error at value level/ missing values... see numpy.mask)
 
 
 
