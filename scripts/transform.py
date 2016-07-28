@@ -54,9 +54,11 @@ def MagPh2ReIm(Mag, Phi, output='ReIm'):
     Im = Mag * np.sin(Phi)
     return(Re, Im)
 
-
-def FFT(x, fs, *args, **kwargs):
+# def FFT(x, fs, *args, **kwargs):
+def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum=complex):
+    # FFT(x, fs, Window_type, Window_length, shift=False, spectrum=complex)
     from scipy.fftpack import fft, fftshift, fftfreq
+    from scripts import window, repeat
     """
     Inputs:
         sig = [sec] time domain signal
@@ -79,104 +81,113 @@ def FFT(x, fs, *args, **kwargs):
 
     TODO:
     - remove smoothing and make solo function from it
-    - fix right place of F(frequency bins)"""
+    - fix right place of F(frequency bins)
+    - Update Window for """
     nfft = NFFT(x)
     N = len(x)  # Temporary solution
-    # print(N, nfft)
-    if len(args) == 0:
+    if Window_type is None:
         X = fft(x, nfft) / N
         N = np.int(nfft)
-    elif len(args) <= 3:
-        if len(args) == 3:
-            if isinstance(args[1], str):
-                # Window_Type = argv[1]
-                pass
-            else:
-                errorstr = "Window Type not right type: Has to be 'str'"
-                raise TypeError(errorstr)
-            # argv[2]print
-            if isinstance(args[2], int) == True:
-                # Window_size = (args[2])
-                pass
-            elif isinstance(args[2], float) == True:
-                if args[2] % 1 == 0:
-                    # Window_size = int(args[2])
-                    pass
-            else:
-                errorstr = "Window Length not right type: Has to be 'int' or 'float'" 
-                raise TypeError(errorstr)
-            # argv[3]
-            if isinstance(args[3], int):
-                # smoothing = (args[3])
-                pass
-            elif isinstance(args[2], float):
-                if args[2] % 1 == 0:
-                    # smoothing = int(args[3])
-                    pass
-            else:
-                errorstr = "Smooting not the right input type: Has to be 'int' or Float" 
-                raise TypeError(errorstr)
-        else:
-            if isinstance(args[1], str):
-                # Window_Type = argv[1]
-                pass
-            elif isinstance(args[1], int):
-                # smoothing = int(args[1])
-                pass
-            elif isinstance(args[1], float):
-                if args[1] % 1 == 0:
-                    # smoothing = int(args[1])
-                    pass
-            else:
-                raise TypeError("not the right input type")
-    else:
-#        raise ME.SizeError(args, "not the right number of parameters")
-        print(args)
-
-    if ('shift' in kwargs) and ('spectrum' in kwargs):
+    elif Window_type == 'rectangle':
+        N = np.int(Window_length)
         pass
-    elif 'shift' in kwargs:
-        if kwargs['shift'] == 'True' or 'true' or True:
+    elif Window_type == 'triangle':
+        N = np.int(Window_length)
+        pass
+    elif Window_type == 'partzen':
+        N = np.int(Window_length)
+        pass
+    elif Window_type == 'genhamming':
+        N = np.int(Window_length)
+        pass
+    elif Window_type == 'hann':
+        N = np.int(Window_length)
+        itterations = np.int32(np.ceil(len(x) / Window_length))
+        X = []
+        whan = window.Window(Window_length)
+        (W, _) = whan.hanwind()
+        for itt in range(itterations):
+            upper = (itt + 1) * Window_length
+            if upper < len(x):
+                X_itt = fft(x[itt*Window_length:upper]*W) / Window_length
+                X = np.append(X, X_itt)
+            else:
+                x_itt = np.zeros(Window_length)
+                nsamp = len(x) - itt * Window_length
+                x_itt[:nsamp] = x[itt * Window_length:]
+                X_itt = fft(x_itt * W) / Window_length
+                X = np.append(X, X_itt)
+        X = repeat.repAvg(X, itterations)
+    elif Window_type == 'hamming':
+        N = np.int(Window_length)
+        pass
+    elif Window_type == 'cosine':
+        N = np.int(Window_length)
+        pass
+    elif Window_type == 'gengaussian':
+        N = np.int(Window_length)
+        pass
+    elif Window_type == 'gaussian':
+        N = np.int(Window_length)
+        pass
+    elif Window_type == 'tukey':
+        N = np.int(Window_length)
+        pass
+    else:
+        pass
+
+    if shift is True:
+        if spectrum is 'complex':
             X = fftshift(X)
             F = np.linspace(0, (N-1)/2, N/2)
             F = np.append(F, np.linspace(-N/2, -1, N/2))
             F = F/(N/fs)
-            return(F, X)
-        elif kwargs['shift'] == 'False' or 'false' or False:
+            return(F, X, _)
+        elif spectrum is 'ReIm':
+            X = fftshift(X)
             F = np.linspace(0, (N-1)/2, N/2)
             F = np.append(F, np.linspace(-N/2, -1, N/2))
             F = F/(N/fs)
-            return(F, X)
-        else:
-            raise ValueError('Wrong ')
-    elif 'spectrum' in kwargs:
-        if kwargs['spectrum'] == 'complex':
-            # F = np.arange(0, fs, 1 / (N / fs))  # alternate frequency array
-            F = np.linspace(0, (N-1)/2, N/2)
-            F = np.append(F, np.linspace(-N/2, -1, N/2))
-            F = F/(N/fs)
-            return(F, X)
-        elif kwargs['spectrum'] == 'AmPh0':
+            RE = np.real(X)
+            IM = np.imag(X)
+            return(F, RE, IM)
+        elif spectrum is 'AmPh0':
             F = np.linspace(0, (N-1)/2, N/2)
             F = F/(N/fs)
-            Amp = abs(X[0:N/2])
-            phi = np.arctan(np.real(X[0:N / 2]) / np.imag(X[0:N / 2]))
-            return(F, Amp, phi)
-        elif kwargs['spectrum'] == 'AmPh':
+            AMP = abs(X[0:N/2])
+            PHI = np.arctan(np.real(X[0:N / 2]) / np.imag(X[0:N / 2]))
+            return(F, AMP, PHI)
+        elif spectrum is 'AmPh':
             F = np.linspace(1, (N-1)/2, N/2 - 1)
             F = F/(N/fs)
-            Amp = abs(X[1:N/2])
-            phi = np.arctan(np.real(X[1:N / 2])/np.imag(X[1:N / 2]))
-            return(F, Amp, phi)
-        else:
-            raise ValueError('The element % don\'t exist for the keyword \'spectrum\'' % kwargs['spectrum'])
-    elif len(kwargs) == 0:
-        F = np.linspace(0, (N-1)/2, N/2)
-        F = np.append(F, np.linspace(-N/2, -1, N/2))
-        F = F/(N/fs)
-        return(F, X)
+            AMP = abs(X[1:N/2])
+            PHI = np.arctan(np.real(X[1:N / 2])/np.imag(X[1:N / 2]))
+            return(F, AMP, PHI)
     else:
-        print(kwargs)
+        if spectrum is 'complex':
+            F = np.linspace(0, (N-1)/2, N/2)
+            F = np.append(F, np.linspace(-N/2, -1, N/2))
+            F = F/(N/fs)
+            return(F, X, _)
+        elif spectrum is 'ReIm':
+            F = np.linspace(0, (N-1)/2, N/2)
+            F = np.append(F, np.linspace(-N/2, -1, N/2))
+            F = F/(N/fs)
+            RE = np.real(X)
+            IM = np.imag(X)
+            return(F, RE, IM)
+        elif spectrum is 'AmPh0':
+            F = np.linspace(0, (N-1)/2, N/2)
+            F = F/(N/fs)
+            AMP = abs(X[0:N/2])
+            PHI = np.arctan(np.real(X[0:N / 2]) / np.imag(X[0:N / 2]))
+            return(F, AMP, PHI)
+        elif spectrum is 'AmPh':
+            F = np.linspace(1, (N-1)/2, N/2 - 1)
+            F = F/(N/fs)
+            AMP = abs(X[1:N/2])
+            PHI = np.arctan(np.real(X[1:N / 2])/np.imag(X[1:N / 2]))
+            return(F, AMP, PHI)
     # X = ft.fft(x, nfft) / N
     # F = np.arange(0, fs, 1 / (N / fs))
     # F = np.arange(-fs / 2, fs / 2, 1 / (N / fs))
@@ -244,8 +255,8 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
             raise TypeError("Wrong input type")
     elif np.iscomplexobj(x_in):
         if isinstance(x_out, tuple):
-            x_out0even = Symmetry(x_out[0], 'even')
-            x_out1odd = Symmetry(x_out[1], 'odd')
+            x_in0even = even(x_in[0])  # even symmetry
+            x_in1odd = odd(x_in[1])  # odd symmetry
             # make complex array
             if (x_out0even & x_out1odd):
                 x_out = x_out[0] + 1j*x_out[0]
@@ -260,8 +271,8 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     elif np.isrealobj(x_in):
         (F, X_IN) = FFT(x_in, fs)
         if isinstance(x_out, tuple):
-            x_out0even = Symmetry(x_out[0], 'even')
-            x_out1odd = Symmetry(x_out[1], 'odd')
+            x_in0even = even(x_in[0])  # even symmetry
+            x_in1odd = odd(x_in[1])  # odd symmetry
             # make complex array
             if (x_out0even & x_out1odd):
                 x_out = x_out[0] + 1j*x_out[0]
