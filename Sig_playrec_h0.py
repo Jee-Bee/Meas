@@ -31,6 +31,9 @@ try:
     # for Amplitude Spectrum; Power Spectrum; Spectral Density;
     # Power Spectral Density
 
+    savename = _  # if you want to save the data add name here between " " if
+                # not add underscore
+
     # WARNING:
     # FROM HERE START SCRIP DON EDIT ANYTHING WITHOUT KNOWLEDGE ABOUT MEAS!!
 
@@ -63,7 +66,7 @@ try:
 
         if RMS_res is True:
             sigout = rms.RMS(sigout)   # return RMS value of stard signal
-            rec1_avg = rms.RMS(rec1)   # return RMS value of measurment
+            rec1 = rms.RMS(rec1)   # return RMS value of measurment
         if crest_res is True:
             sigout_crest = rms.Crest(sigout)
             rec1_crest = rms.Crest(rec1)
@@ -191,16 +194,16 @@ try:
     plt.figure()
     timeplt = default2D(t, sigout)
     timeplt.Time()
-    timeplt = default2D(t, rec1_avg)
+    timeplt = default2D(t, rec1)
     timeplt.Time()
     plt.axis([4.98, 5, -1, 1])
 
     # plot half frequency spectrum
     plt.figure()
-    specplt = default2D(REC1_F, REC1_S)
+#    specplt = default2D(REC1_F, REC1_S)
+#    specplt.SpecMag()
+    specplt = default2D(SIG_F, SIG_S)
     specplt.SpecMag()
-    # specplt = default2D(SIG_F, SIG_S)
-    # specplt.SpecMag()
 
     # plot full transferfunction
     plt.figure()
@@ -218,7 +221,7 @@ except measerror.InterfaceError:
 
 
 try:
-    np.savez("Convtest", sigout, rec1, fs, SIGOUT, REC1)
+    np.savez(savename, sigout, rec1, fs, SIGOUT, REC1)
 except NameError:
     NameError("Name allready excist or whatever... as long as it works...")
 
