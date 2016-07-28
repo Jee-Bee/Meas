@@ -55,7 +55,7 @@ def MagPh2ReIm(Mag, Phi, output='ReIm'):
     return(Re, Im)
 
 # def FFT(x, fs, *args, **kwargs):
-def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum=complex):
+def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='complex'):
     # FFT(x, fs, Window_type, Window_length, shift=False, spectrum=complex)
     from scipy.fftpack import fft, fftshift, fftfreq
     from scripts import window, repeat
@@ -142,7 +142,7 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum=compl
             F = np.linspace(0, (N-1)/2, N/2)
             F = np.append(F, np.linspace(-N/2, -1, N/2))
             F = F/(N/fs)
-            return(F, X, _)
+            return(F, X, [])
         elif spectrum is 'ReIm':
             X = fftshift(X)
             F = np.linspace(0, (N-1)/2, N/2)
@@ -168,7 +168,7 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum=compl
             F = np.linspace(0, (N-1)/2, N/2)
             F = np.append(F, np.linspace(-N/2, -1, N/2))
             F = F/(N/fs)
-            return(F, X, _)
+            return(F, X, [])
         elif spectrum is 'ReIm':
             F = np.linspace(0, (N-1)/2, N/2)
             F = np.append(F, np.linspace(-N/2, -1, N/2))
@@ -249,7 +249,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         elif np.iscomplexobj(x_out):
             H_0 = x_in / x_out
         elif np.isrealobj(x_out):
-            X_OUT, F = FFT(x_out, fs)
+            (X_OUT, F, _) = FFT(x_out, fs)
             H_0 = x_in / X_OUT
         else:
             raise TypeError("Wrong input type")
@@ -264,12 +264,12 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         elif np.iscomplexobj(x_out):
             H_0 = x_in / x_out
         elif np.isrealobj(x_out):
-            (F, X_OUT) = FFT(x_out, fs)
+            (F, X_OUT, _) = FFT(x_out, fs)
             H_0 = x_in / X_OUT
         else:
             raise TypeError("Wrong input type")
     elif np.isrealobj(x_in):
-        (F, X_IN) = FFT(x_in, fs)
+        (F, X_IN, _) = FFT(x_in, fs)
         if isinstance(x_out, tuple):
             x_in0even = even(x_in[0])  # even symmetry
             x_in1odd = odd(x_in[1])  # odd symmetry
@@ -280,7 +280,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
         elif np.iscomplexobj(x_out):
             H_0 = X_IN / x_out
         elif np.isrealobj(x_out):
-            (F, X_OUT) = FFT(x_out, fs)
+            (F, X_OUT, _) = FFT(x_out, fs)
             H_0 = X_IN / X_OUT
         else:
             raise TypeError("Wrong input type")

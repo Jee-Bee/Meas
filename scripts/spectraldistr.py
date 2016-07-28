@@ -79,19 +79,19 @@ def PSD(sig, fs=None, window='hann', window_length=8192, weighting=False, inputs
                     N = len(sig)
                     F = np.arange(1, N/2)
                     PS = (np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2) ** 2) / F
-                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2] / sig[1][1:len(sig[1]) / 2])
+                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
                 else:
                     N = len(sig)
                     F = np.arange(1, N / 2)
                     PS = (np.sqrt(sig[0] ** 2 + sig[1] ** 2) ** 2) / F
                     # power per hertz
-                    PH = np.arctan2(sig[0] / sig[1])
+                    PH = np.arctan2(sig[0], sig[1])
         elif np.iscomplex(sig):
             print('from complex spectum is becomming a magnitude pahse spectrum... \nshow olny N/2 frequency bins')
             N = len(sig)
             F = np.arange(1, N / 2)
             PSD = (abs(sig[1:N / 2]) ** 2) / F  # power per hertz
-            PH = np.arctan2(sig.real / sig.imag)
+            PH = np.arctan2(sig.real, sig.imag)
     elif inputspec is False:
         F, PSD, PH = AS(sig, fs, window, window_length, weighting, inputspec)
         PSD = (PSD ** 2) / F  # Power per hertz - AS to PSD 
@@ -158,19 +158,19 @@ def SD(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
                     N = len(sig)
                     F = np.arange(1, N/2)
                     SD = np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2) / np.sqrt(F)  # devide sqrt(Hz)
-                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2] / sig[1][1:len(sig[1]) / 2])
+                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
                 else:
                     N = len(sig)
                     F = np.arange(1, N / 2)
                     SD = np.sqrt(sig[0] ** 2 + sig[1] ** 2) / np.sqrt(F)
                     # devide sqrt(Hz)
-                    PH = np.arctan2(sig[0] / sig[1])
+                    PH = np.arctan2(sig[0], sig[1])
         elif np.iscomplex(sig):
             print('from complex spectum is becomming a magnitude pahse spectrum... \nshow olny N/2 frequency bins')
             N = len(sig)
             F = np.arange(1, N / 2)
             SD = abs(sig[1:N / 2]) / np.sqrt(F)  # devide sqrt(Hz)
-            PH = np.arctan2(sig.real / sig.imag)
+            PH = np.arctan2(sig.real, sig.imag)
     elif inputspec is False:
         F, PS, PH = AS(sig, fs, window, window_length, weighting, inputspec)
         SD = SD / np.sqrt(F)  # devide sqrt(Hz) -AS to SD
@@ -240,18 +240,18 @@ def PS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
                     N = len(sig)
                     F = np.arange(1, N/2)
                     PS = np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2) ** 2
-                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2] / sig[1][1:len(sig[1]) / 2])
+                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
                 else:
                     N = len(sig)
                     F = np.arange(1, N / 2)
                     PS = np.sqrt(sig[0] ** 2 + sig[1] ** 2) ** 2
-                    PH = np.arctan2(sig[0] / sig[1])
+                    PH = np.arctan2(sig[0], sig[1])
         elif np.iscomplex(sig):
             print('from complex spectum is becomming a magnitude pahse spectrum... \nshow olny N/2 frequency bins')
             N = len(sig)
             F = np.arange(1, N / 2)
             PS = abs(sig[1:N / 2]) ** 2
-            PH = np.arctan2(sig.real / sig.imag)
+            PH = np.arctan2(sig.real, sig.imag)
     elif inputspec is False:
         F, PS, PH = AS(sig, fs, window, window_length, weighting, inputspec)
         PS = PS ** 2  # AS to PS
@@ -321,17 +321,17 @@ def AS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
                     N = len(sig)
                     F = np.arange(1, N / 2)
                     AS = np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2)
-                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2] / sig[1][1:len(sig[1]) / 2])
+                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
                 else:
                     N = len(sig)
                     F = np.arange(1, N / 2)
                     AS = np.sqrt(sig[0] ** 2 + sig[1] ** 2)
-                    PH = np.arctan2(sig[0] / sig[1])
+                    PH = np.arctan2(sig[0], sig[1])
         elif np.iscomplex(sig):
             print('from complex spectum is becomming a magnitude pahse spectrum... \nshow olny N/2 frequency bins')
             N = len(sig)
             AS = abs(sig[1:N / 2])
-            PH = np.arctan2(sig.real / sig.imag)
+            PH = np.arctan2(sig.real, sig.imag)
             F = np.arange(1, N / 2)
     elif inputspec is False:
         if fs is not None:
