@@ -11,22 +11,28 @@ from scripts.measwarning import InterfaceWarning
 try:
     import numpy as np
     import scripts.siggen as sg
-    from scripts import transform, checks, weighting, repeat
-    #from importlib.machinery import SourceFileLoader
+    from scripts import transform, checks, weighting, repeat, spectraldistr
+    # from importlib.machinery import SourceFileLoader
     import matplotlib.pyplot as plt
-    #from scripts.DefaultFigures import Time, SpecMag, SpecPh
+    # from scripts.DefaultFigures import Time, SpecMag, SpecPh
     from scripts.defaultfigures import *  # defaultFigures
 
     T = 5  # [s] T= Time in seconds
     f = (10, 350)  # [Hz] Frequency signal generation
     fs = 44100  # [Hz] fs = Samplerate
     repeats = 3
-    spectrum = 'AS'  # select spectrum type: AS; PS; SD and PSD respectivelijk
-    # for Amplitude Spectrum; Power Spectrum; Spectral Density; 
-    # Power Spectral Density
+
     RMS_res = True  # other option is 'False'
     crest_res = True  # other option is 'False'
     papr_res = True  # other option is 'False'
+
+    weighting_filt = None  # oher options are the weightings 'A', 'B', 'C' and 'D'
+    spectrum = 'AS'  # select spectrum type: AS; PS; SD and PSD respectivelijk
+    # for Amplitude Spectrum; Power Spectrum; Spectral Density;
+    # Power Spectral Density
+
+    # WARNING:
+    # FROM HERE START SCRIP DON EDIT ANYTHING WITHOUT KNOWLEDGE ABOUT MEAS!!
 
     f = np.array(f)
     (sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
@@ -40,13 +46,13 @@ try:
     # Simultanious play/ recording
     rec1 = sd.playrec(sigout_rep, fs, channels=2)
     sd.wait()
+    # sd.stop()
 #    print(dtype(rec1))
     rec1 = checks.input_type(rec1)  # @ Comment till fixed...
-
     rec1 = rec1.T[0]
 
     # averaging from here:
-    rec1_avg = repeat.repAvg(rec1, repeats)
+    rec1 = repeat.repAvg(rec1, repeats)
 
     sigout, new_l = repeat.repSig(sigout, 1, 2, fs, addzeros=True)
     t = np.arange(0, len(sigout)) / fs
@@ -57,30 +63,121 @@ try:
 
         if RMS_res is True:
             sigout = rms.RMS(sigout)   # return RMS value of stard signal
-            rec1_avg = rms.RMS(rec1_avg)   # return RMS value of measurment
+            rec1_avg = rms.RMS(rec1)   # return RMS value of measurment
         if crest_res is True:
             sigout_crest = rms.Crest(sigout)
-            rec1_crest = rms.Crest(rec1_avg)
+            rec1_crest = rms.Crest(rec1)
             print(sigout_crest, rec1_crest)
         if papr_res is True:
             sigout_papr = rms.PAPR(sigout)
-            rec1_papr = rms.PAPR(rec1_avg)
+            rec1_papr = rms.PAPR(rec1)
             print(sigout_papr, rec1_papr)
 
-    # sd.stop()
-    (F_amph, REC1_amp, REC1_phi) = transform.FFT(rec1_avg, fs, spectrum='AmPh')
-    # (F, REC1) = Transform.FFT(rec1, fs)
+    if (weighting_filt is not None) and (spectrum is not None):
+        (REC1_F, REC1_S, REC1_P) = transform.FFT(rec1, fs, spectrum='AmPh')
+        # REC1_S = Amplitude Spectrum and REC1_P = phase
+        # (F, REC1) = Transform.FFT(rec1, fs)
+
+        (F, SIG_S) = transform.FFT(sigout, fs)
+        SIG_F = F[1: len(F)/2]
+        SIG_S = abs(SIG_S[1:len(SIG_S)/2])
+        SIG_P = np.arctan2(np.real(SIG_S[1:len(SIG_S)/2]), np.imag(SIG_S[1:len(SIG_S)/2]))
+        if weighting_filt is 'A':
+            # Weighted FFT
+            AW = weighting.AWeighting()  # temporary off
+            REC1_S = AW.A_Weighting(REC1_F, REC1_S)   # temporary off
+            SIG_S = AW.A_Weighting(SIG_F, SIG_S)
+        elif weighting_filt is 'B':
+            BW = weighting.BWeighting()  # temporary off
+            REC1_S = BW.B_Weighting(REC1_F, REC1_S)   # temporary off
+            SIG_S = BW.B_Weighting(SIG_F, SIG_S)
+        elif weighting_filt is 'C':
+            CW = weighting.CWeighting()  # temporary off
+            REC1_S = CW.C_Weighting(REC1_F, REC1_S)   # temporary off
+            SIG_S = CW.C_Weighting(SIG_F, SIG_S)
+        elif weighting_filt is 'D':
+            DW = weighting.DWeighting()  # temporary off
+            REC1_S = DW.D_Weighting(REC1_F, REC1_S)   # temporary off
+            SIG_S = DW.D_Weighting(SIG_F, SIG_S)
+        else:
+            raise ValueError("the value %s is not one of the options for weighting" % weighting_filt)
+
+        if spectrum is 'AS':
+            (_, REC1_S, REC1_P) = spectraldistr.AS((REC1_S, REC1_P))
+            (_, SIG_S, SIG_P) = spectraldistr.AS((SIG_S, SIG_P))
+        elif spectrum is 'PS':
+            (_, REC1_S, REC1_P) = spectraldistr.PS((REC1_S, REC1_P))
+            (_, SIG_S, SIG_P) = spectraldistr.PS((SIG_S, SIG_P))
+        elif spectrum is 'SD':
+            (_, REC1_S, REC1_P) = spectraldistr.SD((REC1_S, REC1_P))
+            (_, SIG_S, SIG_P) = spectraldistr.SD((SIG_S, SIG_P))
+        elif spectrum is 'PSD':
+            (_, REC1_S, REC1_P) = spectraldistr.PSD((REC1_S, REC1_P))
+            (_, SIG_S, SIG_P) = spectraldistr.PSD((SIG_S, SIG_P))
+        else:
+            raise ValueError("the value %s is not one of the options for spectrum" % weighting)
+
+    elif weighting_filt is not None:
+        (REC1_F, REC1_S, REC1_P) = transform.FFT(rec1, fs, spectrum='AmPh')
+        # REC1_S = Amplitude Spectrum and REC1_P = phase
+        # (F, REC1) = Transform.FFT(rec1, fs)
+
+        # (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
+        (F, SIG_S) = transform.FFT(sigout, fs)
+        SIG_F = F[1: len(F)/2]
+        SIG_P = np.arctan2(np.real(SIG_S[1:len(SIG_S)/2]), np.imag(SIG_S[1:len(SIG_S)/2]))
+        SIG_S = abs(SIG_S[1:len(SIG_S)/2])
+        if weighting_filt is 'A':
+            # Weighted FFT
+            AW = weighting.AWeighting()  # temporary off
+            REC1_S = AW.A_Weighting(REC1_F, REC1_S)   # temporary off
+            SIG_S = AW.A_Weighting(SIG_F, SIG_S)
+        elif weighting_filt is 'B':
+            BW = weighting.BWeighting()  # temporary off
+            REC1_S = BW.B_Weighting(REC1_F, REC1_S)   # temporary off
+            SIG_S = BW.B_Weighting(SIG_F, SIG_S)
+        elif weighting_filt is 'C':
+            CW = weighting.CWeighting()  # temporary off
+            REC1_S = CW.C_Weighting(REC1_F, REC1_S)   # temporary off
+            SIG_S = CW.C_Weighting(SIG_F, SIG_S)
+        elif weighting_filt is 'D':
+            DW = weighting.DWeighting()  # temporary off
+            REC1_S = DW.D_Weighting(REC1_F, REC1_S)   # temporary off
+            SIG_S = DW.D_Weighting(SIG_F, SIG_S)
+    elif spectrum is not None:
+        (REC1_F, REC1_S, REC1_P) = transform.FFT(rec1, fs, spectrum='AmPh')
+        # (F, REC1) = Transform.FFT(rec1, fs)
+        # REC1_S = Amplitude Spectrum and REC1_P = phase
+
+        (F, SIG_S, _) = transform.FFT(sigout, fs)
+        SIG_F = F[1: len(F)/2]
+        SIG_P = np.arctan2(np.real(SIG_S[1:len(SIG_S)/2]), np.imag(SIG_S[1:len(SIG_S)/2]))
+        SIG_S = abs(SIG_S[1:len(SIG_S)/2])
+        if spectrum is 'AS':
+            (_, REC1_S, REC1_P) = spectraldistr.AS((REC1_S, REC1_P))
+            #REC1_F = REC1_F[1:len(REC1_F)/2]
+            (_, SIG_S, SIG_P) = spectraldistr.AS((SIG_S, SIG_P))
+        elif spectrum is 'PS':
+            (_, REC1_S, REC1_P) = spectraldistr.PS((REC1_S, REC1_P))
+            #REC1_F = REC1_F[1:len(REC1_F)/2]
+            (_, SIG_S, SIG_P) = spectraldistr.PS((SIG_S, SIG_P))
+        elif spectrum is 'SD':
+            (_, REC1_S, REC1_P) = spectraldistr.SD((REC1_S, REC1_P))
+            #REC1_F = REC1_F[1:len(REC1_F)/2]
+            (_, SIG_S, SIG_P) = spectraldistr.SD((SIG_S, SIG_P))
+        elif spectrum is 'PSD':
+            (_, REC1_S, REC1_P) = spectraldistr.PSD((REC1_S, REC1_P))
+            #REC1_F = REC1_F[1:len(REC1_F)/2]
+            (_, SIG_S, SIG_P) = spectraldistr.PSD((SIG_S, SIG_P))
+    else:
+        (REC1_F, REC1_S, REC1_P) = transform.FFT(rec1, fs, spectrum='AmPh')
+        # (F, REC1) = Transform.FFT(rec1, fs)
+        # (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
+        (SIG_F, SIG_S) = transform.FFT(sigout, fs)
 
     # Transfer function:
-#    (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
-    (F, SIGOUT) = transform.FFT(sigout, fs)
-
-    (H1) = transform.Transfer(rec1_avg, sigout, fs)  # Rebuild Transfer for ...
+    (H1) = transform.Transfer(rec1, sigout, fs)  # Rebuild Transfer for ...
     # ... adding two allready calculated spectra
-
-    # Weighted FFT
-    AW = weighting.AWeighting()  # temporary off
-    AW_REC1 = AW.A_Weighting(F_amph, REC1_amp)   # temporary off
 
     # Impulse Response:
     (IR, fs_ir, T_ir) = transform.ImpulseResponse(H1, F)  # temporary off
@@ -100,8 +197,10 @@ try:
 
     # plot half frequency spectrum
     plt.figure()
-    specplt = default2D(F_amph, REC1_amp)
+    specplt = default2D(REC1_F, REC1_S)
     specplt.SpecMag()
+    # specplt = default2D(SIG_F, SIG_S)
+    # specplt.SpecMag()
 
     # plot full transferfunction
     plt.figure()
