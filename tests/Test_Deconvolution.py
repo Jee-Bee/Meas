@@ -35,8 +35,10 @@ TS = np.arange(T / ws) * ws
 FS = np.arange(fs * ws) / ws
 FS, TS = np.meshgrid(FS, TS)
 fig1 = plt.figure()
-ax1 = fig.add_subplot(111, projection="3d")
+ax1 = fig1.add_subplot(111, projection="3d")
 ax1.plot_surface(TS, FS, np.abs(SIG1KRESPS), cmap="autumn_r", lw=0.5, rstride=1, cstride=1)
+ax1.azim = -90  # } set axit to top view
+ax1.elev = 90  # }
 
 # F = np.arange(-fs / 2, fs / 2, 1 / T)
 F = np.arange(0, fs, 1 / T)
