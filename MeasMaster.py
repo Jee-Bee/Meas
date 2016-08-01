@@ -5,8 +5,7 @@ Created on Sun Mar  6 13:04:25 2016
 @author: Jee-Bee for jBae (c) 2016
 """
 from PyQt5 import QtCore, QtGui, QtWidgets
-# from ui.jBae_Meas_0_15 import Ui_MeasMain
-from ui.jBae_Meas_0_15_test import Ui_MeasMain
+from ui.jBae_Meas_0_15 import Ui_MeasMain
 from resources.icons import *
 import sys
 
