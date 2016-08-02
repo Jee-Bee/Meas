@@ -7,6 +7,7 @@ Created on Sun Mar  6 13:04:25 2016
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ui.jBae_Meas_0_15 import Ui_MeasMain
 from ui import PrefMaster
+from ui import FigMaster
 from resources.icons import *
 import sys
 
@@ -195,8 +196,7 @@ class Meas(QtWidgets.QMainWindow):
     def Preference_menu(self):
         self.prefMenu = PrefMaster.runPref()
         self.prefMenu.show()
-        #Message = QtWidgets.QMessageBox.information(self, "Empty function!",
-        #                                            "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
 
 >>>>>>> add menu structure of File Menu
 # http://stackoverflow.com/questions/36180552/linking-pyqt-files-dont-relate/
@@ -248,8 +248,8 @@ class Meas(QtWidgets.QMainWindow):
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
     def pref_Top(self):
-        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
-                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        self.figMenu = FigMaster.runFig()
+        self.figMenu.show()
 
     def home_Bottom(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
@@ -264,9 +264,8 @@ class Meas(QtWidgets.QMainWindow):
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
     def pref_Bottom(self):
-        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
-                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
-
+        self.figMenu = FigMaster.runfig()
+        self.figMenu.show()
 
 
 >>>>>>> Add Current Time to viewer and fill comboboxes
