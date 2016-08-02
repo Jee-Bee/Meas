@@ -11,7 +11,7 @@ from ui.jBae_Meas_0_10_Fig import Ui_Dialog  # @@@ Change name to Ui_MeasFig
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../resources/'))
 from icons import *
 
-def runfig():
+def runFig():
     FigDialog = QtWidgets.QDialog() # @@@ Change name to Ui_MeasPref
     figpanel = Fig()
     return (figpanel)
