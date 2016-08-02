@@ -6,6 +6,7 @@ Created on Sun Mar  6 13:04:25 2016
 """
 from PyQt5 import QtCore, QtGui, QtWidgets
 from ui.jBae_Meas_0_15 import Ui_MeasMain
+from ui import PrefMaster
 from resources.icons import *
 import sys
 
@@ -166,8 +167,10 @@ class Meas(QtWidgets.QMainWindow):
 #            self.textEdit.setText(text)
 
     def Preference_menu(self):
-        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
-                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        self.prefMenu = PrefMaster.runPref()
+        self.prefMenu.show()
+        #Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+        #                                            "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
 # http://stackoverflow.com/questions/36180552/linking-pyqt-files-dont-relate/
     def Exit(self):
