@@ -8,6 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from ui.jBae_Meas_0_15 import Ui_MeasMain
 from ui import PrefMaster
 from ui import FigMaster
+from ui import MeasMaster
 from resources.icons import *
 import sys
 
@@ -128,6 +129,9 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.dateTimeEdit.setDate(QtCore.QDate.currentDate())
         self.ui.dateTimeEdit.setTime(QtCore.QTime.currentTime())
 
+        # test + run measurement
+        self.ui.testSig.clicked.connect(self.run_Test)
+        self.ui.startMeas.clicked.connect(self.run_Measurement)
 
 # Menu:
     def new_file(self):
@@ -200,7 +204,7 @@ class Meas(QtWidgets.QMainWindow):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
-
+    # Pricture options
 
     def home_Top(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
@@ -233,6 +237,14 @@ class Meas(QtWidgets.QMainWindow):
     def pref_Bottom(self):
         self.figMenu = FigMaster.runfig()
         self.figMenu.show()
+
+    def run_Measurement(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
+    def run_Test(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
 
 
