@@ -63,22 +63,16 @@ class Fig(QtWidgets.QDialog):
         # phase check
         # @@@ Rename different phase checks to their right names!!
         self.ui.phaseCheck.setChecked(False)
-
         self.ui.phaseCheck.clicked.connect(self.phaseWrap)
 
-
         self.ui.phaseCheck_2.setChecked(False)
-
         self.ui.phaseCheck_2.clicked.connect(self.full_half)
 
-
         self.ui.phaseCheck_3.setChecked(False)
-
         self.ui.phaseCheck_3.clicked.connect(self.lin_log)
 
-        # rename to 
+        # rename to ...
         self.ui.phaseCheck_4.setChecked(False)
-
         self.ui.phaseCheck_4.clicked.connect(self.am_ph)
 
         # spec type sel
@@ -92,65 +86,66 @@ class Fig(QtWidgets.QDialog):
         # weighting check
         # add Weighting Type A, B, C, D
         self.ui.weightingCheck.setChecked(False)
-
         self.ui.weightingCheck.clicked.connect(self.weighting)
-        
+
+        #buttonBox:
+        # see: http://stackoverflow.com/questions/35443399/pyqt-what-signal-does-my-standard-apply-button-emit-and-how-do-i-write-the-s
+        # self.ui.buttonBox.accepted.clicked.connect(self.figOk)
+        self.ui.buttonBox.accepted.connect(self.figOk)
 
 
     def plottype(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
-
     def xUnit(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
-
 
     def yUnit(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
-
     def smoothing(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
-
 
     def full_half(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function (full_half) Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.phaseCheck_4.setChecked(False)
 
-
     def am_ph(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function(am_ph) Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.phaseCheck_2.setChecked(False)
-
 
     def lin_log(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function(op1_op2) Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.phaseCheck_3.setChecked(False)
 
-
     def phaseWrap(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function(op3_op4) Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.phaseCheck.setChecked(False)
 
-
     def spectype(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
-
 
     def weighting(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.weightingCheck.setChecked(False)
 
+    def figCancel(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
+    def figOk(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
 
 if __name__ == "__main__":
@@ -158,6 +153,6 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     # FigDialog = QtWidgets.QDialog() # @@@ Change name to Ui_MeasPref
     # figgui = Fig()
-    figgui = runfig()
+    figgui = runFig()
     figgui.show()
     sys.exit(app.exec_())

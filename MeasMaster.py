@@ -8,6 +8,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from ui.jBae_Meas_0_15 import Ui_MeasMain
 from ui import PrefMaster
 from ui import FigMaster
+from ui import MeasMaster
 from resources.icons import *
 import sys
 
@@ -128,6 +129,7 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.dateTimeEdit.setDate(QtCore.QDate.currentDate())
         self.ui.dateTimeEdit.setTime(QtCore.QTime.currentTime())
 
+<<<<<<< dd1546fb7f675a3674b358bc0aebfa897f5a8e45
 <<<<<<< decf4668f561e57ea2b52cdd75741cfd7958ca88
 <<<<<<< d5a010b1da627195f94115bffd91020e3e23bec7
 <<<<<<< d6a800c100fb796e3a29b203c83f51c7d5e17793
@@ -155,6 +157,12 @@ class Meas(QtWidgets.QMainWindow):
 >>>>>>> Update MeasMaster.py
 =======
 >>>>>>> Update MeasMaster.py
+=======
+        # test + run measurement
+        self.ui.testSig.clicked.connect(self.run_Test)
+        self.ui.startMeas.clicked.connect(self.run_Measurement)
+
+>>>>>>> add MeasMaster = Measurement to MeasMaster = Main
 # Menu:
     def new_file(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
@@ -233,7 +241,7 @@ class Meas(QtWidgets.QMainWindow):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
-
+    # Pricture options
 
     def home_Top(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
@@ -266,6 +274,14 @@ class Meas(QtWidgets.QMainWindow):
     def pref_Bottom(self):
         self.figMenu = FigMaster.runfig()
         self.figMenu.show()
+
+    def run_Measurement(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+
+    def run_Test(self):
+        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
+                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
 
 >>>>>>> Add Current Time to viewer and fill comboboxes
