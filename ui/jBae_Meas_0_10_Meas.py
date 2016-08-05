@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'jBae_Meas_0.10_Meas.ui'
+# Form implementation generated from reading ui file 'jBae_Meas_0_10_Meas.ui'
 #
-# Created by: PyQt5 UI code generator 5.5
+# Created by: PyQt5 UI code generator 5.4.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -11,17 +11,20 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_measDialog(object):
     def setupUi(self, measDialog):
         measDialog.setObjectName("measDialog")
-        measDialog.resize(287, 359)
+        measDialog.resize(287, 440)
         self.gridLayout_3 = QtWidgets.QGridLayout(measDialog)
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.gridtime = QtWidgets.QGridLayout()
         self.gridtime.setObjectName("gridtime")
         self.dateEdit = QtWidgets.QDateEdit(measDialog)
         self.dateEdit.setMinimumSize(QtCore.QSize(140, 0))
+        self.dateEdit.setReadOnly(False)
+        self.dateEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.dateEdit.setObjectName("dateEdit")
         self.gridtime.addWidget(self.dateEdit, 0, 0, 1, 1)
         self.timeEdit = QtWidgets.QTimeEdit(measDialog)
         self.timeEdit.setMinimumSize(QtCore.QSize(65, 0))
+        self.timeEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
         self.timeEdit.setObjectName("timeEdit")
         self.gridtime.addWidget(self.timeEdit, 0, 1, 1, 1)
         self.gridLayout_3.addLayout(self.gridtime, 0, 0, 1, 1)
@@ -30,9 +33,11 @@ class Ui_measDialog(object):
         self.gridLayout_3.addWidget(self.lineEdit, 1, 0, 1, 1)
         self.gridfunc = QtWidgets.QGridLayout()
         self.gridfunc.setObjectName("gridfunc")
-        self.spinBox = QtWidgets.QSpinBox(measDialog)
-        self.spinBox.setObjectName("spinBox")
-        self.gridfunc.addWidget(self.spinBox, 1, 1, 1, 1)
+        self.LevelSend = QtWidgets.QSpinBox(measDialog)
+        self.LevelSend.setMinimum(-192)
+        self.LevelSend.setMaximum(0)
+        self.LevelSend.setObjectName("LevelSend")
+        self.gridfunc.addWidget(self.LevelSend, 1, 1, 1, 1)
         self.gridLayout_2 = QtWidgets.QGridLayout()
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.endFreqLab = QtWidgets.QLabel(measDialog)
@@ -91,9 +96,9 @@ class Ui_measDialog(object):
         self.SweepsSelect.setObjectName("SweepsSelect")
         self.verticalLayout_5.addWidget(self.SweepsSelect)
         self.gridfunc.addLayout(self.verticalLayout_5, 3, 0, 1, 1)
-        self.label = QtWidgets.QLabel(measDialog)
-        self.label.setObjectName("label")
-        self.gridfunc.addWidget(self.label, 0, 1, 1, 1)
+        self.Level_lab = QtWidgets.QLabel(measDialog)
+        self.Level_lab.setObjectName("Level_lab")
+        self.gridfunc.addWidget(self.Level_lab, 0, 1, 1, 1)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.sigTypeLab = QtWidgets.QLabel(measDialog)
@@ -143,7 +148,7 @@ class Ui_measDialog(object):
         self.startFreqSpin.setToolTip(_translate("measDialog", "Set Start Frequency"))
         self.sweepsLab.setText(_translate("measDialog", "No Sweeps"))
         self.SweepsSelect.setToolTip(_translate("measDialog", "Select number of itterations"))
-        self.label.setText(_translate("measDialog", "SoundLevel"))
+        self.Level_lab.setText(_translate("measDialog", "SoundLevel"))
         self.sigTypeLab.setText(_translate("measDialog", "Signal Type"))
         self.sigTypeSel.setToolTip(_translate("measDialog", "Select Signal Type"))
         self.lengthLab.setText(_translate("measDialog", "Length Signal"))

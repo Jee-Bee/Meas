@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>378</width>
-    <height>683</height>
+    <width>386</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,273 +27,308 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>358</width>
-        <height>630</height>
+        <width>351</width>
+        <height>668</height>
        </rect>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <layout class="QFormLayout" name="fileLayout">
-         <item row="0" column="0" colspan="2">
-          <widget class="QLabel" name="File_loc">
-           <property name="text">
-            <string>Default File Location</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLineEdit" name="File_loc_box1"/>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="File_loc_box2"/>
-         </item>
-        </layout>
-       </item>
-       <item row="1" column="0">
-        <layout class="QFormLayout" name="interfaceLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="interfaceSelLab">
-           <property name="text">
-            <string>select interface</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QToolButton" name="interfaceUpdate">
-           <property name="text">
-            <string>Update interface</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QComboBox" name="interfaceInput">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLabel" name="interfaceInputLab">
-           <property name="text">
-            <string>select Input</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QComboBox" name="interfaceOutput">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLabel" name="interfaceOutputLab">
-           <property name="text">
-            <string>select Output</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="2" column="0">
-        <layout class="QGridLayout" name="bitDepthLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="bitDeptLab">
-           <property name="text">
-            <string>Bit Depth</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QComboBox" name="bitDepth">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QCheckBox" name="bitDeptDither">
-           <property name="text">
-            <string>dither on/off</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item row="3" column="0">
-        <layout class="QGridLayout" name="fsLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="fsSelLab">
-           <property name="text">
-            <string>Select Fs</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1" rowspan="3">
-          <widget class="QCheckBox" name="fsStandard">
-           <property name="text">
-            <string>Standard Fs</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QComboBox" name="fsSel">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLineEdit" name="fsEdit"/>
-         </item>
-        </layout>
+       <item row="11" column="0">
+        <widget class="QLabel" name="fsSelLab">
+         <property name="text">
+          <string>Select Fs</string>
+         </property>
+        </widget>
        </item>
        <item row="4" column="0">
-        <layout class="QVBoxLayout" name="buffSize">
+        <widget class="QComboBox" name="interfaceInput">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLabel" name="interfaceOutputLab">
+         <property name="text">
+          <string>select Output</string>
+         </property>
+        </widget>
+       </item>
+       <item row="18" column="0">
+        <widget class="QComboBox" name="WindowSel">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="interfaceSelLab">
+         <property name="text">
+          <string>select interface</string>
+         </property>
+        </widget>
+       </item>
+       <item row="20" column="1">
+        <widget class="QLineEdit" name="defFreqMaxEdit">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="0">
+        <widget class="QLabel" name="buffSizeLab">
+         <property name="text">
+          <string>buffersize</string>
+         </property>
+        </widget>
+       </item>
+       <item row="19" column="1">
+        <widget class="QLabel" name="defFreqMaxLab">
+         <property name="text">
+          <string>default frequency Max</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="0">
+        <widget class="QComboBox" name="buffSizeSel">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="bitDeptLab">
+         <property name="text">
+          <string>Bit Depth</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="22" column="0">
+        <widget class="QLabel" name="styleSheetLab">
+         <property name="text">
+          <string>Style Sheet</string>
+         </property>
+        </widget>
+       </item>
+       <item row="21" column="0" colspan="2">
+        <widget class="Line" name="line_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QLabel" name="buffSizeLab">
-           <property name="text">
-            <string>buffersize</string>
-           </property>
-          </widget>
+          <widget class="QLineEdit" name="File_loc_box1"/>
          </item>
          <item>
-          <widget class="QComboBox" name="buffSizeSel">
+          <widget class="QPushButton" name="File_loc_but">
            <property name="minimumSize">
             <size>
-             <width>162</width>
-             <height>0</height>
+             <width>16</width>
+             <height>16</height>
             </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Map</string>
            </property>
           </widget>
          </item>
         </layout>
+       </item>
+       <item row="3" column="1">
+        <widget class="QToolButton" name="interfaceUpdate">
+         <property name="text">
+          <string>Update interface</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QComboBox" name="bitDepth">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLabel" name="interfaceInputLab">
+         <property name="text">
+          <string>select Input</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
+        <widget class="QCheckBox" name="fsStandard">
+         <property name="text">
+          <string>Standard Fs</string>
+         </property>
+        </widget>
+       </item>
+       <item row="25" column="0">
+        <widget class="QComboBox" name="comboBox_7">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="0">
+        <widget class="QLineEdit" name="fsEdit"/>
+       </item>
+       <item row="24" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>select interface</string>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="1">
+        <widget class="QPushButton" name="OverlapTest">
+         <property name="text">
+          <string>Test</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QLabel" name="interfaceOutputLab_2">
+         <property name="text">
+          <string>Channels</string>
+         </property>
+        </widget>
+       </item>
+       <item row="23" column="0">
+        <widget class="QComboBox" name="styleSheetSel">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
        <item row="5" column="0">
-        <layout class="QGridLayout" name="windowLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="windowLab">
-           <property name="text">
-            <string>Default Window</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="OverlapTest">
-           <property name="text">
-            <string>Test</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QComboBox" name="WindowSel">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QDoubleSpinBox" name="overlapPercent"/>
-         </item>
-        </layout>
+        <widget class="QComboBox" name="interfaceOutput">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
-       <item row="6" column="0">
-        <layout class="QGridLayout" name="defFreqLayout">
-         <item row="0" column="0">
-          <widget class="QLabel" name="defFreqMinLab">
-           <property name="text">
-            <string>default frequency Min</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QLabel" name="defFreqMaxLab">
-           <property name="text">
-            <string>default frequency Max</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLineEdit" name="defFreqMinEdit">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="defFreqMaxEdit">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="19" column="0">
+        <widget class="QLabel" name="defFreqMinLab">
+         <property name="text">
+          <string>default frequency Min</string>
+         </property>
+        </widget>
+       </item>
+       <item row="16" column="0" colspan="2">
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QCheckBox" name="bitDeptDither">
+         <property name="text">
+          <string>dither on/off</string>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="0">
+        <widget class="QLabel" name="windowLab">
+         <property name="text">
+          <string>Default Window</string>
+         </property>
+        </widget>
        </item>
        <item row="7" column="0">
-        <layout class="QVBoxLayout" name="styleSheet">
-         <item>
-          <widget class="QLabel" name="styleSheetLab">
-           <property name="text">
-            <string>Style Sheet</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="styleSheetSel">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QComboBox" name="interfaceOutput_2">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
        </item>
-       <item row="8" column="0">
-        <layout class="QVBoxLayout" name="verticalLayout_7">
-         <item>
-          <widget class="QLabel" name="label_8">
-           <property name="text">
-            <string>select interface</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboBox_7">
-           <property name="minimumSize">
-            <size>
-             <width>162</width>
-             <height>0</height>
-            </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
+       <item row="18" column="1">
+        <widget class="QDoubleSpinBox" name="overlapPercent"/>
+       </item>
+       <item row="20" column="0">
+        <widget class="QLineEdit" name="defFreqMinEdit">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="0">
+        <widget class="QComboBox" name="fsSel">
+         <property name="minimumSize">
+          <size>
+           <width>162</width>
+           <height>0</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="File_loc">
+         <property name="text">
+          <string>Default File Location</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -313,7 +348,6 @@
  </widget>
  <tabstops>
   <tabstop>File_loc_box1</tabstop>
-  <tabstop>File_loc_box2</tabstop>
   <tabstop>interfaceUpdate</tabstop>
   <tabstop>interfaceInput</tabstop>
   <tabstop>interfaceOutput</tabstop>

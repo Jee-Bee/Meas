@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>287</width>
-    <height>359</height>
+    <height>440</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,6 +24,12 @@
          <height>0</height>
         </size>
        </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::NoButtons</enum>
+       </property>
       </widget>
      </item>
      <item row="0" column="1">
@@ -33,6 +39,9 @@
          <width>65</width>
          <height>0</height>
         </size>
+       </property>
+       <property name="buttonSymbols">
+        <enum>QAbstractSpinBox::NoButtons</enum>
        </property>
       </widget>
      </item>
@@ -48,7 +57,14 @@
    <item row="2" column="0">
     <layout class="QGridLayout" name="gridfunc">
      <item row="1" column="1">
-      <widget class="QSpinBox" name="spinBox"/>
+      <widget class="QSpinBox" name="LevelSend">
+       <property name="minimum">
+        <number>-192</number>
+       </property>
+       <property name="maximum">
+        <number>0</number>
+       </property>
+      </widget>
      </item>
      <item row="5" column="0" colspan="2">
       <layout class="QGridLayout" name="gridLayout_2">
@@ -191,7 +207,7 @@
       </layout>
      </item>
      <item row="0" column="1">
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="Level_lab">
        <property name="text">
         <string>SoundLevel</string>
        </property>
