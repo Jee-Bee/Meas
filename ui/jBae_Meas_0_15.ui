@@ -192,12 +192,12 @@
      </widget>
     </item>
     <item row="3" column="1">
-     <widget class="QToolButton" name="startMeas">
+     <widget class="QToolButton" name="runMeas">
       <property name="toolTip">
-       <string>Start Measurement</string>
+       <string>Run Measurement</string>
       </property>
       <property name="text">
-       <string>Start Measurement</string>
+       <string>Run Measurement</string>
       </property>
      </widget>
     </item>
@@ -223,7 +223,7 @@
     </item>
    </layout>
    <zorder>testSig</zorder>
-   <zorder>startMeas</zorder>
+   <zorder>runMeas</zorder>
    <zorder>jBaeLogo</zorder>
    <zorder>Plot_top</zorder>
    <zorder>Plot_bottom</zorder>
@@ -238,7 +238,7 @@
      <height>23</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuJBae_Meas">
+   <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
     </property>
@@ -253,7 +253,7 @@
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
-     <string>Edit</string>
+     <string>&amp;Edit</string>
     </property>
     <addaction name="actionDelete_Measurement"/>
     <addaction name="separator"/>
@@ -269,12 +269,12 @@
    </widget>
    <widget class="QMenu" name="menuMeasurements">
     <property name="title">
-     <string>Measurements</string>
+     <string>&amp;Measurements</string>
     </property>
     <addaction name="actionTest_Signal"/>
     <addaction name="actionRun_Measurent"/>
    </widget>
-   <addaction name="menuJBae_Meas"/>
+   <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuMeasurements"/>
   </widget>
@@ -345,7 +345,7 @@
   </action>
   <action name="actionDelete_Measurement">
    <property name="text">
-    <string>Delete Measurement</string>
+    <string>&amp;Delete Measurement</string>
    </property>
   </action>
   <action name="actionOpen">
@@ -372,12 +372,12 @@
   </action>
   <action name="actionTest_Signal">
    <property name="text">
-    <string>Test Signal</string>
+    <string>&amp;Test Signal</string>
    </property>
   </action>
   <action name="actionRun_Measurent">
    <property name="text">
-    <string>Run Measurent</string>
+    <string>&amp;Run Measurent</string>
    </property>
   </action>
   <action name="actionHome_Top">
@@ -423,7 +423,7 @@
  </widget>
  <layoutdefault spacing="6" margin="9"/>
  <tabstops>
-  <tabstop>startMeas</tabstop>
+  <tabstop>runMeas</tabstop>
   <tabstop>testSig</tabstop>
   <tabstop>panTop</tabstop>
   <tabstop>zoomTop</tabstop>
