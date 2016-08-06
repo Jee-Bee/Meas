@@ -30,10 +30,16 @@ class Meas(QtWidgets.QDialog):
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("../resources/icons/MeasLogo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.setWindowIcon(icon)
-        self.setWindowTitle("Meas Preferences")
+        self.setWindowTitle("Meas Measurement")
 
 # http://stackoverflow.com/questions/8687723/pyqthow-do-i-display-a-image-properly
 #        self.ui.JbaeIcon = QtGui.QGraphicsPixmapItem()
+
+        #date and time properties:
+        self.ui.dateEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
+        self.ui.dateEdit.setDate(QtCore.QDate.currentDate())
+        self.ui.timeEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
+        self.ui.timeEdit.setTime(QtCore.QTime.currentTime())
 
         # Measurement Properties
         self.ui.sigTypeSel.addItem("Sine")
@@ -58,17 +64,19 @@ class Meas(QtWidgets.QDialog):
 #        self.ui.lengthSelect.addItem("1024")
         self.ui.lengthSelect.activated[str].connect(self.sweep_length)
 
-        self.ui.SweepsSelect.addItem("1")
-        self.ui.SweepsSelect.addItem("2")
-        self.ui.SweepsSelect.addItem("3")
-        self.ui.SweepsSelect.addItem("5")
-        self.ui.SweepsSelect.addItem("7")
-        self.ui.SweepsSelect.addItem("9")
-        self.ui.SweepsSelect.activated[str].connect(self.sweep_iterations)
+        self.ui.repeatsSel.addItem("1")
+        self.ui.repeatsSel.addItem("2")
+        self.ui.repeatsSel.addItem("3")
+        self.ui.repeatsSel.addItem("5")
+        self.ui.repeatsSel.addItem("7")
+        self.ui.repeatsSel.addItem("9")
+        self.ui.repeatsSel.activated[str].connect(self.sig_Repeats)
+
+        self.ui.progressBar.setProperty("value", 0)
 
         #buttonBox:
         # see: http://stackoverflow.com/questions/35443399/pyqt-what-signal-does-my-standard-apply-button-emit-and-how-do-i-write-the-s
-        self.ui.buttonBox.accepted.connect(self.measfOk)
+        self.ui.buttonBox.accepted.connect(self.measOk)
         self.ui.buttonBox.rejected.connect(self.measCancel)
 
 
@@ -81,7 +89,7 @@ class Meas(QtWidgets.QDialog):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
-    def sweep_iterations(self):
+    def sig_Repeats(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 

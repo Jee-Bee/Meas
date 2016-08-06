@@ -182,14 +182,14 @@
      <item row="3" column="0">
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QLabel" name="sweepsLab">
+        <widget class="QLabel" name="repeatsLab">
          <property name="text">
-          <string>No Sweeps</string>
+          <string>No Repeats</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="SweepsSelect">
+        <widget class="QComboBox" name="repeatsSel">
          <property name="minimumSize">
           <size>
            <width>140</width>
