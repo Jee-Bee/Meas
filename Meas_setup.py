@@ -30,14 +30,13 @@ class Meas(QtWidgets.QMainWindow):
         self.setWindowIcon(icon)
         self.setWindowTitle("Meas Sound Measurement Tool")
 
-        # logo jBae:
-        jBae = QtGui.QPixmap('./resources/icons/jBaeLogo_0_1.png')
-        jBae_Scaled = jBae.scaled(self.ui.jBaeLogo.size(), QtCore.Qt.KeepAspectRatio)
-        self.ui.jBaeLogo.setPixmap(jBae)
-        # self.ui.jBaeLogo.scaledContents(True)
-        self.ui.jBaeLogo.show()
+        # make global variable for number of recordings:
+        nRecordings = []
+        global nRecordings
+        nRecordings = 0
 
         # Menu bar
+        # File Menu:
         self.ui.actionNew.triggered.connect(self.new_file)
         # self.ui.actionOpen.setText(_translate("MeasMain", "&Open"))
         self.ui.actionOpen.triggered.connect(self.open_file)
@@ -53,43 +52,38 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.actionExit.triggered.connect(self.Exit)
         # self.ui.actionExit.setText(_translate("MeasMain", "&Quit"))
 
+        # Edit Menu
         self.ui.actionDelete_Measurement.triggered.connect(self.Delete_Measurement)
         # self.ui.actionDelete_Measurement.setText(_translate("MeasMain", "&Delete"))
+        # Top figure
+        self.ui.actionHome_Top.triggered.connect(self.home_Top)
+        self.ui.actionZoom_Top.triggered.connect(self.zoom_Top)
+        self.ui.actionPan_Top.triggered.connect(self.pan_Top)
+        self.ui.actionFig_Preferences_Top.triggered.connect(self.pref_Top)
+        # Bottom figure
+        self.ui.actionHome_Bottom.triggered.connect(self.home_Bottom)
+        self.ui.actionZoom_Bottom.triggered.connect(self.zoom_Bottom)
+        self.ui.actionPan_Bottom.triggered.connect(self.pan_Bottom)
+        self.ui.actionFig_Preferences_Bottom.triggered.connect(self.pref_Bottom)
 
-# http://stackoverflow.com/questions/8687723/pyqthow-do-i-display-a-image-properly
-#        self.ui.JbaeIcon = QtGui.QGraphicsPixmapItem()
+        # Measurement Menu:
+        self.ui.actionRun_Measurent.triggered.connect(self.run_Measurement)
+        self.ui.actionTest_Signal.triggered.connect(self.run_Test)
 
-        # Measurement Properties
-        self.ui.sigTypeSel.addItem("Sine")
-        self.ui.sigTypeSel.addItem("Sawtooth")
-        self.ui.sigTypeSel.addItem("Square")
-        self.ui.sigTypeSel.addItem("Triangle")
-        self.ui.sigTypeSel.addItem("ChirpLin")
-        self.ui.sigTypeSel.addItem("ChirpLog")
-        self.ui.sigTypeSel.addItem("Wnoise")
-        self.ui.sigTypeSel.addItem("Pnoise")
-        self.ui.sigTypeSel.addItem("bnoise")
-        self.ui.sigTypeSel.addItem("multitone")
-        self.ui.sigTypeSel.addItem("ChirpPoly")
-#        self.ui.sigTypeSel.addItem("")
-        self.ui.sigTypeSel.activated[str].connect(self.signal)
+        # http://stackoverflow.com/questions/8687723/pyqthow-do-i-display-a-image-properly
+        # self.ui.JbaeIcon = QtGui.QGraphicsPixmapItem()
+        # logo jBae:
+        jBae = QtGui.QPixmap('./resources/icons/jBaeLogo_0_1.png')
+        jBae_Scaled = jBae.scaled(self.ui.jBaeLogo.size(), QtCore.Qt.KeepAspectRatio)
+        self.ui.jBaeLogo.setPixmap(jBae)
+        # self.ui.jBaeLogo.scaledContents(True)
+        self.ui.jBaeLogo.show()
 
-        self.ui.lengthSelect.addItem("128")
-        self.ui.lengthSelect.addItem("256")
-        self.ui.lengthSelect.addItem("512")
-        self.ui.lengthSelect.addItem("1024")
-        self.ui.lengthSelect.addItem("2048")
-#        self.ui.lengthSelect.addItem("1024")
-        self.ui.lengthSelect.activated[str].connect(self.sweep_length)
-
-        self.ui.SweepsSelect.addItem("1")
-        self.ui.SweepsSelect.addItem("2")
-        self.ui.SweepsSelect.addItem("3")
-        self.ui.SweepsSelect.addItem("5")
-        self.ui.SweepsSelect.addItem("7")
-        self.ui.SweepsSelect.addItem("9")
-        self.ui.SweepsSelect.activated[str].connect(self.sweep_iterations)
-
+        # date and time settings
+        self.ui.dateTimeEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
+        self.ui.dateTimeEdit.setDate(QtCore.QDate.currentDate())
+        self.ui.dateTimeEdit.setTime(QtCore.QTime.currentTime())
+        
         # Figure buttons:
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap("./resources/icons/WrenchSm.png"), QtGui.QIcon.Normal, QtGui.QIcon.On)
@@ -123,11 +117,9 @@ class Meas(QtWidgets.QMainWindow):
         self.ui.panBottom.clicked.connect(self.pan_Bottom)
         self.ui.prefBottom.clicked.connect(self.pref_Bottom)
 
-
-        self.ui.progressBar.setProperty("value", 1)
-        self.ui.dateTimeEdit.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
-        self.ui.dateTimeEdit.setDate(QtCore.QDate.currentDate())
-        self.ui.dateTimeEdit.setTime(QtCore.QTime.currentTime())
+        # recordings toolbox pages
+        # http://www.qtcentre.org/threads/23057-how-do-add-a-page-in-QToolBox
+        self.ui.Recordings.setVisible(False)
 
 <<<<<<< dd1546fb7f675a3674b358bc0aebfa897f5a8e45
 <<<<<<< decf4668f561e57ea2b52cdd75741cfd7958ca88
@@ -160,7 +152,7 @@ class Meas(QtWidgets.QMainWindow):
 =======
         # test + run measurement
         self.ui.testSig.clicked.connect(self.run_Test)
-        self.ui.startMeas.clicked.connect(self.run_Measurement)
+        self.ui.runMeas.clicked.connect(self.run_Measurement)
 
 >>>>>>> add MeasMaster = Measurement to MeasMaster = Main
 # Menu:
@@ -227,20 +219,6 @@ class Meas(QtWidgets.QMainWindow):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
-
-    # Signal Parameters
-    def signal(self):
-        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
-                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
-
-    def sweep_length(self):
-        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
-                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
-
-    def sweep_iterations(self):
-        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
-                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
-
     # Pricture options
 
     def home_Top(self):
@@ -272,12 +250,18 @@ class Meas(QtWidgets.QMainWindow):
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
     def pref_Bottom(self):
-        self.figMenu = FigMaster.runfig()
+        self.figMenu = FigMaster.runFig()
         self.figMenu.show()
 
     def run_Measurement(self):
-        Message = QtWidgets.QMessageBox.information(self, "Empty function!",
-                                                    "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        self.measMenu = MeasMaster.runMeas()
+        self.measMenu.show()
+        global nRecordings
+        if nRecordings == 0:
+            self.ui.Recordings.setVisible(True)
+            nRecordings += 1
+        else:
+            self.ui.Recordings(QtToolbox.addItem())
 
     def run_Test(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
