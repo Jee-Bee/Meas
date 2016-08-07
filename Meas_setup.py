@@ -121,6 +121,7 @@ class Meas(QtWidgets.QMainWindow):
         # http://www.qtcentre.org/threads/23057-how-do-add-a-page-in-QToolBox
         self.ui.Recordings.setVisible(False)
 
+<<<<<<< HEAD
 <<<<<<< dd1546fb7f675a3674b358bc0aebfa897f5a8e45
 <<<<<<< decf4668f561e57ea2b52cdd75741cfd7958ca88
 <<<<<<< d5a010b1da627195f94115bffd91020e3e23bec7
@@ -150,11 +151,16 @@ class Meas(QtWidgets.QMainWindow):
 =======
 >>>>>>> Update MeasMaster.py
 =======
+=======
+>>>>>>> df917c2a96a31cb280c3df1790d71d7091912b96
         # test + run measurement
         self.ui.testSig.clicked.connect(self.run_Test)
         self.ui.runMeas.clicked.connect(self.run_Measurement)
 
+<<<<<<< HEAD
 >>>>>>> add MeasMaster = Measurement to MeasMaster = Main
+=======
+>>>>>>> df917c2a96a31cb280c3df1790d71d7091912b96
 # Menu:
     def new_file(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
@@ -198,7 +204,10 @@ class Meas(QtWidgets.QMainWindow):
         self.prefMenu.show()
 
 
+<<<<<<< HEAD
 >>>>>>> add menu structure of File Menu
+=======
+>>>>>>> df917c2a96a31cb280c3df1790d71d7091912b96
 # http://stackoverflow.com/questions/36180552/linking-pyqt-files-dont-relate/
     def Exit(self):
         choice = QtWidgets.QMessageBox.question(self, 'Exit Meas',
@@ -206,6 +215,7 @@ class Meas(QtWidgets.QMainWindow):
                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
         if choice == QtWidgets.QMessageBox.Yes:
             self.close()
+<<<<<<< HEAD
 <<<<<<< d6a800c100fb796e3a29b203c83f51c7d5e17793
 >>>>>>> change exit function for better method see link
 =======
@@ -213,6 +223,9 @@ class Meas(QtWidgets.QMainWindow):
 <<<<<<< 7595d586e3b09885fe9254e3205016203c8220f1
 >>>>>>> Update Exit definition and add link to stackoverflow
 =======
+=======
+
+>>>>>>> df917c2a96a31cb280c3df1790d71d7091912b96
 # http://codeprogress.com/python/libraries/pyqt/showPyQTExample.php?key=QLCDNumberDigitalClock&index=409
 
     def Delete_Measurement(self):
@@ -268,7 +281,10 @@ class Meas(QtWidgets.QMainWindow):
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
 
 
+<<<<<<< HEAD
 >>>>>>> Add Current Time to viewer and fill comboboxes
+=======
+>>>>>>> df917c2a96a31cb280c3df1790d71d7091912b96
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
