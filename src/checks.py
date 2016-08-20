@@ -142,6 +142,28 @@ def input_check(data):
             return(False)
             # raise MeasWarning.TypeWarning('wrong input type')
 
+def input_direction(sig, axis=0):
+    """ input direction
+    inputs:
+        sig = ...
+        axis = ... 
+    outputs:
+        sig = ...
+    max number of axis is two (0 and 1) else gives an input error
+    """
+    if len(chanshape) == 1:
+        # std fft is correct
+        print('std FFT is fine no multi channel FFT Needed')
+    elif len(chanshape) == 2:
+        if chanshape[0] < chanshape[1]:
+            print('right direction')
+        else:
+            # wrong direction... Transform needed
+            print('Transform Needed')
+            chansine = chansine.T  # signal transformed
+        print(chanshape[0])
+    else:
+        raise ValueError('not a valid number of dimensions')
 
 def istuple(var):
     """
