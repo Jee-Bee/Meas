@@ -68,16 +68,14 @@ def repAvg(repsig, reps, l0=None):
 def mrepeat(sig, reps, channels, l0=None, fs=None, addzeros=False, method=1):
     if method == 1:
         # step 1: repeat chrip signal:
-        rep_sig = srepeat(sig, reps, l0, fs, addzeros)
-        msig = np.zeros((channels, channels * len(rep_sig)))
-        l = len(rep_sig)
+        rep_sig, l = srepeat(sig, reps, l0, fs, addzeros)
+        msig = np.zeros((channels, channels * l))
         # step 2 place chirps in total lenght signal positions
         for channel in range(channels):
             msig[channel, channel * l: (channel + 1) * l] = rep_sig
     # method 2: chirps in channels; repeat all channels
     elif method == 2:
-        sig = srepeat(sig, 1, l0, fs, addzeros)
-        l = len(sig)
+        sig, l = srepeat(sig, 1, l0, fs, addzeros)
         msig = np.zeros((channels, channels * len(sig)))
         # step 1 place chirps in single chirp positions
         for channel in range(channels):
