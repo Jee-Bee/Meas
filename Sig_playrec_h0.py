@@ -13,21 +13,23 @@ from src.measwarning import InterfaceWarning
 
 try:
     import numpy as np
-    import src.siggen as sg
-    from src import transform, checks, weighting, repeat, spectraldistr
     # from importlib.machinery import SourceFileLoader
     import matplotlib.pyplot as plt
+    import src.siggen as sg
+    from src import transform, checks, weighting, repeat, spectraldistr
     # from src.DefaultFigures import Time, SpecMag, SpecPh
     from src.defaultfigures import *  # defaultFigures
+
 
     T = 5  # [s] T= Time in seconds
     f = (10, 350)  # [Hz] Frequency signal generation
     fs = 44100  # [Hz] fs = Samplerate
-    repeats = 3
+    nChannels = 'stereo'  # 'Mono'; 'Stereo' or int value
+    repeats = 3  # repeating the signal = Averaging the noise
 
-    RMS_res = True  # other option is 'False'
-    crest_res = True  # other option is 'False'
-    papr_res = True  # other option is 'False'
+    RMS_res = False  # other option is 'False'
+    crest_res = False  # other option is 'False'
+    papr_res = False  # other option is 'False'
 
     weighting_filt = None  # oher options are the weightings 'A', 'B', 'C' and 'D'
     spectrum = 'AS'  # select spectrum type: AS; PS; SD and PSD respectivelijk
@@ -41,16 +43,20 @@ try:
     # FROM HERE START SCRIP DON EDIT ANYTHING WITHOUT KNOWLEDGE ABOUT MEAS!!
 
     f = np.array(f)
-    (sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
+    #(sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
+    # multi channel signal generation
+    (sigout, t) = sg.mSigGen('ChirpLog', f, T, fs, nChannels, repeat=3, l0=2)
     sigout = checks.input_type(sigout)
 
     # Signal to soundcard
 
-    sigout_rep, new_l = repeat.repSig(sigout, repeats, 2, fs, addzeros=True)
+    # replaced by multi channel function
+    sigout_rep = np.copy(sigout)
+    #sigout_rep, new_l = repeat.srepeat(sigout, repeats, 2, fs, addzeros=True)
 
     # sd.default.device = 6  # [6, 1]
     # Simultanious play/ recording
-    rec1 = sd.playrec(sigout_rep, fs, channels=2)
+    rec1 = sd.playrec(sigout_rep.T, fs, channels=2)
     sd.wait()
     # sd.stop()
 #    print(dtype(rec1))
@@ -60,13 +66,12 @@ try:
     # averaging from here:
     rec1 = repeat.repAvg(rec1, repeats)
 
-    sigout, new_l = repeat.repSig(sigout, 1, 2, fs, addzeros=True)
+    # sigout, new_l = repeat.srepeat(sigout, 1, 2, fs, addzeros=True)
     t = np.arange(0, len(sigout)) / fs
 
     # add RMS Crest and PAPR as optional processing
     if (RMS_res is True) or (crest is True) or (papr is true):
         from src import rms
-
         if RMS_res is True:
             sigout = rms.RMS(sigout)   # return RMS value of stard signal
             rec1 = rms.RMS(rec1)   # return RMS value of measurment
