@@ -86,10 +86,10 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='comp
     - fix right place of F(frequency bins)
     - Update Window for """
     nfft = NFFT(x)
-    N = len(x)  # Temporary solution
+    N_o = np.int(len(x))  # Original length
     if Window_type is None:
-        X = fft(x, nfft) / N
-        N = np.int(nfft)
+        X = fft(x, nfft) / N_o
+        N = np.int(nfft)  # maakt wel int obj
     elif Window_type == 'rectangle':
         N = np.int(Window_length)
     elif Window_type == 'triangle':
@@ -146,39 +146,46 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='comp
         elif spectrum is 'AmPh0':
             F = np.linspace(0, (N-1)/2, N/2)
             F = F/(N/fs)
-            AMP = abs(X[0:N/2])
-            PHI = np.arctan(np.real(X[0:N / 2]) / np.imag(X[0:N / 2]))
+            # N should be int becouse of nfft
+            half_spec = np.int(N / 2)
+            AMP = abs(X[0:half_spec])
+            PHI = np.arctan(np.real(X[0:half_spec]) / np.imag(X[0:half_spec]))
             return(F, AMP, PHI)
         elif spectrum is 'AmPh':
+            half_spec = np.int(N / 2)
             F = np.linspace(1, (N-1)/2, N/2 - 1)
             F = F/(N/fs)
-            AMP = abs(X[1:N/2])
-            PHI = np.arctan(np.real(X[1:N / 2])/np.imag(X[1:N / 2]))
+            AMP = abs(X[1:half_spec])
+            PHI = np.arctan(np.real(X[1:half_spec])/np.imag(X[1:half_spec]))
             return(F, AMP, PHI)
     else:
         if spectrum is 'complex':
-            F = np.linspace(0, (N-1)/2, N/2)
-            F = np.append(F, np.linspace(-N/2, -1, N/2))
+            half_spec = np.int(N / 2)
+            F = np.linspace(0, (N-1)/2, half_spec)
+            F = np.append(F, np.linspace(-half_spec, -1, half_spec))
             F = F/(N/fs)
             return(F, X, [])
         elif spectrum is 'ReIm':
-            F = np.linspace(0, (N-1)/2, N/2)
-            F = np.append(F, np.linspace(-N/2, -1, N/2))
+            half_spec = np.int(N / 2)
+            F = np.linspace(0, (N-1)/2, half_spec)
+            F = np.append(F, np.linspace(-half_spec, -1, half_spec))
             F = F/(N/fs)
             RE = np.real(X)
             IM = np.imag(X)
             return(F, RE, IM)
         elif spectrum is 'AmPh0':
-            F = np.linspace(0, (N-1)/2, N/2)
+            half_spec = np.int(N / 2)
+            F = np.linspace(0, (N-1)/2, half_spec)
             F = F/(N/fs)
-            AMP = abs(X[0:N/2])
-            PHI = np.arctan(np.real(X[0:N / 2]) / np.imag(X[0:N / 2]))
+            AMP = abs(X[0:half_spec])
+            PHI = np.arctan(np.real(X[0:half_spec]) / np.imag(X[0:half_spec]))
             return(F, AMP, PHI)
         elif spectrum is 'AmPh':
-            F = np.linspace(1, (N-1)/2, N/2 - 1)
+            half_spec = np.int(N / 2)
+            F = np.linspace(1, (N-1)/2, half_spec - 1)
             F = F/(N/fs)
-            AMP = abs(X[1:N/2])
-            PHI = np.arctan(np.real(X[1:N / 2])/np.imag(X[1:N / 2]))
+            AMP = abs(X[1:half_spec])
+            PHI = np.arctan(np.real(X[1:half_spec])/np.imag(X[1:half_spec]))
             return(F, AMP, PHI)
     # X = ft.fft(x, nfft) / N
     # F = np.arange(0, fs, 1 / (N / fs))

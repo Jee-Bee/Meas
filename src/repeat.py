@@ -57,7 +57,10 @@ def repAvg(repsig, reps, l0=None):
     TODO:
     - implement l0
     """
-    N = len(repsig)/reps  # signal Length singel signal
+    if len(repsig) % reps == 0:
+        N = int(len(repsig) / reps)  # signal Length singel signal
+    else:
+        raise ValueError("length of signal can't be divided by number of repeats")
     avgsig = np.zeros(N)
     for idx in range(reps):
         avgsig += repsig[idx * N:(idx+1) * N]

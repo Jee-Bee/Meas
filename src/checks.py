@@ -32,10 +32,19 @@ def even(x):
     - Magnitute signals have \'even\' symmetry
     - phase signals have \'odd\' symmetry +/- pi"""
     N = np.int(len(x))
-    if (x[1: N/2] == np.flipud(x[-N/2 + 1:])).all():
-        evenvals = True
+    if N % 2 == 0:
+        # N / 2 ia aloud to be odd it can be half spectrum... 
+        N_half = np.int(N / 2)
+        if (x[1: N_half] == np.flipud(x[-N_half + 1:])).all():
+            evenvals = True
+        else:
+            evenvals = False
     else:
-        evenvals = False
+        N_half = np.int((N - 1) / 2)
+        if (x[1: N_half] == np.flipud(x[-N_half + 1:])).all():
+            evenvals = True
+        else:
+            evenvals = False
     return(evenvals)
 
 
@@ -188,10 +197,18 @@ def odd(x):
     - Magnitute signals have \'even\' symmetry
     - phase signals have \'odd\' symmetry +/- pi"""
     N = np.int(len(x))
-    if (x[1: N/2] == - np.flipud(x[-N/2 +1 :])).all():
-        oddvals = True
+    if N % 2 == 0:
+        N_half = np.int(N / 2)
+        if (x[1: N_half] == - np.flipud(x[-N_half +1 :])).all():
+            oddvals = True
+        else:
+            oddvals = False 
     else:
-        oddvals = False    
+        N_half = np.int((N - 1) / 2)
+        if (x[1: N_half] == - np.flipud(x[-N_half +1 :])).all():
+            oddvals = True
+        else:
+            oddvals = False 
     return(oddvals)
 
 
