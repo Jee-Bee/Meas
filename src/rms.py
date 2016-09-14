@@ -229,4 +229,142 @@ def PAPR_dB(sig):  # Peak to Average Power Ratio
 
 # par
 
+def mRMS(msig):
+    msig_shape = np.shape(msig)
+    if len(msig_shape) ==1:
+        mRMS = RMS(msig)
+    elif len(msig_shape) ==2:
+        if msig_shape[0] < msig_shape[1]:
+            pass
+        elif msig_shape[0] > msig_shape[1]:
+            msig = msig.T
+            msig_shape = np.shape(msig)
+        mRMS = []
+        for channel in range(msig_shape[0]):
+            si_RMS = RMS(msig[channel])
+            if channel == 0:
+                mRMS = np.append(mRMS, si_RMS)
+            else:
+                mRMS = np.vstack((mRMS, si_RMS))
+    else:
+        raise ValueError('not a valid number of dimensions')
+    return(mRMS)
+
+
+def mRMSf(msig):
+    msig_shape = np.shape(msig)
+    if len(msig_shape) ==1:
+        mRMSf = RMSf(msig)
+    elif len(msig_shape) ==2:
+        if msig_shape[0] < msig_shape[1]:
+            pass
+        elif msig_shape[0] > msig_shape[1]:
+            msig = msig.T
+            msig_shape = np.shape(msig)
+        mRMSf = []
+        for channel in range(msig_shape[0]):
+            si_RMSf = RMSf(msig[channel])
+            if channel == 0:
+                mRMSf = np.append(mRMSf, si_RMSf)
+            else:
+                mRMSf = np.vstack((mRMSf, si_RMSf))
+    else:
+        raise ValueError('not a valid number of dimensions')
+    return(mRMSf)
+
+
+def mRMSe(x_theo, x_measurement):
+    theo_shape = np.shape(x_theo)
+    measurement_shape = np.shape(x_measurement)
+    if (len(theo_shape) == 1) and (len(measurement_shape) == 1):
+        mRMSe = RMSe(x_theo, x_measurement)
+    elif (len(theo_shape) == 1) and (len(measurement_shape) == 2):
+        if measurement_shape[0] < measurement_shape[1]:
+            pass
+        elif measurement_shape[0] > measurement_shape[1]:
+            x_measurement = x_measurement.T
+            measurement_shape = np.shape(x_measurement)
+        mRMSe = []
+        for channel in range(measurement_shape[0]):
+            si_RMSe = RMSe(x_theo, x_measurement[channel])
+            if channel == 0:
+                mRMSe = np.append(mRMSe, si_RMSe)
+            else:
+                mRMSe = np.vstack((mRMSe, si_RMSe))
+    elif (len(theo_shape) == 2) and (len(measurement_shape) == 2):
+        if theo_shape[0] < theo_shape[1]:
+            pass
+        elif theo_shape[0] > theo_shape[1]:
+            x_theo = x_theo.T
+            theo_shape = np.shape(x_theo)
+        if measurement_shape[0] < measurement_shape[1]:
+            pass
+        elif measurement_shape[0] > measurement_shape[1]:
+            x_measurement = x_measurement.T
+            measurement_shape = np.shape(x_measurement)
+        mRMSe = []
+        for channel in range(measurement_shape[0]):
+            si_RMSe = RMSe(x_theo[channel], x_measurement[channel])
+            if channel == 0:
+                mRMSe = np.append(mRMSe, si_RMSe)
+            else:
+                mRMSe = np.vstack((mRMSe, si_RMSe))
+    else:
+        raise ValueError('not a valid number of dimensions')
+    return(mRMS)
+
+def mCrest(msig):
+    msig_shape = np.shape(msig)
+    if len(msig_shape) ==1:
+        mCrest = Crest(msig)
+    elif len(msig_shape) ==2:
+        if msig_shape[0] < msig_shape[1]:
+            pass
+        elif msig_shape[0] > msig_shape[1]:
+            msig = msig.T
+            msig_shape = np.shape(msig)
+        mCrest = []
+        for channel in range(msig_shape[0]):
+            si_Crest = Crest(msig[channel])
+            mCrest = np.append(mCrest,si_Crest )
+    else:
+        raise ValueError('not a valid number of dimensions')
+    return(mCrest)
+
+
+def mPAPR(msig):
+    msig_shape = np.shape(msig)
+    if len(msig_shape) == 1:
+        mCrest = Crest(msig)
+    elif len(msig_shape) == 2:
+        if msig_shape[0] < msig_shape[1]:
+            pass
+        elif msig_shape[0] > msig_shape[1]:
+            msig = msig.T
+            msig_shape = np.shape(msig)
+        mPAPR = []
+        for channel in range(msig_shape[0]):
+            mPAPR = np.append(mPAPR, PAPR(msig[channel]))
+    else:
+        raise ValueError('not a valid number of dimensions')
+    return(mPAPR)
+
+
+def mPAPR_dB(msig):
+    msig_shape = np.shape(msig)
+    if len(msig_shape) == 1:
+        mCrest = Crest(msig)
+    elif len(msig_shape) == 2:
+        if msig_shape[0] < msig_shape[1]:
+            pass
+        elif msig_shape[0] > msig_shape[1]:
+            msig = msig.T
+            msig_shape = np.shape(msig)
+        mPAPR = []
+        for channel in range(msig_shape[0]):
+            mPAPR = np.append(mPAPR, PAPR_dB[channel])
+    else:
+        raise ValueError('not a valid number of dimensions')
+    return(mPAPR)
+
 # RMS.py
