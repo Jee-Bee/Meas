@@ -351,3 +351,42 @@ def ImpulseResponse(H, F):
 
 def Cepstrum(x):
     pass
+
+
+def mFFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='complex'):
+    """
+    multi channel version of the FFT function.
+    For information about input and or output parameters see FFT.
+    Multi channel check for number of channels as long as the maximum number of
+    channels is smaller than 128 and the number of channels is less than the
+    number of samples of the signal!
+    """
+    fft_shape = np.shape(x)
+    print(fft_shape)
+    if len(fft_shape) == 1:
+        mF, mX1, mX2 = FFT(x, fs, Window_type, Window_length, shift, spectrum)
+    elif len(fft_shape) == 2:
+        if fft_shape[0] < fft_shape[1]:
+            print(fft_shape)
+            pass
+        elif fft_shape[0] > fft_shape[1]:
+            x = x.T
+            fft_shape = np.shape(x)
+        mF = mX1 = mX2 = []
+        for channel in range(fft_shape[0]):
+            print(channel)
+            si_mF, si_mX1, si_mX2 = FFT(x[channel], fs, Window_type, Window_length, shift, spectrum)
+            if channel == 0:
+                mF = np.append(mF, si_mF)
+                mX1 = np.append(mX1, si_mX1)
+                mX2 = np.append(mX2, si_mX2)
+            else:
+                mF = np.vstack((mF, si_mF))
+                mX1 = np.vstack((mX1, si_mX1))
+                if si_mX2 == []:
+                    pass
+                else:
+                    mX2 = np.vstack((mX2, si_mX2))
+    elif len(fft_shape) > 2:
+        raise ValueError("Shape of input can't be greather than 2")
+    return(mF, mX1, mX2)
