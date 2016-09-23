@@ -360,21 +360,20 @@ def mFFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='com
     Multi channel check for number of channels as long as the maximum number of
     channels is smaller than 128 and the number of channels is less than the
     number of samples of the signal!
+    TODO:
+    - limit the number of channels
     """
     fft_shape = np.shape(x)
-    print(fft_shape)
     if len(fft_shape) == 1:
         mF, mX1, mX2 = FFT(x, fs, Window_type, Window_length, shift, spectrum)
     elif len(fft_shape) == 2:
         if fft_shape[0] < fft_shape[1]:
-            print(fft_shape)
             pass
         elif fft_shape[0] > fft_shape[1]:
             x = x.T
             fft_shape = np.shape(x)
         mF = mX1 = mX2 = []
         for channel in range(fft_shape[0]):
-            print(channel)
             si_mF, si_mX1, si_mX2 = FFT(x[channel], fs, Window_type, Window_length, shift, spectrum)
             if channel == 0:
                 mF = np.append(mF, si_mF)
@@ -390,3 +389,71 @@ def mFFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='com
     elif len(fft_shape) > 2:
         raise ValueError("Shape of input can't be greather than 2")
     return(mF, mX1, mX2)
+
+
+def mTransfer(x_in, x_out, fs):
+    """
+    multi channel version of the Transfer function.
+    For information about input and or output parameters see Transfer.
+    Multi channel check for number of channels as long as the maximum number of
+    channels is smaller than 128 and the number of channels is less than the
+    number of samples of the signal!
+    TODO:
+    - limit the number of channels
+    """
+    transin_shape = np.shape(x_in)
+    transout_shape = np.shape(x_out)
+    print(transin_shape, transout_shape)
+    if (len(transin_shape) and len(transout_shape)) == 1:
+        print("in 1 out 1")
+        mH_0 = Transfer(x_in, x_out, fs)
+    elif (len(transin_shape) and len(transout_shape)) == 2:
+        print("in 2 out 2")
+        if transin_shape[0] < transin_shape[1]:
+            pass
+        elif transin_shape[0] > transin_shape[1]:
+            x_in = x_in.T
+            transin_shape = np.shape(x_in)
+        if transout_shape[0] < transout_shape[1]:
+            pass
+        elif transout_shape[0] > transout_shape[1]:
+            x_out = x_out.T
+            transout_shape = np.shape(x_out)
+        mH_0 = []
+        for channel in range(transout_shape[0]):
+            si_H_0 = Transfer(x_in, x_out[channel], fs)
+            if channel == 0:
+                mH_0 = np.append(mH_0, si_H_0)
+            else:
+                mH_0 = np.vstack((mH_0, si_H_0))
+    elif len(transout_shape) == 2:
+        print("in 1 out 2")
+        if transout_shape[0] < transout_shape[1]:
+            pass
+        elif transout_shape[0] > transout_shape[1]:
+            x_out = x_out.T
+            transout_shape = np.shape(x_out)
+        mH_0 = []
+        for channel in range(transout_shape[0]):
+            si_H_0 = Transfer(x_in, x_out[channel], fs)
+            if channel == 0:
+                mH_0 = np.append(mH_0, si_H_0)
+            else:
+                mH_0 = np.vstack((mH_0, si_H_0))
+    elif len(transin_shape) == 2:
+        print("in 2 out 1")
+        if transin_shape[0] < transin_shape[1]:
+            pass
+        elif transin_shape[0] > transin_shape[1]:
+            x_in = x_in.T
+            transin_shape = np.shape(x_in)
+        mH_0 = []
+        for channel in range(transin_shape[0]):
+            si_H_0 = Transfer(x_in[channel], x_out, fs)
+            if channel == 0:
+                mH_0 = np.append(mH_0, si_H_0)
+            else:
+                mH_0 = np.vstack((mH_0, si_H_0))
+    elif (len(transin_shape) or len(transout_shape)) > 2:
+        raise ValueError("Shape of input can't be greather than 2")
+    return(mH_0)
