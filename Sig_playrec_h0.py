@@ -27,12 +27,12 @@ try:
     nChannels = 'stereo'  # 'Mono'; 'Stereo' or int value
     repeats = 3  # repeating the signal = Averaging the noise
 
-    RMS_res = False  # other option is 'False'
-    crest_res = False  # other option is 'False'
-    papr_res = False  # other option is 'False'
+    RMS_res = True  # other option is 'False'
+    crest_res = True  # other option is 'False'
+    papr_res = True  # other option is 'False'
 
     weighting_filt = None  # oher options are the weightings 'A', 'B', 'C' and 'D'
-    spectrum = 'AS'  # select spectrum type: AS; PS; SD and PSD respectivelijk
+    spectrum = None  # select spectrum type: AS; PS; SD and PSD respectivelijk
     # for Amplitude Spectrum; Power Spectrum; Spectral Density;
     # Power Spectral Density
 
@@ -45,7 +45,7 @@ try:
     f = np.array(f)
     #(sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
     # multi channel signal generation
-    (sigout, t) = sg.mSigGen('ChirpLog', f, T, fs, nChannels, repeat=3, l0=2)
+    (sigout, t) = sg.mSigGen('ChirpLog', f, T, fs, nChannels, repeat=repeats, l0=2)
     sigout = checks.input_type(sigout)
 
     # Signal to soundcard
@@ -73,23 +73,23 @@ try:
     if (RMS_res is True) or (crest is True) or (papr is true):
         from src import rms
         if RMS_res is True:
-            sigout = rms.RMS(sigout)   # return RMS value of stard signal
+            sigout = rms.mRMS(sigout)   # return RMS value of stard signal
             rec1 = rms.RMS(rec1)   # return RMS value of measurment
         if crest_res is True:
-            sigout_crest = rms.Crest(sigout)
+            sigout_crest = rms.mCrest(sigout)
             rec1_crest = rms.Crest(rec1)
             print(sigout_crest, rec1_crest)
         if papr_res is True:
-            sigout_papr = rms.PAPR(sigout)
+            sigout_papr = rms.mPAPR(sigout)
             rec1_papr = rms.PAPR(rec1)
             print(sigout_papr, rec1_papr)
 
     if (weighting_filt is not None) and (spectrum is not None):
-        (REC1_F, REC1_S, REC1_P) = transform.FFT(rec1, fs, spectrum='AmPh')
+        (REC1_F, REC1_S, REC1_P) = transform.mFFT(rec1, fs, spectrum='AmPh')
         # REC1_S = Amplitude Spectrum and REC1_P = phase
         # (F, REC1) = Transform.FFT(rec1, fs)
 
-        (F, SIG_S) = transform.FFT(sigout, fs)
+        (F, SIG_S, _) = transform.mFFT(sigout, fs)
         SIG_F = F[1: len(F)/2]
         SIG_S = abs(SIG_S[1:len(SIG_S)/2])
         SIG_P = np.arctan2(np.real(SIG_S[1:len(SIG_S)/2]), np.imag(SIG_S[1:len(SIG_S)/2]))
@@ -129,12 +129,12 @@ try:
             raise ValueError("the value %s is not one of the options for spectrum" % weighting)
 
     elif weighting_filt is not None:
-        (REC1_F, REC1_S, REC1_P) = transform.FFT(rec1, fs, spectrum='AmPh')
+        (REC1_F, REC1_S, REC1_P) = transform.mFFT(rec1, fs, spectrum='AmPh')
         # REC1_S = Amplitude Spectrum and REC1_P = phase
         # (F, REC1) = Transform.FFT(rec1, fs)
 
         # (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
-        (F, SIG_S) = transform.FFT(sigout, fs)
+        (F, SIG_S) = transform.mFFT(sigout, fs)
         SIG_F = F[1: len(F)/2]
         SIG_P = np.arctan2(np.real(SIG_S[1:len(SIG_S)/2]), np.imag(SIG_S[1:len(SIG_S)/2]))
         SIG_S = abs(SIG_S[1:len(SIG_S)/2])
@@ -156,11 +156,11 @@ try:
             REC1_S = DW.D_Weighting(REC1_F, REC1_S)   # temporary off
             SIG_S = DW.D_Weighting(SIG_F, SIG_S)
     elif spectrum is not None:
-        (REC1_F, REC1_S, REC1_P) = transform.FFT(rec1, fs, spectrum='AmPh')
+        (REC1_F, REC1_S, REC1_P) = transform.mFFT(rec1, fs, spectrum='AmPh')
         # (F, REC1) = Transform.FFT(rec1, fs)
         # REC1_S = Amplitude Spectrum and REC1_P = phase
 
-        (F, SIG_S, _) = transform.FFT(sigout, fs)
+        (F, SIG_S, _) = transform.mFFT(sigout, fs)
         SIG_F = F[1: len(F)/2]
         SIG_P = np.arctan2(np.real(SIG_S[1:len(SIG_S)/2]), np.imag(SIG_S[1:len(SIG_S)/2]))
         SIG_S = abs(SIG_S[1:len(SIG_S)/2])
@@ -181,17 +181,25 @@ try:
             #REC1_F = REC1_F[1:len(REC1_F)/2]
             (_, SIG_S, SIG_P) = spectraldistr.PSD((SIG_S, SIG_P))
     else:
-        (REC1_F, REC1_S, REC1_P) = transform.FFT(rec1, fs, spectrum='AmPh')
+        (REC1_F, REC1_S, REC1_P) = transform.mFFT(rec1, fs, spectrum='AmPh')
         # (F, REC1) = Transform.FFT(rec1, fs)
         # (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
-        (SIG_F, SIG_S) = transform.FFT(sigout, fs)
+        (SIG_F, SIG_S, SIG_P) = transform.mFFT(sigout, fs)
+        
+        F_len = len(sigout.T)/3
+        F_log = 2**np.ceil(np.log2(F_len))
+        F = np.arange(F_log)/fs
+        F = np.vstack((F, F))
 
     # Transfer function:
-    (H1) = transform.Transfer(rec1, sigout, fs)  # Rebuild Transfer for ...
+    print(np.shape(sigout))
+    val = len(sigout.T)/3
+    sigout_si = sigout.T[:val].T
+    (H1) = transform.mTransfer(rec1, sigout_si, fs)  # Rebuild Transfer for ...
     # ... adding two allready calculated spectra
 
     # Impulse Response:
-    (IR, fs_ir, T_ir) = transform.ImpulseResponse(H1, F)  # temporary off
+    (IR, fs_ir, T_ir) = transform.mImpulseResponse(H1, F)  # temporary off
     # Create Var out from IR in To Do List!!
 
     if len(t) > 100000:
