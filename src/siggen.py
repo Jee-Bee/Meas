@@ -247,61 +247,61 @@ class SigGen(object):
             Output
         Description"""
         import numpy as np
-        from scripts.repeat import srepeat, mrepeat
-        msig = SigGen(gentype, f, T, fs, duty=0.5, width=0)
+        from src.repeat import srepeat, mrepeat
+        si_sig, t = SigGen(gentype, f, T, fs, duty=duty, width=width)
         if channels is ('mono' or 'Mono'):
             # mono channel don't have cascade function...
             if (repeat is not None) and (l0 is not None):
-                msig = srepeat(msig, repeat, l0, fs, addzeros=True)
+                msig = srepeat(si_sig, repeat, l0, fs, addzeros=True)
             elif l0 is not None:
-                msig = srepeat(msig, repeat, l0, fs, addzeros=False)
+                msig = srepeat(si_sig, repeat, l0, fs, addzeros=False)
 			else: 
 			    pass
-            return(msig)
+            return(msig, si_sig)
         elif channels is ('stereo' or 'Stereo'):
             if cascade is True:
                 if (repeat is not None) and (l0 is not None):
-                    msig = mrepeat(msig, repeat, 2, l0, fs, addzeros=True)
+                    msig = mrepeat(si_sig, repeat, 2, l0, fs, addzeros=True)
                 elif l0 is not None:
-                    msig = mrepeat(msig, repeat, 2, l0, fs, addzeros=False)
+                    msig = mrepeat(si_sig, repeat, 2, l0, fs, addzeros=False)
                 else:
                     pass
             elif cascade is False:
                 if (repeat is not None) and (l0 is not None):
-                    msig = srepeat(msig, repeat, l0, fs, addzeros=True)
+                    msig, len_msig = srepeat(si_sig, repeat, l0, fs, addzeros=True)
                     msig = np.tile(msig, (2, 1))
                 elif l0 is not None:
-                    msig = srepeat(msig, repeat, l0, fs, addzeros=False)
+                    msig, len_msig = srepeat(si_sig, repeat, l0, fs, addzeros=False)
                     msig = np.tile(msig, (2, 1))
                 else:
                     pass
 			else:
 			    pass
-			t = np.tile(np.arange(len_msig * repeat)/fs, (2,1))	
-            return(msig)
+			t = np.tile(np.arange(len_msig * repeat) / fs, (2,1))
+            return(msig, si_sig, t)
         elif channels is int:
             # Migrate with stereo for less duplication...
             if cascade is True:
                 # Create cascade/ serie of signals acc. the number of channels
                 if (repeat is not None) and (l0 is not None):
-                    msig = mrepeat(msig, repeat, channels, l0, fs, addzeros=True)
+                    msig, len_msig = mrepeat(si_sig, repeat, channels, l0, fs, addzeros=True)
                 elif l0 is not None:
-                    msig = mrepeat(msig, repeat, channels, l0, fs, addzeros=False)
+                    msig, len_msig = mrepeat(si_sig, repeat, channels, l0, fs, addzeros=False)
                 else:
                     pass
             elif cascade is False:
                 # Create cascade/ serie of signals acc. the number of channels
                 if (repeat is not None) and (l0 is not None):
-                    msig = srepeat(msig, repeat, l0, fs, addzeros=True)
-                    msig = np.tile(msig, (channels, 1))
+                    msig, len_msig = srepeat(si_sig, repeat, l0, fs, addzeros=True)
+                    msig = np.tile(si_sig, (channels, 1))
                 elif l0 is not None:
-                    msig = srepeat(msig, repeat, l0, fs, addzeros=False)
+                    msig, len_msig = srepeat(si_sig, repeat, l0, fs, addzeros=False)
                 else:
                     pass
             else:
                 pass
-			t = np.tile(np.arange(len_msig * repeat)/fs, (channels,1))
-            return(msig)
+			t = np.tile(np.arange(len_msig * repeat) / fs, (channels,1))
+            return(msig, si_sig, t)
         else:
             raise ValueError("Channels can only handle int or 'mono' or 'stereo'")
 
