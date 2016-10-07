@@ -262,7 +262,7 @@ def PS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
     return(F, PS, PH)
 
 
-def AS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputspec=True):
+def AS(sig, fs, window=None, window_length=8192):
     """
     Calculate Amplitude Spectrum [v // g // ...]
     Inputs:
@@ -279,104 +279,27 @@ def AS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
                 time (False)
         window_length = [-] length of window in number of samples - Only valid
                         when inputspec is time (False)
-        weighting = True/False Boolean for setting if a weighting is applied on
-                    spectrum - only valid when inputspec is time(False)
-        inputspec = True/False Boolean for setting input as spectrum(True) or
-                    as time Signal(False)
 
     AS creates a single sided spectrum of Frequency and phase.
-    There two possible input signals. a time signal and a spectral signal
-    (complex or Real and Imaginair).
+    The input array is an time signal. So this function is a copy of the mFFT
+    function. However the default values are different. The type of output is
+    in AS set to Amplitude and Phase and CAN'T be changed!
 
-    When time signal is applied some extra parameters can be set.
-    window and weighting.
     For window it is possible to set the window type and length of samples.
     default for this is hanning window and length of 8192 samples.
     When window_length is set to None; no window will be applied
     after this the single sided amplitude spectrum is created and returned.
-
-    When input is a spectrum. it is checked for complex vallued signal and for
-    symmetry.
-    after this the single sided amplitude spectrum is created and returned.
     """
-    if inputspec is True:
-        from src.checks import istuple, even, odd, oddphase, phasecheck
-        if istuple(sig):
-            sig1phase = phasecheck(sig[1])
-            if sig1phase is True:
-                sig0even = even(sig[0])
-                sig1odd = oddphase(sig[1])
-                if (sig0even is True) and (sig1odd is True):
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    AS = sig[0][1:len(sig[0])/2]
-                    PH = sig[1][1:len(sig[1])/2]
-                else:
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    AS = sig[0]
-                    PH = sig[1]
-            else:
-                sig0even = even(sig[0])
-                sig1odd = odd(sig[1])
-                if (sig0even is True) and (sig1odd is True):
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    AS = np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2)
-                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
-                else:
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    AS = np.sqrt(sig[0] ** 2 + sig[1] ** 2)
-                    PH = np.arctan2(sig[0], sig[1])
-        elif np.iscomplex(sig):
-            print('from complex spectum is becomming a magnitude pahse spectrum... \nshow olny N/2 frequency bins')
-            N = len(sig)
-            AS = abs(sig[1:N / 2])
-            PH = np.arctan2(sig.real, sig.imag)
-            F = np.arange(1, N / 2)
-    elif inputspec is False:
-        if fs is not None:
-            pass
-        else:
-            raise ValueError('value fs is \'None\' this should be changed')
-# https://stackoverflow.com/questions/18472904/how-to-use-a-python-function-with-keyword-self-in-arguments
-        if (window_length is None) and (weighting is False):
-            F, AS, PH = FFT(sig, fs, spectrum='AmPh0')
-        elif (window_length is None) and (weighting is not False):
-            F, AS, PH = FFT(sig, fs, spectrum='AmPh')
-        elif isinstance(window_length, int) and (weighting is False):
-            F, AS, PH = FFT(sig, fs, window, window_length, spectrum='AmPh0')
-        elif isinstance(window_length, int) and (weighting is not False):
-            F, AS, PH = FFT(sig, fs, window, window_length, spectrum='AmPh')
+    import types
+    from .transform import mFFT
 
-        if weighting is False:
-            pass
-        elif weighting is True:
-            from src.weighting import AWeighting
-            aw = AWeighting()
-            AS = aw.A_Weighting(F, AS)
-        elif weighting == 'A':
-            from src.weighting import AWeighting
-            aw = AWeighting()
-            AS = aw.A_Weighting(F, AS)
-        elif weighting == 'B':
-            from src.weighting import BWeighting
-            bw = BWeighting()
-            AS = bw.B_Weighting(F, AS)
-        elif weighting == 'C':
-            from src.weighting import CWeighting
-            cw = CWeighting()
-            AS = cw.C_Weighting(F, AS)
-        elif weighting == 'D':
-            from src.weighting import DWeighting
-            dw = DWeighting()
-            AS = dw.D_Weighting(F, AS)
-        else:
-            raise ValueError('weighing should be True, False, or the letters A to D')
-    else:
-        raise ValueError('inputspec should be True or False')
-    return(F, AS, PH)
+    def AS_int(mFFT):
+        AS_mFFT = types.FunctionType(mFFT.__code__, mFFT.__globals__, name=mFFT.__name__,
+                                     argdefs=mFFT.__defaults__, closure=mFFT.__closure__)
+        return(AS_mFFT)
+    AS_func = AS_int(mFFT)
+    AS_val = AS_func(sig, fs, window, window_length, spectrum='AmPh')
+    return(AS_val)
 
 
 # def complexAS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputspec=True):
