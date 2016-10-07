@@ -13,9 +13,15 @@ Spectral Class ??
 
 import sys
 import numpy as np
+<<<<<<< HEAD:src/spectraldistr.py
 from src.transform import FFT  # , NFFT
 if sys.version_info.major <3:
     from __future__ import division
+=======
+import scipy.fftpack as fft
+from scripts.transform import FFT, NFFT
+from scripts.checks import istuple
+>>>>>>> Change beahvour Power Spectrum. Input only complex or amplitude phase + add multi channel:scripts/spectraldistr.py
 
 # Creating class from this??
 
@@ -184,82 +190,103 @@ def SD(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
 # ASD =
 
 
-def PS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputspec=True):
+def PS(spectrums):
     """
-    Calculate Spectral Density Spectrum [W]
+    Calculate Power Spectrum [W]
     Inputs:
-        sig = time or spectrum - Default is spectrum
-        fs = [Hz] sample frequency - only valid when time signal
-            (inputspec=False)
+        spectrums = Frequency spectrums - Default is spectrum
     Outputs:
-        F = [Hz] frequency bins
         PS = [W?] Power spectrum
-    Options:
-        window = [string] name of windowtype - Only valid when inputspec is
-                time (False)
-        window_length = [-] length of window in number of samples - Only valid
-                        when inputspec is time (False)
-        weighting = True/False Boolean for setting if a weighting is applied on
-                    spectrum - only valid when inputspec is time(False)
-        inputspec = True/False Boolean for setting input as spectrum(True) or
-                    as time Signal(False)
 
-    AS creates a single sided spectrum of Frequency and phase.
-    There two possible input signals. a time signal and a spectral signal
-    (complex or Real and Imaginair).
+    PS creates from a single sided  Amplitude spectrum of Frequency and phase
+    a power spectrum.
 
-    When time signal is applied some extra parameters can be set.
-    window and weighting.
-    For window it is possible to set the window type and length of samples.
-    default for this is hanning window and length of 8192 samples.
-    after this the single sided power spectrum is created and returned.
-
-    When input is a spectrum. it is checked for complex vallued signal and for
-    symmetry.
-    after this the single sided power spectrum is created and returned.
+    The input is a spectrum. This can be a complex signal or an tuple of
+    Amplitude and phase. The complex signal is converted to amplitude and Phase
+    and after this the power spectrum is created.
     """
-    if inputspec is True:
-        from src.checks import istuple, even, odd, oddphase, phasecheck
-        if istuple(sig):
-            sig1phase = phasecheck(sig[1])
-            if sig1phase is True:
-                sig0even = even(sig[0])
-                sig1odd = oddphase(sig[1])
-                if (sig0even is True) and (sig1odd is True):
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    PS = sig[0][1:len(sig[0]) / 2] ** 2
-                    PH = sig[1][1:len(sig[1])/2]
-                else:
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    PS = sig[0] ** 2
-                    PH = sig[1]
-            else:
-                sig0even = even(sig[0])
-                sig1odd = odd(sig[1])
-                if (sig0even is True) and (sig1odd is True):
-                    N = len(sig)
-                    F = np.arange(1, N/2)
-                    PS = np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2) ** 2
-                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
-                else:
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    PS = np.sqrt(sig[0] ** 2 + sig[1] ** 2) ** 2
-                    PH = np.arctan2(sig[0], sig[1])
-        elif np.iscomplex(sig):
-            print('from complex spectum is becomming a magnitude pahse spectrum... \nshow olny N/2 frequency bins')
-            N = len(sig)
-            F = np.arange(1, N / 2)
-            PS = abs(sig[1:N / 2]) ** 2
-            PH = np.arctan2(sig.real, sig.imag)
-    elif inputspec is False:
-        F, PS, PH = AS(sig, fs, window, window_length, weighting, inputspec)
-        PS = PS ** 2  # AS to PS
+#    if inputspec is True:
+#        from scripts.checks import istuple, even, odd, oddphase, phasecheck
+#        if istuple(sig):
+#            sig1phase = phasecheck(sig[1])
+#            if sig1phase is True:
+#                sig0even = even(sig[0])
+#                sig1odd = oddphase(sig[1])
+#                if (sig0even is True) and (sig1odd is True):
+#                    N = len(sig)
+#                    F = np.arange(1, N / 2)
+#                    PS = sig[0][1:len(sig[0]) / 2] ** 2
+#                    PH = sig[1][1:len(sig[1])/2]
+#                else:
+#                    N = len(sig)
+#                    F = np.arange(1, N / 2)
+#                    PS = sig[0] ** 2
+#                    PH = sig[1]
+#            else:
+#                sig0even = even(sig[0])
+#                sig1odd = odd(sig[1])
+#                if (sig0even is True) and (sig1odd is True):
+#                    N = len(sig)
+#                    F = np.arange(1, N/2)
+#                    PS = np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2) ** 2
+#                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
+#                else:
+#                    N = len(sig)
+#                    F = np.arange(1, N / 2)
+#                    PS = np.sqrt(sig[0] ** 2 + sig[1] ** 2) ** 2
+#                    PH = np.arctan2(sig[0], sig[1])
+#        elif np.iscomplex(sig):
+#            print('from complex spectum is becomming a magnitude pahse spectrum... \nshow olny N/2 frequency bins')
+#            N = len(sig)
+#            F = np.arange(1, N / 2)
+#            PS = abs(sig[1:N / 2]) ** 2
+#            PH = np.arctan2(sig.real, sig.imag)
+#    elif inputspec is False:
+#        F, PS, PH = AS(sig, fs, window, window_length, weighting, inputspec)
+#        PS = PS ** 2  # AS to PS
+#    else:
+#        raise ValueError('inputspec should be True or False')
+#    return(F, PS, PH)
+    if istuple(spectrums) is True:
+        AMP = spectrums[0]
+        PHI = spectrums[1]
+        AMP_shape = np.shape(AMP)
+        if len(AMP_shape) == 1:
+            AMP = AMP ** 2
+        elif len(AMP_shape) == 2:
+            if AMP_shape[0] < AMP_shape[1]:
+                pass
+            elif AMP_shape[0] > AMP_shape[1]:
+                AMP = AMP.T
+                PHI = PHI.T
+                AMP_shape = np.shape(AMP)
+            for channel in range(AMP_shape[0]):
+                AMP[channel] = AMP[channel] ** 2
+        else:
+            raise ValueError("Shape of input can't be greather than 2")
+        pass
+    elif np.iscomplex(spectrums) is True:
+        spec_shape = np.shape(spectrums)
+        if len(spec_shape) == 1:
+            N = np.int(len(spectrums))
+            AMP = abs(spectrums[1:N / 2]) ** 2
+            PHI = np.arctan2(spectrums[1:N / 2].real, spectrums[1:N / 2].imag)
+        elif len(spec_shape) == 2:
+            if spec_shape[0] < spec_shape[1]:
+                N=shape[1]
+                pass
+            elif spec_shape[0] > spec_shape[1]:
+                spectrums = spectrums.T
+                spec_shape = np.shape(spectrums)
+                N = spec_shape[1]
+            for channel in range(AMP_shape[0]):
+                AMP[channel] = spectrums[channel][1:N / 2] ** 2
+                PHI = np.arctan2(spectrums[channel][1:N / 2].real, spectrums[channel][1:N / 2].imag)
+        else:
+            raise ValueError("Shape of input can't be greather than 2")
     else:
-        raise ValueError('inputspec should be True or False')
-    return(F, PS, PH)
+        raise TypeError("Variable spectrums should be type complex or tuple")
+    return(AMP, PHI)
 
 
 def AS(sig, fs, window=None, window_length=8192):
