@@ -205,48 +205,6 @@ def PS(spectrums):
     Amplitude and phase. The complex signal is converted to amplitude and Phase
     and after this the power spectrum is created.
     """
-#    if inputspec is True:
-#        from scripts.checks import istuple, even, odd, oddphase, phasecheck
-#        if istuple(sig):
-#            sig1phase = phasecheck(sig[1])
-#            if sig1phase is True:
-#                sig0even = even(sig[0])
-#                sig1odd = oddphase(sig[1])
-#                if (sig0even is True) and (sig1odd is True):
-#                    N = len(sig)
-#                    F = np.arange(1, N / 2)
-#                    PS = sig[0][1:len(sig[0]) / 2] ** 2
-#                    PH = sig[1][1:len(sig[1])/2]
-#                else:
-#                    N = len(sig)
-#                    F = np.arange(1, N / 2)
-#                    PS = sig[0] ** 2
-#                    PH = sig[1]
-#            else:
-#                sig0even = even(sig[0])
-#                sig1odd = odd(sig[1])
-#                if (sig0even is True) and (sig1odd is True):
-#                    N = len(sig)
-#                    F = np.arange(1, N/2)
-#                    PS = np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2) ** 2
-#                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
-#                else:
-#                    N = len(sig)
-#                    F = np.arange(1, N / 2)
-#                    PS = np.sqrt(sig[0] ** 2 + sig[1] ** 2) ** 2
-#                    PH = np.arctan2(sig[0], sig[1])
-#        elif np.iscomplex(sig):
-#            print('from complex spectum is becomming a magnitude pahse spectrum... \nshow olny N/2 frequency bins')
-#            N = len(sig)
-#            F = np.arange(1, N / 2)
-#            PS = abs(sig[1:N / 2]) ** 2
-#            PH = np.arctan2(sig.real, sig.imag)
-#    elif inputspec is False:
-#        F, PS, PH = AS(sig, fs, window, window_length, weighting, inputspec)
-#        PS = PS ** 2  # AS to PS
-#    else:
-#        raise ValueError('inputspec should be True or False')
-#    return(F, PS, PH)
     if istuple(spectrums) is True:
         AMP = spectrums[0]
         PHI = spectrums[1]
