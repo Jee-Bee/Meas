@@ -23,89 +23,75 @@ if sys.version_info.major <3:
 # ESD = 
 #
 #
-def PSD(sig, fs=None, window='hann', window_length=8192, weighting=False, inputspec=True):
+def PSD(spectrums, F):
     """
-    Calculate Spectral Density Spectrum [W]
+    Calculate Power Spectral Density [u^2/sqrt(Hz)^2] = [u^2/Hz]
     Inputs:
-        sig = time or spectrum - Default is spectrum
-        fs = [Hz] sample frequency - only valid when time signal
-            (inputspec=False)
+        spectrums = Frequency spectrums - Default is spectrum
     Outputs:
-        F = [Hz] frequency bins
-        PSD = [W?] Power spectral density - power per hertz
-    Options:
-        window = [string] name of windowtype - Only valid when inputspec is
-                time (False)
-        window_length = [-] length of window in number of samples - Only valid
-                        when inputspec is time (False)
-        weighting = True/False Boolean for setting if a weighting is applied on
-                    spectrum - only valid when inputspec is time(False)
-        inputspec = True/False Boolean for setting input as spectrum(True) or
-                    as time Signal(False)
+        SD = Spectral Density
 
-    AS creates a single sided spectrum of Frequency and phase.
-    There two possible input signals. a time signal and a spectral signal
-    (complex or Real and Imaginair).
+    SD is created from a single sided Amplitude spectrum of Amplitude and phase
+    with a frequency array an Spectral density.
 
-    When time signal is applied some extra parameters can be set.
-    window and weighting.
-    For window it is possible to set the window type and length of samples.
-    default for this is hanning window and length of 8192 samples.
-    after this the single sided power spectrum is created and returned.
-
-    When input is a spectrum. it is checked for complex vallued signal and for
-    symmetry.
-    after this the single sided power spectrum is created and returned.
+    The input is a spectrum and corsponding frequecy array. The spectrum can be
+    a complex signal or an tuple of Amplitude and phase. The complex signal is
+    converted to amplitude and Phase and after this the spectrum density is 
+    created.
     """
-    if inputspec is True:
-        from src.checks import istuple, even, odd, oddphase, phasecheck
-        if istuple(sig):
-            sig1phase = phasecheck(sig[1])
-            if sig1phase is True:
-                sig0even = even(sig[0])
-                sig1odd = oddphase(sig[1])
-                if (sig0even is True) and (sig1odd is True):
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    PSD = (sig[0][1:len(sig[0]) / 2] ** 2) / F
-                    # power per Hertz
-                    PH = sig[1][1:len(sig[1])/2]
-                else:
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    PSD = (sig[0] ** 2) / F  # power per hertz
-                    PH = sig[1]
-            else:
-                sig0even = even(sig[0])
-                sig1odd = odd(sig[1])
-                if (sig0even is True) and (sig1odd is True):
-                    N = len(sig)
-                    F = np.arange(1, N/2)
-                    PSD = (np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2) ** 2) / F
-                    PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
-                else:
-                    N = len(sig)
-                    F = np.arange(1, N / 2)
-                    PSD = (np.sqrt(sig[0] ** 2 + sig[1] ** 2) ** 2) / F
-                    # power per hertz
-                    PH = np.arctan2(sig[0], sig[1])
-        elif np.iscomplex(sig):
-            print('from complex spectum is becomming a magnitude pahse spectrum... \nshow olny N/2 frequency bins')
-            N = len(sig)
-            F = np.arange(1, N / 2)
-            PSD = (abs(sig[1:N / 2]) ** 2) / F  # power per hertz
-            PH = np.arctan2(sig.real, sig.imag)
-    elif inputspec is False:
-        F, PSD, PH = AS(sig, fs, window, window_length, weighting, inputspec)
-        PSD = (PSD ** 2) / F  # Power per hertz - AS to PSD 
+    if istuple(spectrums) is True:
+        AMP = spectrums[0]
+        PHI = spectrums[1]
+        AMP_shape = np.shape(AMP)
+        PHI_shape = np.shape(PHI)
+        F_shape = np.shape(F)
+        if AMP_shape == PHI_shape == F_shape:
+            pass
+        else:
+            raise ValueError ("input parameters don't have same shape")
+        if len(AMP_shape) == 1:
+            AMP = AMP ** 2 / F  # devide sqrt(Hz)
+        elif len(AMP_shape) == 2:
+            if AMP_shape[0] < AMP_shape[1]:
+                pass
+            elif AMP_shape[0] > AMP_shape[1]:
+                AMP = AMP.T
+                PHI = PHI.T
+                F = F.T
+                AMP_shape = np.shape(AMP)
+            for channel in range(AMP_shape[0]):
+                AMP[channel] = AMP[channel] ** 2 / F[channel]  # devide sqrt(Hz)
+        else:
+            raise ValueError("Shape of input can't be greather than 2")
+        pass
+    elif np.iscomplex(spectrums) is True:
+        spec_shape = np.shape(spectrums)
+        if len(spec_shape) == 1:
+            N = np.int(len(spectrums))
+            F = F[1:N / 2]
+            AMP = abs(spectrums[1:N / 2]) ** 2 / F
+            PHI = np.arctan2(spectrums[1:N / 2].real, spectrums[1:N / 2].imag)
+        elif len(spec_shape) == 2:
+            if spec_shape[0] < spec_shape[1]:
+                N=shape[1]
+            elif spec_shape[0] > spec_shape[1]:
+                spectrums = spectrums.T
+                spec_shape = np.shape(spectrums)
+                N = spec_shape[1]
+            for channel in range(AMP_shape[0]):
+                F = F[1:N / 2]
+                AMP[channel] = spectrums[channel][1:N / 2] ** 2 / F
+                PHI[channel] = np.arctan2(spectrums[channel][1:N / 2].real, spectrums[channel][1:N / 2].imag)
+        else:
+            raise ValueError("Shape of input can't be greather than 2")
     else:
-        raise ValueError('inputspec should be True or False')
-    return(F, PSD, PH)
+        raise TypeError("Variable spectrums should be type complex or tuple")
+    return(AMP, PHI, F)
 
 
 def SD(spectrums, F):
     """
-    Calculate Spectrual Density [u/sqrt(Hz)]
+    Calculate Spectral Density [u/sqrt(Hz)]
     Inputs:
         spectrums = Frequency spectrums - Default is spectrum
     Outputs:
@@ -148,7 +134,7 @@ def SD(spectrums, F):
         spec_shape = np.shape(spectrums)
         if len(spec_shape) == 1:
             N = np.int(len(spectrums))
-            AMP = abs(spectrums[1:N / 2]) ** 2
+            AMP = abs(spectrums[1:N / 2]) / np.sqrt(F)
             PHI = np.arctan2(spectrums[1:N / 2].real, spectrums[1:N / 2].imag)
             F = F[1:N / 2]
         elif len(spec_shape) == 2:
