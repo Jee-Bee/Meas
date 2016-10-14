@@ -12,6 +12,12 @@ Created on Tue Mar  8 12:26:11 2016
 import datetime as dt
 import numpy as np
 
+# TODO
+# Use Enumerate to make arrays/ dictionatys of values/ arrays
+# one set of values add to dictionarus at the end.
+# make remove function and recalculate enumerate number sequence
+
+
 # http://stackoverflow.com/questions/7999935/python-datetime-to-string-without-microsecond-component
 # http://stackoverflow.com/questions/7588511/format-a-datetime-into-a-string-with-milliseconds
 timenow = dt.datetime.now().strftime("%Y%m%dT%H%M%S")
