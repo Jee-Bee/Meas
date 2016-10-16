@@ -31,8 +31,10 @@ try:
     crest_res = True  # other option is 'False'
     papr_res = True  # other option is 'False'
 
+    fftMethod = "FFT"  # optionals FFT or AS both same result.
+    # for spectrum AS does nothing
     weighting_filt = None  # oher options are the weightings 'A', 'B', 'C' and 'D'
-    spectrum = None  # select spectrum type: AS; PS; SD and PSD respectivelijk
+    spectrum = "SD"  # select spectrum type: AS; PS; SD and PSD respectivelijk
     # for Amplitude Spectrum; Power Spectrum; Spectral Density;
     # Power Spectral Density
 
@@ -45,7 +47,7 @@ try:
     f = np.array(f)
     #(sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
     # multi channel signal generation
-    (sigout, t) = sg.mSigGen('ChirpLog', f, T, fs, nChannels, repeat=repeats, l0=2)
+    (sigout, si_sigout, t) = sg.mSigGen('ChirpLog', f, T, fs, nChannels, repeat=repeats, l0=2)
     sigout = checks.input_type(sigout)
 
     # Signal to soundcard
@@ -84,112 +86,75 @@ try:
             rec1_papr = rms.PAPR(rec1)
             print(sigout_papr, rec1_papr)
 
-    if (weighting_filt is not None) and (spectrum is not None):
-        (REC1_F, REC1_S, REC1_P) = transform.mFFT(rec1, fs, spectrum='AmPh')
-        # REC1_S = Amplitude Spectrum and REC1_P = phase
-        # (F, REC1) = Transform.FFT(rec1, fs)
+    # FFT method
+    if (fftMethod is "fft") or (fftMethod is "FFT"):
+        SI_F, SI_S, SI_P = transform.mFFT(si_sigout, fs)
+        REC1_F, REC1_S, REC1_P = transform.mFFT(rec1, fs)
+    elif (fftMethod is "as") or (fftMethod is "AS"):
+        SI_F, SI_S, SI_P = spectraldistr.AS(si_sigout, fs)
+        REC1_F, REC1_S, REC1_P = spectraldistr.AS(rec1, fs)
 
-        (F, SIG_S, _) = transform.mFFT(sigout, fs)
-        SIG_F = F[1: len(F)/2]
-        SIG_S = abs(SIG_S[1:len(SIG_S)/2])
-        SIG_P = np.arctan2(np.real(SIG_S[1:len(SIG_S)/2]), np.imag(SIG_S[1:len(SIG_S)/2]))
-        if weighting_filt is 'A':
-            # Weighted FFT
-            AW = weighting.AWeighting()  # temporary off
-            REC1_S = AW.A_Weighting(REC1_F, REC1_S)   # temporary off
-            SIG_S = AW.A_Weighting(SIG_F, SIG_S)
-        elif weighting_filt is 'B':
-            BW = weighting.BWeighting()  # temporary off
-            REC1_S = BW.B_Weighting(REC1_F, REC1_S)   # temporary off
-            SIG_S = BW.B_Weighting(SIG_F, SIG_S)
-        elif weighting_filt is 'C':
-            CW = weighting.CWeighting()  # temporary off
-            REC1_S = CW.C_Weighting(REC1_F, REC1_S)   # temporary off
-            SIG_S = CW.C_Weighting(SIG_F, SIG_S)
-        elif weighting_filt is 'D':
-            DW = weighting.DWeighting()  # temporary off
-            REC1_S = DW.D_Weighting(REC1_F, REC1_S)   # temporary off
-            SIG_S = DW.D_Weighting(SIG_F, SIG_S)
+    AW = weighting.weighting()
+    if weighting is None:
+        pass
+    elif weighting is "A":
+        if np.iscomplex(REC1_S).any() is True:
+            SI_F, SI_S, SI_P = AW.Aweighting(SI_F, SI_S)
+            REC1_F, REC1_S, REC1_P = AW.Aweighting(REC1_F, REC1_S)
         else:
-            raise ValueError("the value %s is not one of the options for weighting" % weighting_filt)
-
-        if spectrum is 'AS':
-            (_, REC1_S, REC1_P) = spectraldistr.AS((REC1_S, REC1_P))
-            (_, SIG_S, SIG_P) = spectraldistr.AS((SIG_S, SIG_P))
-        elif spectrum is 'PS':
-            (_, REC1_S, REC1_P) = spectraldistr.PS((REC1_S, REC1_P))
-            (_, SIG_S, SIG_P) = spectraldistr.PS((SIG_S, SIG_P))
-        elif spectrum is 'SD':
-            (_, REC1_S, REC1_P) = spectraldistr.SD((REC1_S, REC1_P))
-            (_, SIG_S, SIG_P) = spectraldistr.SD((SIG_S, SIG_P))
-        elif spectrum is 'PSD':
-            (_, REC1_S, REC1_P) = spectraldistr.PSD((REC1_S, REC1_P))
-            (_, SIG_S, SIG_P) = spectraldistr.PSD((SIG_S, SIG_P))
+            SI_F, SI_S, SI_P = AW.Aweighting(SI_F, (SI_S, SI_P))
+            REC1_F, REC1_S, REC1_P = AW.Aweighting(REC1_F, (REC1_S, REC1_P))
+    elif weighting is "B":
+        if np.iscomplex(REC1_S).any() is True:
+            SI_F, SI_S, SI_P = AW.Bweighting(SI_F, SI_S)
+            REC1_F, REC1_S, REC1_P = AW.Bweighting(REC1_F, REC1_S)
         else:
-            raise ValueError("the value %s is not one of the options for spectrum" % weighting)
-
-    elif weighting_filt is not None:
-        (REC1_F, REC1_S, REC1_P) = transform.mFFT(rec1, fs, spectrum='AmPh')
-        # REC1_S = Amplitude Spectrum and REC1_P = phase
-        # (F, REC1) = Transform.FFT(rec1, fs)
-
-        # (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
-        (F, SIG_S) = transform.mFFT(sigout, fs)
-        SIG_F = F[1: len(F)/2]
-        SIG_P = np.arctan2(np.real(SIG_S[1:len(SIG_S)/2]), np.imag(SIG_S[1:len(SIG_S)/2]))
-        SIG_S = abs(SIG_S[1:len(SIG_S)/2])
-        if weighting_filt is 'A':
-            # Weighted FFT
-            AW = weighting.AWeighting()  # temporary off
-            REC1_S = AW.A_Weighting(REC1_F, REC1_S)   # temporary off
-            SIG_S = AW.A_Weighting(SIG_F, SIG_S)
-        elif weighting_filt is 'B':
-            BW = weighting.BWeighting()  # temporary off
-            REC1_S = BW.B_Weighting(REC1_F, REC1_S)   # temporary off
-            SIG_S = BW.B_Weighting(SIG_F, SIG_S)
-        elif weighting_filt is 'C':
-            CW = weighting.CWeighting()  # temporary off
-            REC1_S = CW.C_Weighting(REC1_F, REC1_S)   # temporary off
-            SIG_S = CW.C_Weighting(SIG_F, SIG_S)
-        elif weighting_filt is 'D':
-            DW = weighting.DWeighting()  # temporary off
-            REC1_S = DW.D_Weighting(REC1_F, REC1_S)   # temporary off
-            SIG_S = DW.D_Weighting(SIG_F, SIG_S)
-    elif spectrum is not None:
-        (REC1_F, REC1_S, REC1_P) = transform.mFFT(rec1, fs, spectrum='AmPh')
-        # (F, REC1) = Transform.FFT(rec1, fs)
-        # REC1_S = Amplitude Spectrum and REC1_P = phase
-
-        (F, SIG_S, _) = transform.mFFT(sigout, fs)
-        SIG_F = F[1: len(F)/2]
-        SIG_P = np.arctan2(np.real(SIG_S[1:len(SIG_S)/2]), np.imag(SIG_S[1:len(SIG_S)/2]))
-        SIG_S = abs(SIG_S[1:len(SIG_S)/2])
-        if spectrum is 'AS':
-            (_, REC1_S, REC1_P) = spectraldistr.AS((REC1_S, REC1_P))
-            #REC1_F = REC1_F[1:len(REC1_F)/2]
-            (_, SIG_S, SIG_P) = spectraldistr.AS((SIG_S, SIG_P))
-        elif spectrum is 'PS':
-            (_, REC1_S, REC1_P) = spectraldistr.PS((REC1_S, REC1_P))
-            #REC1_F = REC1_F[1:len(REC1_F)/2]
-            (_, SIG_S, SIG_P) = spectraldistr.PS((SIG_S, SIG_P))
-        elif spectrum is 'SD':
-            (_, REC1_S, REC1_P) = spectraldistr.SD((REC1_S, REC1_P))
-            #REC1_F = REC1_F[1:len(REC1_F)/2]
-            (_, SIG_S, SIG_P) = spectraldistr.SD((SIG_S, SIG_P))
-        elif spectrum is 'PSD':
-            (_, REC1_S, REC1_P) = spectraldistr.PSD((REC1_S, REC1_P))
-            #REC1_F = REC1_F[1:len(REC1_F)/2]
-            (_, SIG_S, SIG_P) = spectraldistr.PSD((SIG_S, SIG_P))
+            SI_F, SI_S, SI_P = AW.Bweighting(SI_F, (SI_S, SI_P))
+            REC1_F, REC1_S, REC1_P = AW.Bweighting(REC1_F, (REC1_S, REC1_P))
+    elif weighting is "C":
+        if np.iscomplex(REC1_S).any() is True:
+            SI_F, SI_S, SI_P = AW.Cweighting(SI_F, SI_S)
+            REC1_F, REC1_S, REC1_P = AW.Cweighting(REC1_F, REC1_S)
+        else:
+            SI_F, SI_S, SI_P = AW.Cweighting(SI_F, (SI_S, SI_P))
+            REC1_F, REC1_S, REC1_P = AW.Cweighting(REC1_F, (REC1_S, REC1_P))
+    elif weighting is "D":
+        if np.iscomplex(REC1_S).any() is True:
+            SI_F, SI_S, SI_P = AW.Aweighting(SI_F, SI_S)
+            REC1_F, REC1_S, REC1_P = AW.Aweighting(REC1_F, REC1_S)
+        else:
+            SI_F, SI_S, SI_P = AW.Aweighting(SI_F, (SI_S, SI_P))
+            REC1_F, REC1_S, REC1_P = AW.Aweighting(REC1_F, (REC1_S, REC1_P))
     else:
-        (REC1_F, REC1_S, REC1_P) = transform.mFFT(rec1, fs, spectrum='AmPh')
-        # (F, REC1) = Transform.FFT(rec1, fs)
-        # (F, SIGOUT_amp, SIGOUT_phi, F_1) = Transform.FFT(sigout, fs, spectrum='AmPh')
-        (SIG_F, SIG_S, SIG_P) = transform.mFFT(sigout, fs)
-        
-        F_len = len(sigout.T)/3
-        F_log = 2**np.ceil(np.log2(F_len))
-        F = np.arange(F_log)/fs
-        F = np.vstack((F, F))
+        raise ValueError("input for Weighting Doesn Excist")
+
+    if spectrum is None:
+        pass
+    elif (spectrum is "AS") or (spectrum is "as"):
+        pass
+    elif (spectrum is "PS") or (spectrum is "ps"):
+        if np.iscomplex(REC1_S).any() is True:
+            SI_F, SI_S, SI_P  = spectraldistr.PS(SI_S, SI_F)
+            REC1_F, REC1_S, REC1_P = spectraldistr.PS(REC1_S, REC1_F)
+        else:
+            SI_F, SI_S, SI_P = spectraldistr.PS((SI_S, SI_P), SI_F)
+            REC1_F, REC1_S, REC1_P = spectraldistr.PS((REC1_S, REC1_P), REC1_F)
+    elif (spectrum is "SD") or (spectrum is "sd"):
+        if np.iscomplex(REC1_S).any() is True:
+            SI_F, SI_S, SI_P  = spectraldistr.SD(SI_S, SI_F)
+            REC1_F, REC1_S, REC1_P = spectraldistr.SD(REC1_S, REC1_F)
+        else:
+            SI_F, SI_S, SI_P = spectraldistr.SD((SI_S, SI_P), SI_F)
+            REC1_F, REC1_S, REC1_P = spectraldistr.SD((REC1_S, REC1_P), REC1_F)
+    elif (spectrum is "PSD") or (spectrum is "psd"):
+        if np.iscomplex(REC1_S).any() is True:
+            SI_F, SI_S, SI_P  = spectraldistr.PSD(SI_S, SI_F)
+            REC1_F, REC1_S, REC1_P = spectraldistr.PSD(REC1_S, REC1_F)
+        else:
+            SI_F, SI_S, SI_P = spectraldistr.PSD((SI_S, SI_P), SI_F)
+            REC1_F, REC1_S, REC1_P = spectraldistr.PSD((REC1_S, REC1_P), REC1_F)
+    else: 
+        raise ValueError("Input for Spectrums doesn't excist")
 
     # Transfer function:
     print(np.shape(sigout))
