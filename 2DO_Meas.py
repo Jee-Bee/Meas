@@ -102,7 +102,9 @@
 # cross-correlation
 # Convolution
 # autocorrelation
-# http://dsp.stackexchange.com/questions/27451/the-difference-between-convolution-and-cross-correlation-from-a-signal-analysis
+# |_ http://dsp.stackexchange.com/questions/27451/the-difference-between-convolution-and-cross-correlation-from-a-signal-analysis
+# Correlation Coefficient
+# |_ http://dsp.stackexchange.com/questions/9797/cross-correlation-peak
 
 # Signal quality
 # |_ Crest factor       2     8 feb 2016
@@ -126,7 +128,6 @@
 # Linking folders       5   07 Feb 2016
 # git Repository        5   05 Feb 2016
 # Garbage Collector
-
 
 # GUI  (Make class??)
 # |_ layout             4    13 Mar 2016
