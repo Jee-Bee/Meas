@@ -2,7 +2,7 @@
 """
 Created on Wed Jan 13 15:29:56 2016
 
-@author: enjbwink
+@author: Jee-Bee for jBae (c) 2016
 """
 import sys
 import numpy as np
