@@ -64,7 +64,7 @@ def PSD(spectrums, F):
         else:
             raise ValueError("Shape of input can't be greather than 2")
         pass
-    elif np.iscomplex(spectrums) is True:
+    elif np.iscomplex(spectrums).any() is True:
         spec_shape = np.shape(spectrums)
         if len(spec_shape) == 1:
             N = np.int(len(spectrums))
@@ -86,7 +86,7 @@ def PSD(spectrums, F):
             raise ValueError("Shape of input can't be greather than 2")
     else:
         raise TypeError("Variable spectrums should be type complex or tuple")
-    return(AMP, PHI, F)
+    return(F, AMP, PHI)
 
 
 def SD(spectrums, F):
@@ -130,7 +130,7 @@ def SD(spectrums, F):
         else:
             raise ValueError("Shape of input can't be greather than 2")
         pass
-    elif np.iscomplex(spectrums) is True:
+    elif np.iscomplex(spectrums).any() is True:
         spec_shape = np.shape(spectrums)
         if len(spec_shape) == 1:
             N = np.int(len(spectrums))
@@ -152,7 +152,7 @@ def SD(spectrums, F):
             raise ValueError("Shape of input can't be greather than 2")
     else:
         raise TypeError("Variable spectrums should be type complex or tuple")
-    return(AMP, PHI, F)
+    return(F, AMP, PHI)
 
 # ASD =
 
@@ -190,7 +190,7 @@ def PS(spectrums):
         else:
             raise ValueError("Shape of input can't be greather than 2")
         pass
-    elif np.iscomplex(spectrums) is True:
+    elif np.iscomplex(spectrums).any() is True:
         spec_shape = np.shape(spectrums)
         if len(spec_shape) == 1:
             N = np.int(len(spectrums))
@@ -211,7 +211,7 @@ def PS(spectrums):
             raise ValueError("Shape of input can't be greather than 2")
     else:
         raise TypeError("Variable spectrums should be type complex or tuple")
-    return(AMP, PHI)
+    return(F, AMP, PHI)
 
 
 def AS(sig, fs, window=None, window_length=8192):
@@ -250,7 +250,7 @@ def AS(sig, fs, window=None, window_length=8192):
                                      argdefs=mFFT.__defaults__, closure=mFFT.__closure__)
         return(AS_mFFT)
     AS_func = AS_int(mFFT)
-    AS_val = AS_func(sig, fs, window, window_length, spectrum='AmPh')
+    AS_val = AS_func(sig, fs, window, window_length, output='AmPh')
     return(AS_val)
 
 
