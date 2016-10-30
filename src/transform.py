@@ -5,15 +5,6 @@ Created on Tue Feb  9 15:25:42 2016
 @author: Jee-Bee for jBae (c) 2016
 """
 
-# Transforms (make class)
-# |_ Fourier FFT/ DFT   5
-#    |_ Wrap phase      3
-#    |_ STFT
-# |_ Laplace/ Z-trans   0
-# |_ Transferfunction   0
-# |_ Impulse response   0
-# |_ Cepstrum           0
-
 import sys
 import numpy as np
 # from ..src import MeasError #as ME # , MeasWarning
@@ -57,7 +48,7 @@ def MagPh2ReIm(Mag, Phi, output='ReIm'):
     return(Re, Im)
 
 # def FFT(x, fs, *args, **kwargs):
-def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='complex'):
+def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, output='complex'):
     # FFT(x, fs, Window_type, Window_length, shift=False, spectrum=complex)
     from scipy.fftpack import fft, fftshift, fftfreq
     from src import window, repeat
@@ -129,13 +120,13 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='comp
     else:
         pass
     if shift is True:
-        if spectrum is 'complex':
+        if output is 'complex':
             X = fftshift(X)
             F = np.linspace(0, (N-1)/2, N/2)
             F = np.append(F, np.linspace(-N/2, -1, N/2))
             F = F/(N/fs)
             return(F, X, [])
-        elif spectrum is 'ReIm':
+        elif output is 'ReIm':
             X = fftshift(X)
             F = np.linspace(0, (N-1)/2, N/2)
             F = np.append(F, np.linspace(-N/2, -1, N/2))
@@ -143,7 +134,7 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='comp
             RE = np.real(X)
             IM = np.imag(X)
             return(F, RE, IM)
-        elif spectrum is 'AmPh0':
+        elif output is 'AmPh0':
             F = np.linspace(0, (N-1)/2, N/2)
             F = F/(N/fs)
             # N should be int becouse of nfft
@@ -151,7 +142,7 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='comp
             AMP = abs(X[0:half_spec])
             PHI = np.arctan(np.real(X[0:half_spec]) / np.imag(X[0:half_spec]))
             return(F, AMP, PHI)
-        elif spectrum is 'AmPh':
+        elif output is 'AmPh':
             half_spec = np.int(N / 2)
             F = np.linspace(1, (N-1)/2, N/2 - 1)
             F = F/(N/fs)
@@ -159,13 +150,13 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='comp
             PHI = np.arctan(np.real(X[1:half_spec])/np.imag(X[1:half_spec]))
             return(F, AMP, PHI)
     else:
-        if spectrum is 'complex':
+        if output is 'complex':
             half_spec = np.int(N / 2)
             F = np.linspace(0, (N-1)/2, half_spec)
             F = np.append(F, np.linspace(-half_spec, -1, half_spec))
             F = F/(N/fs)
             return(F, X, [])
-        elif spectrum is 'ReIm':
+        elif output is 'ReIm':
             half_spec = np.int(N / 2)
             F = np.linspace(0, (N-1)/2, half_spec)
             F = np.append(F, np.linspace(-half_spec, -1, half_spec))
@@ -173,14 +164,14 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='comp
             RE = np.real(X)
             IM = np.imag(X)
             return(F, RE, IM)
-        elif spectrum is 'AmPh0':
+        elif output is 'AmPh0':
             half_spec = np.int(N / 2)
             F = np.linspace(0, (N-1)/2, half_spec)
             F = F/(N/fs)
             AMP = abs(X[0:half_spec])
             PHI = np.arctan(np.real(X[0:half_spec]) / np.imag(X[0:half_spec]))
             return(F, AMP, PHI)
-        elif spectrum is 'AmPh':
+        elif output is 'AmPh':
             half_spec = np.int(N / 2)
             F = np.linspace(1, (N-1)/2, half_spec - 1)
             F = F/(N/fs)

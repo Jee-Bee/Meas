@@ -39,7 +39,7 @@ def PSD(spectrums, F):
     converted to amplitude and Phase and after this the spectrum density is 
     created.
     """
-    if istuple(spectrums) is True:
+    if istuple(spectrums) == True:
         AMP = spectrums[0]
         PHI = spectrums[1]
         AMP_shape = np.shape(AMP)
@@ -64,13 +64,13 @@ def PSD(spectrums, F):
         else:
             raise ValueError("Shape of input can't be greather than 2")
         pass
-    elif np.iscomplex(spectrums).any() is True:
+    elif np.iscomplex(spectrums).any() == True:
         spec_shape = np.shape(spectrums)
         if len(spec_shape) == 1:
             N = np.int(len(spectrums))
             F = F[1:N / 2]
-            AMP = abs(spectrums[1:N / 2]) ** 2 / F
-            PHI = np.arctan2(spectrums[1:N / 2].real, spectrums[1:N / 2].imag)
+            AMP = abs(spectrums[1:N // 2]) ** 2 / F
+            PHI = np.arctan2(spectrums[1:N // 2].real, spectrums[1:N // 2].imag)
         elif len(spec_shape) == 2:
             if spec_shape[0] < spec_shape[1]:
                 N=shape[1]
@@ -79,9 +79,9 @@ def PSD(spectrums, F):
                 spec_shape = np.shape(spectrums)
                 N = spec_shape[1]
             for channel in range(AMP_shape[0]):
-                F = F[1:N / 2]
-                AMP[channel] = spectrums[channel][1:N / 2] ** 2 / F
-                PHI[channel] = np.arctan2(spectrums[channel][1:N / 2].real, spectrums[channel][1:N / 2].imag)
+                F = F[1:N // 2]
+                AMP[channel] = spectrums[channel][1:N // 2] ** 2 / F
+                PHI[channel] = np.arctan2(spectrums[channel][1:N // 2].real, spectrums[channel][1:N // 2].imag)
         else:
             raise ValueError("Shape of input can't be greather than 2")
     else:
@@ -105,7 +105,7 @@ def SD(spectrums, F):
     converted to amplitude and Phase and after this the spectrum density is 
     created.
     """
-    if istuple(spectrums) is True:
+    if istuple(spectrums) == True:
         AMP = spectrums[0]
         PHI = spectrums[1]
         AMP_shape = np.shape(AMP)
@@ -130,13 +130,13 @@ def SD(spectrums, F):
         else:
             raise ValueError("Shape of input can't be greather than 2")
         pass
-    elif np.iscomplex(spectrums).any() is True:
+    elif np.iscomplex(spectrums).any() == True:
         spec_shape = np.shape(spectrums)
         if len(spec_shape) == 1:
             N = np.int(len(spectrums))
-            AMP = abs(spectrums[1:N / 2]) / np.sqrt(F)
-            PHI = np.arctan2(spectrums[1:N / 2].real, spectrums[1:N / 2].imag)
-            F = F[1:N / 2]
+            AMP = abs(spectrums[1:N // 2]) / np.sqrt(F[1:N // 2])
+            PHI = np.arctan2(spectrums[1:N // 2].real, spectrums[1:N // 2].imag)
+            F = F[1:N // 2]
         elif len(spec_shape) == 2:
             if spec_shape[0] < spec_shape[1]:
                 N=shape[1]
@@ -145,9 +145,9 @@ def SD(spectrums, F):
                 spec_shape = np.shape(spectrums)
                 N = spec_shape[1]
             for channel in range(AMP_shape[0]):
-                AMP[channel] = spectrums[channel][1:N / 2] / np.sqrt(F[1:N / 2])
-                PHI = np.arctan2(spectrums[channel][1:N / 2].real, spectrums[channel][1:N / 2].imag)
-                F = F[1:N / 2]
+                AMP[channel] = spectrums[channel][1:N // 2] / np.sqrt(F[1:N // 2])
+                PHI = np.arctan2(spectrums[channel][1:N // 2].real, spectrums[channel][1:N // 2].imag)
+                F = F[1:N // 2]
         else:
             raise ValueError("Shape of input can't be greather than 2")
     else:
@@ -172,7 +172,7 @@ def PS(spectrums):
     Amplitude and phase. The complex signal is converted to amplitude and Phase
     and after this the power spectrum is created.
     """
-    if istuple(spectrums) is True:
+    if istuple(spectrums) == True:
         AMP = spectrums[0]
         PHI = spectrums[1]
         AMP_shape = np.shape(AMP)
@@ -190,12 +190,12 @@ def PS(spectrums):
         else:
             raise ValueError("Shape of input can't be greather than 2")
         pass
-    elif np.iscomplex(spectrums).any() is True:
+    elif np.iscomplex(spectrums).any() == True:
         spec_shape = np.shape(spectrums)
         if len(spec_shape) == 1:
             N = np.int(len(spectrums))
             AMP = abs(spectrums[1:N / 2]) ** 2
-            PHI = np.arctan2(spectrums[1:N / 2].real, spectrums[1:N / 2].imag)
+            PHI = np.arctan2(spectrums[1:N // 2].real, spectrums[1:N // 2].imag)
         elif len(spec_shape) == 2:
             if spec_shape[0] < spec_shape[1]:
                 N=shape[1]
@@ -205,8 +205,8 @@ def PS(spectrums):
                 spec_shape = np.shape(spectrums)
                 N = spec_shape[1]
             for channel in range(AMP_shape[0]):
-                AMP[channel] = spectrums[channel][1:N / 2] ** 2
-                PHI = np.arctan2(spectrums[channel][1:N / 2].real, spectrums[channel][1:N / 2].imag)
+                AMP[channel] = spectrums[channel][1:N // 2] ** 2
+                PHI = np.arctan2(spectrums[channel][1:N // 2].real, spectrums[channel][1:N // 2].imag)
         else:
             raise ValueError("Shape of input can't be greather than 2")
     else:
