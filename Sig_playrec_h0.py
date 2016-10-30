@@ -48,7 +48,7 @@ try:
     #(sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
     # multi channel signal generation
     (sigout, si_sigout, t) = sg.mSigGen('ChirpLog', f, T, fs, nChannels, repeat=repeats, l0=2)
-    sigout = checks.input_type(sigout)
+    sigout = checks.convertFloat(sigout)
 
     # Signal to soundcard
 
@@ -62,7 +62,7 @@ try:
     sd.wait()
     # sd.stop()
 #    print(dtype(rec1))
-    rec1 = checks.input_type(rec1)  # @ Comment till fixed...
+    rec1 = checks.convertFloat(rec1)  # @ Comment till fixed...
     rec1 = rec1.T[0]
 
     # averaging from here:
@@ -95,30 +95,30 @@ try:
         REC1_F, REC1_S, REC1_P = spectraldistr.AS(rec1, fs)
 
     AW = weighting.weighting()
-    if weighting is None:
+    if weighting_filt is None:
         pass
-    elif weighting is "A":
+    elif weighting_filt is "A":
         if np.iscomplex(REC1_S).any() is True:
             SI_F, SI_S, SI_P = AW.Aweighting(SI_F, SI_S)
             REC1_F, REC1_S, REC1_P = AW.Aweighting(REC1_F, REC1_S)
         else:
             SI_F, SI_S, SI_P = AW.Aweighting(SI_F, (SI_S, SI_P))
             REC1_F, REC1_S, REC1_P = AW.Aweighting(REC1_F, (REC1_S, REC1_P))
-    elif weighting is "B":
+    elif weighting_filt is "B":
         if np.iscomplex(REC1_S).any() is True:
             SI_F, SI_S, SI_P = AW.Bweighting(SI_F, SI_S)
             REC1_F, REC1_S, REC1_P = AW.Bweighting(REC1_F, REC1_S)
         else:
             SI_F, SI_S, SI_P = AW.Bweighting(SI_F, (SI_S, SI_P))
             REC1_F, REC1_S, REC1_P = AW.Bweighting(REC1_F, (REC1_S, REC1_P))
-    elif weighting is "C":
+    elif weighting_filt is "C":
         if np.iscomplex(REC1_S).any() is True:
             SI_F, SI_S, SI_P = AW.Cweighting(SI_F, SI_S)
             REC1_F, REC1_S, REC1_P = AW.Cweighting(REC1_F, REC1_S)
         else:
             SI_F, SI_S, SI_P = AW.Cweighting(SI_F, (SI_S, SI_P))
             REC1_F, REC1_S, REC1_P = AW.Cweighting(REC1_F, (REC1_S, REC1_P))
-    elif weighting is "D":
+    elif weighting_filt is "D":
         if np.iscomplex(REC1_S).any() is True:
             SI_F, SI_S, SI_P = AW.Aweighting(SI_F, SI_S)
             REC1_F, REC1_S, REC1_P = AW.Aweighting(REC1_F, REC1_S)
@@ -134,15 +134,16 @@ try:
         pass
     elif (spectrum is "PS") or (spectrum is "ps"):
         if np.iscomplex(REC1_S).any() is True:
-            SI_F, SI_S, SI_P  = spectraldistr.PS(SI_S, SI_F)
+            SI_F, SI_S, SI_P = spectraldistr.PS(SI_S, SI_F)
             REC1_F, REC1_S, REC1_P = spectraldistr.PS(REC1_S, REC1_F)
         else:
             SI_F, SI_S, SI_P = spectraldistr.PS((SI_S, SI_P), SI_F)
             REC1_F, REC1_S, REC1_P = spectraldistr.PS((REC1_S, REC1_P), REC1_F)
     elif (spectrum is "SD") or (spectrum is "sd"):
-        if np.iscomplex(REC1_S).any() is True:
-            SI_F, SI_S, SI_P  = spectraldistr.SD(SI_S, SI_F)
-            REC1_F, REC1_S, REC1_P = spectraldistr.SD(REC1_S, REC1_F)
+        print(np.iscomplex(REC1_S).any())
+        if np.iscomplex(REC1_S).any() == True:
+            SI_S, SI_P, SI_F = spectraldistr.SD(SI_S, SI_F)
+            REC1_S, REC1_P, REC1_F = spectraldistr.SD(REC1_S, REC1_F)
         else:
             SI_F, SI_S, SI_P = spectraldistr.SD((SI_S, SI_P), SI_F)
             REC1_F, REC1_S, REC1_P = spectraldistr.SD((REC1_S, REC1_P), REC1_F)
