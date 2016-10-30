@@ -33,7 +33,7 @@ def even(x):
     - phase signals have \'odd\' symmetry +/- pi"""
     N = np.int(len(x))
     if N % 2 == 0:
-        # N / 2 ia aloud to be odd it can be half spectrum... 
+        # N / 2 ia aloud to be odd it can be half spectrum...
         N_half = np.int(N / 2)
         if (x[1: N_half] == np.flipud(x[-N_half + 1:])).all():
             evenvals = True
@@ -48,7 +48,7 @@ def even(x):
     return(evenvals)
 
 
-def input_type(data):
+def convertFloat(data):
     """
     Input:
         data = array of data recorded by input of audio/ vibration interface.
@@ -57,75 +57,56 @@ def input_type(data):
 
     Check d-type or data type (class) of the input array. After this it
     rescaled the data to floating point data array of +/- 1."""
-    if np.ndim(data) == 0:
-        # print("input ndim = 0")
-        if isinstance(data, np.float()):
-            return(data)
-        elif isinstance(data, np.int64()):
-            data = data.astype(float) / (2 ** (64 - 1))
-            return(data)
-        elif isinstance(data, np.int32):
-            data = data.astype(float) / (2 ** (32 - 1))
-            return(data)
-        elif isinstance(data, np.int16):
-            data = data.astype(float) / (2 ** (16 - 1))
-            return(data)
-        elif isinstance(data, np.int8):
-            data = data.astype(float) / (2 ** (8 - 1))
-            return(data)
-        else:
-            raise TypeError('wrong input type')
-
-    if np.ndim(data) == 1:
-        # print("input ndim = 1")
-        # print(data.T[1])
-        if isinstance(data.T[0], np.float):
-            print('floating point data')
-            return(data)
-        elif isinstance(data.T[0], np.float_):
-            return(data)
-        elif isinstance(data.T[0], np.int64):
-            data = data.astype(float) / (2 ** (64 - 1))
-            return(data)
-        elif isinstance(data.T[0], np.int32):
-            data = data.astype(float) / (2 ** (32 - 1))
-            return(data)
-        elif isinstance(data.T[0], np.int16):
-            data = data.astype(float) / (2 ** (16 - 1))
-            return(data)
-        elif isinstance(data.T[0], np.int8):
-            data = data.astype(float) / (2 ** (8 - 1))
-            return(data)
-        else:
-            raise TypeError('wrong input type')
-
-    elif np.ndim(data) == 2:
-        # print("input ndim = 2")
-        # print(data.T[1])
-        if isinstance(data.T[0][0], np.float):
-            return(data)
-        elif isinstance(data.T[0][0], np.float_):
-            return(data)
-        elif isinstance(data.T[0][0], np.int64):
-            data = data.astype(float) / (2 ** (64 - 1))
-            return(data)
-        elif isinstance(data.T[0][0], np.int32):
-            data = data.astype(float) / (2 ** (32 - 1))
-            return(data)
-        elif isinstance(data.T[0][0], np.int16):
-            data = data.astype(float) / (2 ** (16 - 1))
-            return(data)
-        elif isinstance(data.T[0][0], np.int8):
-            data = data.astype(float) / (2 ** (8 - 1))
-            return(data)
-        else:
-            raise TypeError('wrong input type')
-
+    if data.dtype == np.float64():
+        return(data)
+    elif data.dtype == np.int64():
+        data = data.astype(float) / (2 ** (64 - 1))
+        return(data)
+    elif data.dtype == np.int32:
+        data = data.astype(float) / (2 ** (32 - 1))
+        return(data)
+    elif data.dtype == np.int16:
+        data = data.astype(float) / (2 ** (16 - 1))
+        return(data)
+    elif data.dtype == np.int8:
+        data = data.astype(float) / (2 ** (8 - 1))
+        return(data)
+    elif isinstance(data, int):
+        data = data.astype(float) / (2 ** (32 - 1))
+        return(data)
+    elif isinstance(data, float):
+        return(data)
     else:
         raise TypeError('wrong input type')
 
 
-def input_check(data):
+def ShapeDirection(sig):
+    """ input direction
+    inputs:
+        sig = Array of signals
+    outputs:
+        sig = signal or transposed signal
+    ndimensions not larger as 2 dimensional
+    max number of axis is two (0 and 1) else gives an input error
+
+    TODO:
+    - Implement Axis?
+    """
+    sig_shape = np.shape(sig)
+    if sig.ndim == 1:
+        pass
+    elif sig.ndim == 2:
+        if sig_shape[0] < sig_shape[1]:
+            print('right direction')
+        else:
+            # wrong direction... Transform needed
+            sig = sig.T  # signal transformed
+            print('Data is Transformed')            
+    else:
+        raise ValueError('not a valid number of dimensions')
+
+
+def isfloat(data):
     """
     Input:
         data = array of one or more values
@@ -138,41 +119,8 @@ def input_check(data):
     TODO:
         - Add Inputtype to function
         - Check all data"""
-    if np.ndim(data) > 0:
-        if isinstance(data[0], np.float):
-            return(True)
-        else:
-            # raise TypeWarning('wrong input type')
-            return(False)
-    elif np.ndim(data) == 0:
-        if isinstance(data, np.float):
-            return(True)
-        else:
-            return(False)
-            # raise MeasWarning.TypeWarning('wrong input type')
+    return(isinstance(data.any(), np.float))
 
-def input_direction(sig, axis=0):
-    """ input direction
-    inputs:
-        sig = ...
-        axis = ... 
-    outputs:
-        sig = ...
-    max number of axis is two (0 and 1) else gives an input error
-    """
-    if len(chanshape) == 1:
-        # std fft is correct
-        print('std FFT is fine no multi channel FFT Needed')
-    elif len(chanshape) == 2:
-        if chanshape[0] < chanshape[1]:
-            print('right direction')
-        else:
-            # wrong direction... Transform needed
-            print('Transform Needed')
-            chansine = chansine.T  # signal transformed
-        print(chanshape[0])
-    else:
-        raise ValueError('not a valid number of dimensions')
 
 def istuple(var):
     """
@@ -199,16 +147,16 @@ def odd(x):
     N = np.int(len(x))
     if N % 2 == 0:
         N_half = np.int(N / 2)
-        if (x[1: N_half] == - np.flipud(x[-N_half +1 :])).all():
+        if (x[1:N_half] == - np.flipud(x[-N_half + 1:])).all():
             oddvals = True
         else:
-            oddvals = False 
+            oddvals = False
     else:
         N_half = np.int((N - 1) / 2)
-        if (x[1: N_half] == - np.flipud(x[-N_half +1 :])).all():
+        if (x[1:N_half] == - np.flipud(x[-N_half +1:])).all():
             oddvals = True
         else:
-            oddvals = False 
+            oddvals = False
     return(oddvals)
 
 
