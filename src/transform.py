@@ -27,7 +27,7 @@ def NFFT(x):
     return(nfft)
 
 
-def MagPh2ReIm(Mag, Phi, output='ReIm'):
+def MagPh2ReIm(Mag, Phi, output='complex'):
     """
     Inputs:
         MAG = Magnitude spectrum *
@@ -41,11 +41,21 @@ def MagPh2ReIm(Mag, Phi, output='ReIm'):
     * at this moment only to Real and Imaginaire vallues later on also Complex
 
     Calculate back the Real and imaginary Values
-    To Do:
-        - Make Real + Imag to Complex values - If required """
+    TODO:
+        - Make Real + Imag to Complex values - If required
+    """
+    MagRev = np.fliplr(np.delete(Mag))
+    Mag = np.concatenate((MagRev, Mag), axis=1)
+    PhiRev = np.fliplr(np.delete(Phi))
+    Phi = np.concatenate((PhiRev, Phi), axis=1)
+
     Re = Mag * np.cos(Phi)
     Im = Mag * np.sin(Phi)
-    return(Re, Im)
+    if (output is 'Complex') or (output is 'complex') or (output is 'C') or (output is 'c'):
+        return(Re + 1j*Im)
+    elif (output is 'RealImag') or (output is 'realimaf') or (output is 'RI') or (output is 'ri'):
+        return(Re, Im)
+
 
 # def FFT(x, fs, *args, **kwargs):
 def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, output='complex'):
