@@ -476,29 +476,18 @@ def mImpulseResponse(H, F):
         H_amp_shape = np.shape(H_amp)
         H_phi_shape = np.shape(H_phi)
         if (len(H_amp_shape) and len(H_phi_shape)) == 1:
-            (IR, fs, T) = ImpulseResponse(H, F)
+             H = MagPh2ReIm(H_amp, H_phi)
         elif (len(H_amp_shape) and len(H_phi_shape)) == 2:
             if H_amp_shape[0] < H_amp_shape[1]:
                 pass
             elif H_amp_shape[0] > H_amp_shape[1]:
                 H_amp = H_amp.T
-                H_amp_shape = np.shape(H_amp)
             if H_phi_shape[0] < H_phi_shape[1]:
                 pass
             elif H_phi_shape[0] > H_phi_shape[1]:
                 H_phi = H_phi.T
-                H_phi_shape = np.shape(H_phi)
-            mIR = mfs = mT = []
-            for channel in range(H_amp_shape[0]):
-                si_IR, fs, T = ImpulseResponse((H_amp[channel], H_phi[channel]), F)
-                if channel == 0:
-                    mIR = np.append(mIR, si_IR)
-                    mfs = np.append(mfs, fs)
-                    mT = np.append(mT, T)
-                else:
-                    mIR = np.vstack((mIR, si_IR))
-                    mfs = np.vstack((mfs, fs))
-                    mT = np.vstack((mT, T))
+            H = MagPh2ReIm(H_amp, H_phi)
+            H_shape = np.shape(H)
         else:
             raise ValueError("Shape of input can't be greather than 2")
 
@@ -512,17 +501,21 @@ def mImpulseResponse(H, F):
             elif H_shape[0] > H_shape[1]:
                 H = H.T
                 H_shape = np.shape(H)
-            mIR = mfs = mT = []
-            for channel in range(H_shape[0]):
-                si_IR, fs, T = ImpulseResponse(H[channel], F)
-                if channel == 0:
-                    mIR = np.append(mIR, si_IR)
-                    mfs = np.append(mfs, fs)
-                    mT = np.append(mT, T)
-                else:
-                    mIR = np.vstack((mIR, si_IR))
-                    mfs = np.vstack((mfs, fs))
-                    mT = np.vstack((mT, T))
         else:
             raise ValueError("Shape of input can't be greather than 2")
-    return(mIR, mfs, mT)
+    if len(H_shape) == 1:
+        (IR, fs, T) = ImpulseResponse(H, F)
+        return(IR, fs, T)
+    else:
+        mIR = mfs = mT = []
+        for channel in range(H_shape[0]):
+            si_IR, fs, T = ImpulseResponse(H[channel], F)
+            if channel == 0:
+                mIR = np.append(mIR, si_IR)
+                mfs = np.append(mfs, fs)
+                mT = np.append(mT, T)
+            else:
+                mIR = np.vstack((mIR, si_IR))
+                mfs = np.vstack((mfs, fs))
+                mT = np.vstack((mT, T))
+        return(mIR, mfs, mT)
