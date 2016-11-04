@@ -7,7 +7,7 @@ import sounddevice as sd
 # from src.measwarning import InterfaceWarning
 
 
-def InterfaceIO():
+def interfaceIO():
     """
     Input:
         None
@@ -26,11 +26,11 @@ def InterfaceIO():
     # print(devinfo)
 
     IOs = np.zeros((len(devinfo), 3))
-    for idx in range(len(devinfo)):
-        temp = devinfo[idx]
-        IOs[idx][0] = idx
-        IOs[idx][1] = temp['max_input_channels']
-        IOs[idx][2] = temp['max_output_channels']
+    for device in range(len(devinfo)):
+        temp = devinfo[device]
+        IOs[device][0] = device
+        IOs[device][1] = temp['max_input_channels']
+        IOs[device][2] = temp['max_output_channels']
     # nonzeroval = IOs[:, [1, 2]]  # filter on arrays!!
     # http://stackoverflow.com/questions/8386675/extracting-specific-columns-in-numpy-array
     nzin = np.nonzero(IOs[:, 1])[0]
@@ -77,6 +77,115 @@ def InterfaceIO():
                 print(idx, Interfaces_print['name'])
             devopt = (nzin, nzout)
     return(devinfo, devopt)
+
+
+def advPlayRec(data, samplerate=None, repeats=None, cascade=False, 
+               input_channels=None, output_channels=None, dtype=None, out=None,
+               input_mapping=None, output_mapping=None, blocking=False, **kwargs):
+    """ 
+    adv PlayRec
+    
+    Parameters
+    ----------
+    data: Audio data to be played back. see python Sounddevice
+    repeats: Number of repeats (per channel).
+    cascade: If ''False''(the default) measure all output channels at once. If
+        ''True'' Solo measurement per channel.
+    input_channels, output_channels: Number of input channels. default the 
+        number of output channels is obtained from *data.shape*. except by 
+        cascading signals
+    dtype:  Input data type.
+    input_mapping, output_mapping
+    blocking: If ``False`` (the default), return immediately, if ``True``, wait
+        until playback/recording is finished.
+    
+    return
+    ------
+    The recorded data.
+    
+    Other Parameters
+    ----------------
+    out : Optional see python Sounddevice
+    samplerate, **kwargs: All parameters of `Stream` -- exceptions see
+        python Sounddevice
+    
+    Basic function of Sounddevice playrec() extended to need of repeating and
+    avaraging sound signals
+    
+    """
+    try:
+        import sounddevice as sd
+
+        print(sd.get_portaudio_version())
+        if repeats is None:
+            repeats = 1
+
+        if (output_mapping is not None) and (cascade is True):
+            # chack same dimension
+            mapping_length = len(output_mapping)
+            recarray = []
+            for channel in range(mapping_length):
+                chanarray = []
+                for repeat in range(repeats):
+                    singlerec = sd.playrec(data, samplerate, input_channels, dtype, out,
+                                input_mapping, output_mapping[channel], blocking, kwargs)
+                    recarray += singlerec
+                if channel == 0:
+                    recarray = np.append(chanarray, recarray)
+                else:
+                    if recarray.ndim == 1:
+                        recarray = np.vstack((recarray, chanarray))
+                    else:
+                        recarray = np.dstack((recarray, chanarray))
+            recarray = recarray / repeats
+            return(recarray)
+        elif (output_mapping is not None):
+            recarray = []
+            mapping_length = len(output_mapping)
+            data = np.repeat(data, output_channels, axis=1).reshape((len(data), mapping_length))
+            for repeat in range(repeats):
+                singlerec = sd.playrec(data, samplerate, input_channels, dtype, out,
+                                input_mapping, output_mapping, blocking, kwargs)
+                recarray += singlerec
+            recarray = recarray / repeats
+            return(recarray)
+        elif (output_channels is not None) and (cascade is True):
+            # check dimension with signal
+            recarray = []
+            for channel in range(output_channels):
+                chanarray = []
+                for repeat in range(repeats):
+                    singlerec = sd.playrec(data, samplerate, input_channels, dtype, out,
+                                input_mapping, output_mapping=channel, blocking, kwargs)
+                    recarray += singlerec
+                if channel == 0:
+                    recarray = np.append(chanarray, recarray)
+                else:
+                    if recarray.ndim == 1:
+                        recarray = np.vstack((recarray, chanarray))
+                    else:
+                        recarray = np.dstack((recarray, chanarray))
+            recarray = recarray / repeats
+            return(recarray)
+        elif (output_channels is not None):
+            recarray = []
+            data = np.repeat(data, output_channels, axis=1).reshape((len(data), output_channels))
+            for repeat in range(repeats):
+                singlerec = sd.playrec(data, samplerate, input_channels, dtype, out,
+                input_mapping, output_mapping, blocking, kwargs)
+                recarray += singlerec
+            recarray = recarray / repeats
+            return(recarray)
+        else:
+            recarray = []
+            for repeat in range(repeats):
+                singlerec = sd.playrec(data, samplerate, output_channels)
+                recarray += singlerec
+            recarray = recarray / repeats
+            return(recarray)
+
+    except ImportError:
+        raise ("No module named 'sounddevice'. ")
 
 
 def BufferSampt(Ns):
