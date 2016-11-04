@@ -46,6 +46,11 @@
 # |_ Fourier FFT/ DFT   5    12 Feb 2016() just data no real/imag  or Amp phase; no smooting and windowing
 #    |_ Wrap phase      3
 #    |_ STFT
+#    |_ compare different FFT tools:
+#       - PyFFTW
+#       - scikit-Cuda
+#       - reikna (follow up of pyfft)
+#       -- See http://stackoverflow.com/questions/6365623/improving-fft-performance-in-python
 # |_ Laplace/ Z-trans   0
 # |_ Transferfunction   2    12 Feb 2016 (No exeptions or extra parameters)
 # |_ Impulse response   2    13 Mar 2016
