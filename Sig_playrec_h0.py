@@ -1,48 +1,47 @@
 # Test Script for signal generation and recording:
 
-import sys
-if sys.version_info.major <3:
-    from __future__ import division
-from src import interface, measerror
-import sounddevice as sd
-from src.measwarning import InterfaceWarning
+T = 5  # [s] T= Time in seconds
+f = (10, 350)  # [Hz] Frequency signal generation
+fs = 44100  # [Hz] fs = Samplerate
+nChannels = 'stereo'  # 'Mono'; 'Stereo' or int value
+repeats = 3  # repeating the signal = Averaging the noise
 
-# Soundcard information
-(devinfo, devopt) = interface.InterfaceIO()
-# print(devinfo, devopt)
+RMS_res = True  # other option is 'False'
+crest_res = True  # other option is 'False'
+papr_res = True  # other option is 'False'
 
+fftMethod = "FFT"  # optionals FFT or AS both same result.
+# for spectrum AS does nothing
+weighting_filt = None  # oher options are the weightings 'A', 'B', 'C' and 'D'
+spectrum = "SD"  # select spectrum type: AS; PS; SD and PSD respectivelijk
+# for Amplitude Spectrum; Power Spectrum; Spectral Density;
+# Power Spectral Density
+
+savename = _  # if you want to save the data add name here between " " if
+            # not add underscore
+
+
+# WARNING:
+# ----------------------------------------------------------------------
+# FROM HERE START SCRIP DON EDIT ANYTHING WITHOUT KNOWLEDGE ABOUT MEAS!!
 try:
+    import sys
+    if sys.version_info.major <3:
+        from __future__ import division
     import numpy as np
     # from importlib.machinery import SourceFileLoader
     import matplotlib.pyplot as plt
+	import sounddevice as sd
+    from src import interface, measerror
+    from src.measwarning import InterfaceWarning
     import src.siggen as sg
     from src import transform, checks, weighting, repeat, spectraldistr
     # from src.DefaultFigures import Time, SpecMag, SpecPh
     from src.defaultfigures import *  # defaultFigures
 
-
-    T = 5  # [s] T= Time in seconds
-    f = (10, 350)  # [Hz] Frequency signal generation
-    fs = 44100  # [Hz] fs = Samplerate
-    nChannels = 'stereo'  # 'Mono'; 'Stereo' or int value
-    repeats = 3  # repeating the signal = Averaging the noise
-
-    RMS_res = True  # other option is 'False'
-    crest_res = True  # other option is 'False'
-    papr_res = True  # other option is 'False'
-
-    fftMethod = "FFT"  # optionals FFT or AS both same result.
-    # for spectrum AS does nothing
-    weighting_filt = None  # oher options are the weightings 'A', 'B', 'C' and 'D'
-    spectrum = "SD"  # select spectrum type: AS; PS; SD and PSD respectivelijk
-    # for Amplitude Spectrum; Power Spectrum; Spectral Density;
-    # Power Spectral Density
-
-    savename = _  # if you want to save the data add name here between " " if
-                # not add underscore
-
-    # WARNING:
-    # FROM HERE START SCRIP DON EDIT ANYTHING WITHOUT KNOWLEDGE ABOUT MEAS!!
+    # Soundcard information
+    (devinfo, devopt) = interface.interfaceIO()
+    # print(devinfo, devopt)
 
     f = np.array(f)
     #(sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
@@ -140,7 +139,6 @@ try:
             SI_F, SI_S, SI_P = spectraldistr.PS((SI_S, SI_P), SI_F)
             REC1_F, REC1_S, REC1_P = spectraldistr.PS((REC1_S, REC1_P), REC1_F)
     elif (spectrum is "SD") or (spectrum is "sd"):
-        print(np.iscomplex(REC1_S).any())
         if np.iscomplex(REC1_S).any() == True:
             SI_S, SI_P, SI_F = spectraldistr.SD(SI_S, SI_F)
             REC1_S, REC1_P, REC1_F = spectraldistr.SD(REC1_S, REC1_F)
@@ -154,50 +152,50 @@ try:
         else:
             SI_F, SI_S, SI_P = spectraldistr.PSD((SI_S, SI_P), SI_F)
             REC1_F, REC1_S, REC1_P = spectraldistr.PSD((REC1_S, REC1_P), REC1_F)
-    else: 
+    else:
         raise ValueError("Input for Spectrums doesn't excist")
 
     # Transfer function:
-    print(np.shape(sigout))
+    #print(np.shape(sigout))
     val = len(sigout.T)/3
     sigout_si = sigout.T[:val].T
-    (H1) = transform.mTransfer(rec1, sigout_si, fs)  # Rebuild Transfer for ...
+    (H1, F) = transform.mTransfer(rec1, sigout_si, fs)  # Rebuild Transfer for ...
     # ... adding two allready calculated spectra
 
     # Impulse Response:
     (IR, fs_ir, T_ir) = transform.mImpulseResponse(H1, F)  # temporary off
     # Create Var out from IR in To Do List!!
 
-    if len(t) > 100000:
-        # mpl.RcParams()
-        plt.rcParams['agg.path.chunksize'] = 10000
-
-    # Time plot
-    plt.figure()
-    timeplt = default2D(t, sigout)
-    timeplt.Time()
-    timeplt = default2D(t, rec1)
-    timeplt.Time()
-    plt.axis([4.98, 5, -1, 1])
-
-    # plot half frequency spectrum
-    plt.figure()
-#    specplt = default2D(REC1_F, REC1_S)
+#    if len(t) > 100000:
+#        # mpl.RcParams()
+#        plt.rcParams['agg.path.chunksize'] = 10000
+#
+#    # Time plot
+#    plt.figure()
+#    timeplt = default2D(t, sigout)
+#    timeplt.Time()
+#    timeplt = default2D(t, rec1)
+#    timeplt.Time()
+#    plt.axis([4.98, 5, -1, 1])
+#
+#    # plot half frequency spectrum
+#    plt.figure()
+##    specplt = default2D(REC1_F, REC1_S)
+##    specplt.SpecMag()
+#    specplt = default2D(SIG_F, SIG_S)
 #    specplt.SpecMag()
-    specplt = default2D(SIG_F, SIG_S)
-    specplt.SpecMag()
-
-    # plot full transferfunction
-    plt.figure()
-    specplt = default2D(F, H1)
-    specplt.SpecMag()
-
-    # Impulse response plot
-    # check this on proper recording!!
-    t_ir = np.arange(0,T_ir,1/fs)
-    plt.figure()
-    timeplt = default2D(t_ir, IR)
-    timeplt.Time()
+#
+#    # plot full transferfunction
+#    plt.figure()
+#    specplt = default2D(F, H1)
+#    specplt.SpecMag()
+#
+#    # Impulse response plot
+#    # check this on proper recording!!
+#    t_ir = np.arange(0,T_ir,1/fs)
+#    plt.figure()
+#    timeplt = default2D(t_ir, IR)
+#    timeplt.Time()
 except measerror.InterfaceError:
     raise InterfaceWarning("cant play and record at same time")  #, "Sigplayrec.py", 64):
 

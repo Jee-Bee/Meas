@@ -197,7 +197,7 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, output='comple
 
 
 # http://stackoverflow.com/questions/2598734/numpy-creating-a-complex-array-from-2-real-ones
-def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
+def Transfer(x_in, x_out, fs=None):  # possible some input paremeters addded later
     """
     Inputs:
         x_in = input signal or recorded signal
@@ -226,19 +226,29 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     # else is wrong valued type and give error
     from src.checks import even, odd, oddphase, phasecheck
 
-    if isinstance(x_in, tuple):
-        if phasecheck(x_in[1]) == True:
-            x_in0even = even(x_in[0])  # even symmetry
-            x_in1phodd = oddphase(x_in[1])  # odd symmetry
+    if fs is not None:
+        print("All inputs are expect to be time signals")
+        (F, X_IN, _) = mFFT(x_in, fs)
+        (F, X_OUT, _) = mFFT(x_out, fs)
+        H_0 = X_IN / X_OUT
+        return(H_0, F)
+    else:
+        if isinstance(x_in, tuple):
+            if phasecheck(x_in[1]) is True:
+                x_in0even = even(x_in[0])  # even symmetry
+                x_in1phodd = oddphase(x_in[1])  # odd symmetry
+            else:
+                x_in0even = even(x_in[0])  # even symmetry
+                x_in1odd = odd(x_in[1])  # odd symmetry
+            # make complex array
+            if (x_in0even & x_in1odd):
+                x_in = x_in[0] + 1j*x_in[1]
+            elif (x_in0even & x_in1phodd):
+                x_in = x_in[0]*np.sin(x_in[1]) + 1j * x_in[0]*np.cos(x_in[1])
+        elif np.iscomplexobj(x_in):
+            pass
         else:
-            x_in0even = even(x_in[0])  # even symmetry
-            x_in1odd = odd(x_in[1])  # odd symmetry
-            print(x_in0even, x_in1odd)
-        # make complex array
-        if (x_in0even & x_in1odd):
-            x_in = x_in[0] + 1j*x_in[1]
-        elif (x_in0even & x_in1phodd):
-            x_in = x_in[0]*np.sin(x_in[1]) + 1j * x_in[0]*np.cos(x_in[1])
+            raise TypeError("Wrong input type")
         if isinstance(x_out, tuple):
             x_out0even = even(x_out[0])
             x_out1odd = odd(x_out[1])
@@ -248,45 +258,9 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
                 H_0 = x_in / x_out
         elif np.iscomplexobj(x_out):
             H_0 = x_in / x_out
-        elif np.isrealobj(x_out):
-            (X_OUT, F, _) = FFT(x_out, fs)
-            H_0 = x_in / X_OUT
         else:
             raise TypeError("Wrong input type")
-    elif np.iscomplexobj(x_in):
-        if isinstance(x_out, tuple):
-            x_in0even = even(x_in[0])  # even symmetry
-            x_in1odd = odd(x_in[1])  # odd symmetry
-            # make complex array
-            if (x_out0even & x_out1odd):
-                x_out = x_out[0] + 1j*x_out[0]
-                H_0 = x_in / x_out
-        elif np.iscomplexobj(x_out):
-            H_0 = x_in / x_out
-        elif np.isrealobj(x_out):
-            (F, X_OUT, _) = FFT(x_out, fs)
-            H_0 = x_in / X_OUT
-        else:
-            raise TypeError("Wrong input type")
-    elif np.isrealobj(x_in):
-        (F, X_IN, _) = FFT(x_in, fs)
-        if isinstance(x_out, tuple):
-            x_in0even = even(x_in[0])  # even symmetry
-            x_in1odd = odd(x_in[1])  # odd symmetry
-            # make complex array
-            if (x_out0even & x_out1odd):
-                x_out = x_out[0] + 1j*x_out[0]
-                H_0 = X_IN / x_out
-        elif np.iscomplexobj(x_out):
-            H_0 = X_IN / x_out
-        elif np.isrealobj(x_out):
-            (F, X_OUT, _) = FFT(x_out, fs)
-            H_0 = X_IN / X_OUT
-        else:
-            raise TypeError("Wrong input type")
-    else:
-        raise TypeError("Wrong input type")
-    return(H_0)
+        return(H_0, [])
 
 
 # make complex array
@@ -404,12 +378,9 @@ def mTransfer(x_in, x_out, fs):
     """
     transin_shape = np.shape(x_in)
     transout_shape = np.shape(x_out)
-    print(transin_shape, transout_shape)
     if (len(transin_shape) and len(transout_shape)) == 1:
-        print("in 1 out 1")
-        mH_0 = Transfer(x_in, x_out, fs)
+        mH_0, mF = Transfer(x_in, x_out, fs)
     elif (len(transin_shape) == 2) and (len(transout_shape)) == 2:
-        print("in 2 out 2")
         if transin_shape[0] < transin_shape[1]:
             pass
         elif transin_shape[0] > transin_shape[1]:
@@ -421,43 +392,50 @@ def mTransfer(x_in, x_out, fs):
             x_out = x_out.T
             transout_shape = np.shape(x_out)
         mH_0 = []
+        mF = []
         for channel in range(transout_shape[0]):
-            si_H_0 = Transfer(x_in, x_out[channel], fs)
+            si_H_0, si_F = Transfer(x_in, x_out[channel], fs)
             if channel == 0:
                 mH_0 = np.append(mH_0, si_H_0)
+                mF = np.append(mF, si_F)
             else:
                 mH_0 = np.vstack((mH_0, si_H_0))
+                mF = np.vstack((mF, si_F))
     elif len(transout_shape) == 2:
-        print("in 1 out 2")
         if transout_shape[0] < transout_shape[1]:
             pass
         elif transout_shape[0] > transout_shape[1]:
             x_out = x_out.T
             transout_shape = np.shape(x_out)
         mH_0 = []
+        mF = []
         for channel in range(transout_shape[0]):
-            si_H_0 = Transfer(x_in, x_out[channel], fs)
+            si_H_0, si_F = Transfer(x_in, x_out[channel], fs)
             if channel == 0:
                 mH_0 = np.append(mH_0, si_H_0)
+                mF = np.append(mF, si_F)
             else:
                 mH_0 = np.vstack((mH_0, si_H_0))
+                mF = np.vstack((mF, si_F))
     elif len(transin_shape) == 2:
-        print("in 2 out 1")
         if transin_shape[0] < transin_shape[1]:
             pass
         elif transin_shape[0] > transin_shape[1]:
             x_in = x_in.T
             transin_shape = np.shape(x_in)
         mH_0 = []
+        mF = []
         for channel in range(transin_shape[0]):
-            si_H_0 = Transfer(x_in[channel], x_out, fs)
+            si_H_0, si_F = Transfer(x_in[channel], x_out, fs)
             if channel == 0:
                 mH_0 = np.append(mH_0, si_H_0)
+                mF = np.append(mF, si_F)
             else:
                 mH_0 = np.vstack((mH_0, si_H_0))
+                mF = np.vstack((mF, si_F))
     elif (len(transin_shape) or len(transout_shape)) > 2:
         raise ValueError("Shape of input can't be greather than 2")
-    return(mH_0)
+    return(mH_0, mF)
 
 
 def mImpulseResponse(H, F):
@@ -470,6 +448,16 @@ def mImpulseResponse(H, F):
     TODO:
     - limit the number of channels
     """
+    F_shape = np.shape(F)
+    if len(F_shape) == 1:
+        pass
+    elif len(F_shape) == 2:
+        if F_shape[0] < F_shape[1]:
+            F = F[0]
+        elif F_shape[0] > F_shape[1]:
+            F = F.T[0]
+    else:
+        raise ValueError("Shape of input can't be greather than 2")
     if isinstance(H, tuple):
         H_amp = H[0]
         H_phi = H[1]
