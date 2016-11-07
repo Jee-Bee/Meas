@@ -156,7 +156,7 @@ def advPlayRec(data, samplerate=None, repeats=None, cascade=False,
                 chanarray = []
                 for repeat in range(repeats):
                     singlerec = sd.playrec(data, samplerate, input_channels, dtype, out,
-                                input_mapping, output_mapping=channel, blocking, kwargs)
+                                input_mapping, channel, blocking, kwargs)
                     recarray += singlerec
                 if channel == 0:
                     recarray = np.append(chanarray, recarray)
