@@ -186,7 +186,7 @@ class SigGen(object):
             t = np.arange(0, T * fs)/fs
             factor_f = fs/f1  # factor fs/f1
             T = T - (np.ceil(factor_f) + 1) / fs
-            Sig_unw = sig.chirp(t, f0, T, f1, 'linear', 90)  # unwindowed Signal
+            Sig_unw = sig.chirp(t, f0, T, f1, 'logarithmic', 90)  # unwindowed Signal
             # phi = (f0 * (f1 / f0) ** (t[-4:] / T)) % np.pi
             if factor_f < 2:
                 # print error
