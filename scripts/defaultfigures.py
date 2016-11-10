@@ -7,7 +7,7 @@ Created on Tue Dec 29 12:26:12 2015
 
 # FUNCTION           PRIORITY  DATE FINISHED
 # ----------------------------------------------
-# Plots               
+# Plots
 # |_ time plot        5
 # |_ Freq plot/ bode  5
 # |_ spectrum time    4
@@ -20,9 +20,10 @@ Created on Tue Dec 29 12:26:12 2015
 import numpy as np
 import matplotlib.pylab as plt
 from mpl_toolkits.mplot3d import Axes3D
-#import matplotlib as mpl
-#http://matplotlib.org/api/mlab_api.html
+# import matplotlib as mpl
+# http://matplotlib.org/api/mlab_api.html
 from scripts import measerror
+from scripts.checks import istuple
 
 # what variable needed:
 # Signal x axis (t[sec]/ t_samples[-]/ F[Hz]/ Freuencynr[-] / Quefrecy[?])
@@ -35,39 +36,51 @@ from scripts import measerror
 # Title
 # Save Yes no + sizes
 
-#http://matplotlib.org/users/shell.html
-##create big-expensive-figure
-#ioff()      # turn updates off
-#title('now how much would you pay?')
-#xticklabels(fontsize=20, color='green')
-#draw()      # force a draw
-#savefig('alldone', dpi=300)
-#close()
-#ion()      # turn updating back on
-#plot(rand(20), mfc='g', mec='r', ms=40, mew=4, ls='--', lw=3)
+# http://matplotlib.org/users/shell.html
+# #create big-expensive-figure
+# ioff()      # turn updates off
+# title('now how much would you pay?')
+# xticklabels(fontsize=20, color='green')
+# draw()      # force a draw
+# savefig('alldone', dpi=300)
+# close()
+# ion()      # turn updating back on
+# plot(rand(20), mfc='g', mec='r', ms=40, mew=4, ls='--', lw=3)
 
 # save figure:
-#plt.savefig("test.png")
+# plt.savefig("test.png")
 
 
-class defaultFigures():
-        
-    def __init__(self):
-        pass
+class time2D(plt.Figure):
 
-class default2D(defaultFigures):
-    
-    def __init__(self, signalx, signaly):
-        self.signalx = signalx
-        self.signaly = signaly
+    def __init__(self, timesignal, signal):
+        self.timesignal = timesignal
+        self.signal = signal
 
-    def Time(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
-        plt.plot(self.signalx, self.signaly)
-        plt.xlabel('time [s]')  # or sample number
-        plt.ylabel('voltage [mV]')  # auto add unit here
+    def time(self, yunit=None):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
+        time = self.Figure()
+        timeaxis = time.axis(self.timesignal, self.signal)
+        time.xlabel('time [s]')  # or sample number
+        if yunit is None:
+            time.ylabel('voltage [mV]')  # auto add unit here
+        elif isinstance(yunit, str):
+            time.ylabel(yunit)  # auto add unit here
+        else:
+            raise ValueError("yunit should be empty or type 'str'.")
         plt.title(' ')
         plt.grid(True)
         plt.show()
+
+    def timeupdate():
+        pass
+
+
+class bode2D(plt.Figure):
+
+    def __init__(self, amp, phi, frequency):
+        self.amp = amp
+        self.phi = phi
+        self.frequency = frequency
 
     def SpecMag(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
         plt.plot(self.signalx, self.signaly)
@@ -102,13 +115,13 @@ class default2D(defaultFigures):
             plt.grid(True)
             plt.show()
         elif np.iscomplex(self.signaly):
-            print ("input need to be a tuple for proper working \n complex valued signal not implemented yet")
+            print("input need to be a tuple for proper working \n complex valued signal not implemented yet")
         else:
-            # raise 
-            print ("input need to be a tuple for proper working")
+            # raise
+            print("input need to be a tuple for proper working")
 
 
-class default3D(defaultFigures):
+class default3D(plt.Figure):
 
     def __init__(self, signalx, signaly, signalz):
         self.signalx = signalx
@@ -120,7 +133,7 @@ class default3D(defaultFigures):
         if self.signalx.shape == self.signaly.shape == self.signalz.shape:
             pass
         elif self.signalx.shape == (len(self.signalx), ) or self.signaly.shape == (len(self.signaly), ):
-        # Check for 1D array both
+        #    Check for 1D array both
             if self.signalx.shape == (len(self.signalx), ) and self.signaly.shape == (len(self.signaly), ):
                 self.signalx, self.signaly = np.meshgrid(self.signalx, self.signaly)
                 nx, mx = np.shape(self.signalx)
@@ -128,7 +141,7 @@ class default3D(defaultFigures):
                 if nx == nz and mx == mz:
                     pass
                 elif nx == mz and mx == nz:
-                    self.signalz = np.rot90(self.signalz, 1) 
+                    self.signalz = np.rot90(self.signalz, 1)
                     # find out if it has to be 1 or 3
             elif self.signalx.shape == (len(self.signalx), ):
                 pass
@@ -140,7 +153,7 @@ class default3D(defaultFigures):
                 if nx == nz and mx == mz:
                     pass
                 elif nx == mz and mx == nz:
-                    self.signalz = np.rot90(self.signalz, 1) 
+                    self.signalz = np.rot90(self.signalz, 1)
                     # find out if it has to be 1 or 3
             elif self.signalx.shape == self.signalz.shape != self.signaly.shape:
                 nx, mx = np.shape(self.signalx)
@@ -148,7 +161,7 @@ class default3D(defaultFigures):
                 if nx == ny and mx == my:
                     pass
                 elif nx == my and mx == ny:
-                    self.signaly = np.rot90(self.signaly, 1) 
+                    self.signaly = np.rot90(self.signaly, 1)
                     # find out if it has to be 1 or 3
         elif self.signaly.shape == self.signalz.shape != self.signalx.shape:
             ny, my = np.shape(self.signaly)
@@ -156,11 +169,11 @@ class default3D(defaultFigures):
             if ny == nx and my == mx:
                 pass
             elif ny == mx and my == nx:
-                self.signalz = np.rot90(self.signalz, 1) 
+                self.signalz = np.rot90(self.signalz, 1)
                 # find out if it has to be 1 or 3
         else:
             raise MeasError.DataError("No Valid data found in at least one of the axis")
-        
+
         plt.xlabel('time [s]')  # Or Sample number
         plt.ylabel('Frequency [Hz]')  # Or Freq Bins number
         plt.zlabel('voltage [mV]')  # auto add unit here
@@ -169,7 +182,7 @@ class default3D(defaultFigures):
         plt.show()
 
     def water(self, *argv):  # Dimension is unit type as V(olt) W(att), etc
-#        http://matplotlib.org/examples/mplot3d/polys3d_demo.html
+        # http://matplotlib.org/examples/mplot3d/polys3d_demo.html
         Axes3D.plot_surface(self.signalx, self.signaly, self.signalz)  # till better funcion
         plt.xlabel('time [s]')  # Or Sample number
         plt.ylabel('Frequency [Hz]')  # Or Freq Bins number
@@ -178,8 +191,9 @@ class default3D(defaultFigures):
         plt.grid(True)
         plt.show()
 
-class Overlap_Characterestics(defaultFigures):
-    
+
+class Overlap_Characterestics(plt.Figure):
+
     def __init__(self, percent, afval, ocval, WindowType):
         self.precent = percent
         self.afval = afval
@@ -188,7 +202,6 @@ class Overlap_Characterestics(defaultFigures):
                 self.WindowType = WindowType
         else:
                 raise TypeError("Wrong input type have to be str")
-        
 
     def OC(self):  # ,dimension):  # Dimension is unit type as V(olt) W(att), etc
         plt.plot(self.percent, self.afval, self.percent, self.afval)
@@ -200,8 +213,8 @@ class Overlap_Characterestics(defaultFigures):
         plt.show()
 
 
-#def zero (zeeroar,signal,dimension):
-#    plot(zeroar, signal)    
+# def zero (zeeroar,signal,dimension):
+#    plot(zeroar, signal)
 #    xlabel('time (s)')
 #    ylabel('voltage (mV)')
 #    title('About as simple as it gets, folks')
