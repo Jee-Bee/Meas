@@ -57,7 +57,6 @@ def interfaceIO():
                 for idx in nzin:
                     temp = devinfo[np.int(idx)]
                     print(idx, temp['name'])
-                print('Outputs:')
                 for idx in int(nzout):
                     temp = devinfo[np.int(idx)]
                     print(idx, temp['name'])
@@ -81,6 +80,25 @@ def interfaceIO():
         return(devinfo, devopt)
     except ImportError:
         raise ImportError("No module named 'sounddevice'. ")
+
+
+def IOcheck():
+    try:
+        import sounddevice as sd
+        # Signal to soundcard
+        # Soundcard information
+        devinfo = sd.query_devices()
+        # print(devinfo)
+    
+        IOs = np.zeros((len(devinfo), 3))
+        for device in range(len(devinfo)):
+            temp = devinfo[device]
+            IOs[device][0] = device
+            IOs[device][1] = temp['max_input_channels']
+            IOs[device][2] = temp['max_output_channels']
+        return(IOs)
+    except ImportError:
+        raise ("No module named 'sounddevice'. ")
 
 
 def advPlayRec(data, samplerate=None, input_channels=None, output_channels=None,
@@ -119,9 +137,17 @@ def advPlayRec(data, samplerate=None, input_channels=None, output_channels=None,
     """
     try:
         import sounddevice as sd
-        #from scripts.checks import srepeat
+        print(sd.get_portaudio_version())  # this works
 
-        print(sd.get_portaudio_version())
+        if output_channels is int:
+            pass
+        elif output_channels in ['mono', 'Mono', 'MONO', 'm', 'M']:
+            output_channels = 1
+        elif output_channels in ['stereo', 'Stereo', 'STEREO', 's', 'S']:
+            output_channels = 2
+        else:
+            raise ValueError("Output have to be an integer or 'Mono' or 'Stereo'")
+
         if repeats is None:
             repeats = 1
         else:
@@ -168,10 +194,12 @@ def advPlayRec(data, samplerate=None, input_channels=None, output_channels=None,
             recarray /= repeats
             return(recarray)
         elif (output_channels is not None):
-            recarray = []
             data = np.repeat(data, output_channels, axis=1).reshape((len(data), output_channels))
-            singlerec = sd.playrec(data, samplerate, input_channels, dtype, out,
-                input_mapping, output_mapping, blocking, kwargs)
+            print("break after this")
+            recarray = sd.playrec(data, samplerate, input_channels, dtype, out, 
+                                  input_mapping, output_mapping, blocking,
+                                  kwargs)
+            print("break after this")
             recarray = recarray = np.array_split(recarray, repeats, axis=0)
             recarray /= repeats
             return(recarray)
@@ -184,6 +212,21 @@ def advPlayRec(data, samplerate=None, input_channels=None, output_channels=None,
             return(recarray)
     except ImportError:
         raise ("No module named 'sounddevice'. ")
+
+
+def simplePlayRec(data, samplerate=None, input_channels=None, output_channels=None,
+               repeats=None):
+    import sounddevice as sd
+    print("break during recording")
+    data = np.repeat(data, output_channels).reshape((len(data), output_channels))
+    print("break after this")
+    recarray = sd.playrec(data, samplerate, input_channels)
+    print("break after this")
+    recarray = sd.playrec(data, samplerate, input_channels)
+    sd.wait()
+    recarray = recarray = np.array_split(recarray, repeats, axis=0)
+    recarray /= repeats
+    return(recarray)
 
 
 def BufferSampt(Ns):
