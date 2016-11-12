@@ -224,8 +224,7 @@ def Transfer(x_in, x_out, fs=None):  # possible some input paremeters addded lat
     # Compex valued signals = FFT
     # Nummeric is real valued and neeed FFT!!
     # else is wrong valued type and give error
-    from src.checks import even, odd, oddphase, phasecheck
-
+    from src.measutils import even, odd, oddphase, phasecheck
     if fs is not None:
         print("All inputs are expect to be time signals")
         (F, X_IN, _) = mFFT(x_in, fs)

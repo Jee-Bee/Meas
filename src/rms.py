@@ -6,9 +6,11 @@ Created on Mon Jan  4 13:53:54 2016
 """
 
 import sys
-import numpy as np
 if sys.version_info.major <3:
     from __future__ import division
+import numpy as np
+from src.measutils import zeroCheck
+
 
 # 2Do
 # check input type
@@ -17,37 +19,6 @@ if sys.version_info.major <3:
 
 # http://samcarcagno.altervista.org/blog/basic-sound-processing-python/
 
-
-def zeroCheck(vals):
-    """
-    Inputs:
-        vals = (ndim) array of values
-    Output:
-        vals_no0 = same array of values when it contain no zeros otherwise
-                    new array without the zeros.
-
-    check for zeros in array. After this remove the vallues from array.
-    Or replace the value for another value.
-
-    TODO:
-     - replace the zero by given value"""
-    arrdims = np.shape(vals)
-    if len(arrdims) >= 3:
-        raise ValueError("dimensions of ndim array are bigger than 2")
-    elif len(arrdims) == 2:
-        valsno0 = ()
-        for idx in np.arange(arrdims[1]):
-            exec('vals' + str(idx) + ' = vals.T[' + str(idx) + ']')
-            delrows = np.where(eval('vals' + str(idx)) == 0)
-            exec('vals' + str(idx) + '= np.delete(vals' + str(idx) + ', delrows, 0)')
-            valsno0 = valsno0 + (eval('vals' + str(idx)),)
-        return(valsno0)
-    elif len(arrdims) == 1:
-        #valsno0 = np.array([])
-        delrows= np.where(vals == 0)
-        exec('vals0 = np.delete(vals, delrows, 0)')
-        valsno0 = eval('vals0')
-        return(valsno0)
 
 
 def RMS(sig):

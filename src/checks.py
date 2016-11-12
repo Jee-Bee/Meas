@@ -243,6 +243,37 @@ def srepeat(sig, reps, l0=None, fs=None, addzeros=True):
         repsig = np.tile(sig, reps)
         return(repsig, len(sig))
 
+def zeroCheck(vals):
+    """
+    Inputs:
+        vals = (ndim) array of values
+    Output:
+        vals_no0 = same array of values when it contain no zeros otherwise
+                    new array without the zeros.
+
+    check for zeros in array. After this remove the vallues from array.
+    Or replace the value for another value.
+
+    TODO:
+     - replace the zero by given value"""
+    arrdims = np.shape(vals)
+    if len(arrdims) >= 3:
+        raise ValueError("dimensions of ndim array are bigger than 2")
+    elif len(arrdims) == 2:
+        valsno0 = ()
+        for idx in np.arange(arrdims[1]):
+            exec('vals' + str(idx) + ' = vals.T[' + str(idx) + ']')
+            delrows = np.where(eval('vals' + str(idx)) == 0)
+            exec('vals' + str(idx) + '= np.delete(vals' + str(idx) + ', delrows, 0)')
+            valsno0 = valsno0 + (eval('vals' + str(idx)),)
+        return(valsno0)
+    elif len(arrdims) == 1:
+        #valsno0 = np.array([])
+        delrows= np.where(vals == 0)
+        exec('vals0 = np.delete(vals, delrows, 0)')
+        valsno0 = eval('vals0')
+        return(valsno0)
+
 def LSB(data, n):
     """ Calculate single LSB value- Least Significant Bit
     Inputs:

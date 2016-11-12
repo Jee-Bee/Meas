@@ -18,6 +18,7 @@ from src.checks import istuple
 if sys.version_info.major <3:
     from __future__ import division
 
+
 # Creating class from this??
 
 # ESD = 

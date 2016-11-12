@@ -6,9 +6,8 @@ Created on Tue Feb  9 13:06:54 2016
 """
 
 import numpy as np
-# from src import measerror #import MeasError
-from src.checks import istuple
-
+from src import measerror #import MeasError
+from src.measutils import istuple
 
 
 # RX are the values of the different weightings
