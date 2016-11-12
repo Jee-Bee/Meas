@@ -40,28 +40,44 @@ try:
     from src.defaultfigures import *  # defaultFigures
 
     # Soundcard information
-    (devinfo, devopt) = interface.interfaceIO()
+    # -------------------
+    # temporary off
+    #(devinfo, devopt) = interface.interfaceIO()
+    # ------------------------
     # print(devinfo, devopt)
 
     f = np.array(f)
     #(sigout, t) = sg.SigGen.SigGen('ChirpLog', f, T, fs)  # before testing signals etc
     # multi channel signal generation
-    (sigout, si_sigout, t) = sg.mSigGen('ChirpLog', f, T, fs, nChannels, repeat=repeats, l0=2)
-    sigout = checks.convertFloat(sigout)
+    # ---------------------
+    # remove mchannel if works
+    #(sigout, si_sigout, t) = sg.mSigGen('ChirpLog', f, T, fs, nChannels, repeat=repeats, l0=2)
+    # -------------------
+    (sigout, t) = sg.SigGen('ChirpLog', f, T, fs)
+    
+    sigout = measutils.convertFloat(sigout)
 
     # Signal to soundcard
 
     # replaced by multi channel function
-    sigout_rep = np.copy(sigout)
+    # ---------------------
+    # remove mchannel if works
+    #sigout_rep = np.copy(sigout)
+    # -------------------
     #sigout_rep, new_l = repeat.srepeat(sigout, repeats, 2, fs, addzeros=True)
 
     # sd.default.device = 6  # [6, 1]
     # Simultanious play/ recording
-    rec1 = sd.playrec(sigout_rep.T, fs, channels=2)
-    sd.wait()
+    # ---------------------
+    # remove mchannel if works
+    # rec1 = sd.playrec(sigout_rep.T, fs, channels=2)
+    # sd.wait()
+    # -------------------
+    rec1 = interface.tempPlayRec(sigout.T, fs, input_channels=2, output_channels=nChannels, repeats=repeats)
+
     # sd.stop()
 #    print(dtype(rec1))
-    rec1 = checks.convertFloat(rec1)  # @ Comment till fixed...
+    rec1 = measutils.convertFloat(rec1)  # @ Comment till fixed...
     rec1 = rec1.T[0]
 
     # averaging from here:
@@ -196,8 +212,11 @@ try:
 #    plt.figure()
 #    timeplt = default2D(t_ir, IR)
 #    timeplt.Time()
-except measerror.InterfaceError:
-    raise InterfaceWarning("cant play and record at same time")  #, "Sigplayrec.py", 64):
+
+#except measerror.InterfaceError:
+except:
+    (devinfo, devopt) = interface.interfaceIO()
+    InterfaceWarning("cant play and record at same time")  #, "Sigplayrec.py", 64):
 
 
 try:
