@@ -6,7 +6,7 @@ Created on Tue Aug  2 11:01:19 2016
 """
 
 import sys, os
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets  # ,QtCore
 from ui.jBae_Meas_0_10_Fig import Ui_Dialog  # @@@ Change name to Ui_MeasFig
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../resources/'))
 from icons import *
@@ -97,38 +97,46 @@ class Fig(QtWidgets.QDialog):
     def plottype(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def xUnit(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def yUnit(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def smoothing(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def full_half(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function (full_half) Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.phaseCheck_4.setChecked(False)
+        return(Message)
 
     def am_ph(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function(am_ph) Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.phaseCheck_2.setChecked(False)
+        return(Message)
 
     def lin_log(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function(op1_op2) Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.phaseCheck_3.setChecked(False)
+        return(Message)
 
     def phaseWrap(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function(op3_op4) Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.phaseCheck.setChecked(False)
+        return(Message)
 
     def spectype(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
@@ -138,14 +146,17 @@ class Fig(QtWidgets.QDialog):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
         self.ui.weightingCheck.setChecked(False)
+        return(Message)
 
     def figCancel(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def figOk(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
 
 if __name__ == "__main__":

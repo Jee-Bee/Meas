@@ -14,7 +14,6 @@ Created on Tue Feb  9 15:25:42 2016
 # |_ Impulse response   0
 # |_ Cepstrum           0
 
-import sys
 import numpy as np
 # from ..script import MeasError #as ME # , MeasWarning
 

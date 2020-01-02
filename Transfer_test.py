@@ -5,14 +5,24 @@ Created on Tue Jan 26 14:32:59 2016
 @author: Jee-Bee for jBae (c) 2016
 """
 
-# transfer function test
-# Signal out is signal for speaker. 
-# Signal in1 is recorded by mic.
-# Signal in2 is recorded + filter
-# transfer function is:
-#     in signal     in1    in2
-# H = ---------- --> --- or ---
-#     out signal     out    out
+import numpy as np
+from scipy.fftpack import fft
+from scipy.signal import chirp
+from scripts import Transform, Window, DefaultFigures
+import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
+# from matplotlib.ticker import LinearLocator, FormatStrFormatter
+
+“””transfer function test
+Signal out is signal for speaker. 
+Signal in1 is recorded by mic.
+Signal in2 is recorded + filter
+transfer function is:
+    in signal     in1    in2
+H = ---------- --> --- or ---
+    out signal     out    out
+”””
 
 
 # http://www.mathworks.com/matlabcentral/answers/33500-2nd-order-digital-butterworth-filter
@@ -24,14 +34,7 @@ Created on Tue Jan 26 14:32:59 2016
 # [B, A] = sig.butter(2, 19000 * 2 / fs, 'lowpass')
 # in3 = np.transpose(sig.filtfilt(B, A, np.transpose(in3)))
 
-#
-#
-#
-#import numpy as np
-#from scipy.fftpack import fft
-#from scipy.signal import chirp
-#from scripts import Transform
-#import matplotlib.pylab as plt
+
 #
 #N = 64
 #t = np.arange(0, 1, 1 / N)
@@ -80,11 +83,6 @@ Created on Tue Jan 26 14:32:59 2016
 # ----- Part 2 of test
 #
 
-from scripts import Transform, Window, DefaultFigures
-import numpy as np
-from scipy.signal import chirp
-import sounddevice as sd
-import matplotlib.pylab as plt
 
 # signal generation
 # allready exist
@@ -147,11 +145,6 @@ if np.shape(F) != np.shape(Y):
 
 # spectogram
 #DefaultFigures.Default3D(Y, F, twind)
-import matplotlib.pylab as plt
-from mpl_toolkits.mplot3d import Axes3D
-
-from matplotlib import cm
-from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
 
 fig = plt.figure()

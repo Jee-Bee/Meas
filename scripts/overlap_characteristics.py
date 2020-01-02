@@ -1,7 +1,5 @@
-import sys
 import numpy as np
-import matplotlib.pylab as plt
-import Window.Window as wind
+import matplotlib.pyplot as plt
 from Window import Window
 
 

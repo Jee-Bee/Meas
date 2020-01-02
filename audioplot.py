@@ -54,14 +54,14 @@ sd.play(data, fs)
 
 #sd.stop()
 
-from scripts.DefaultFigures import Time, SpecMag, SpecPh
+from scripts.DefaultFigures import Time, SpecMag  #, SpecPh
 plt.figure()
 Time(t, data)
 plt.figure()
 SpecMag(F, DATA)
 
 #Tertsband test
-#Small Tesst audio
+#Small Test audio
 
 N = int(4096)
 

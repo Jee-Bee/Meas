@@ -12,8 +12,7 @@ Spectral Class ??
 # https://wiki.python.org/moin/NumericAndScientificRecipes
 
 import numpy as np
-import scipy.fftpack as fft
-from scripts.transform import FFT, NFFT
+from scripts.transform import FFT# , NFFT
 
 # Creating class from this??
 
@@ -64,13 +63,13 @@ def PSD(sig, fs=None, window='hann', window_length=8192, weighting=False, inputs
                 if (sig0even is True) and (sig1odd is True):
                     N = len(sig)
                     F = np.arange(1, N / 2)
-                    PS = (sig[0][1:len(sig[0]) / 2] ** 2) / F
+                    PSD = (sig[0][1:len(sig[0]) / 2] ** 2) / F
                     # power per Hertz
                     PH = sig[1][1:len(sig[1])/2]
                 else:
                     N = len(sig)
                     F = np.arange(1, N / 2)
-                    PS = (sig[0] ** 2) / F  # power per hertz
+                    PSD = (sig[0] ** 2) / F  # power per hertz
                     PH = sig[1]
             else:
                 sig0even = even(sig[0])
@@ -78,12 +77,12 @@ def PSD(sig, fs=None, window='hann', window_length=8192, weighting=False, inputs
                 if (sig0even is True) and (sig1odd is True):
                     N = len(sig)
                     F = np.arange(1, N/2)
-                    PS = (np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2) ** 2) / F
+                    PSD = (np.sqrt(sig[0][1:len(sig[0]) / 2] ** 2 + sig[1][1:len(sig[1]) / 2] ** 2) ** 2) / F
                     PH = np.arctan2(sig[0][1:len(sig[0]) / 2], sig[1][1:len(sig[1]) / 2])
                 else:
                     N = len(sig)
                     F = np.arange(1, N / 2)
-                    PS = (np.sqrt(sig[0] ** 2 + sig[1] ** 2) ** 2) / F
+                    PSD = (np.sqrt(sig[0] ** 2 + sig[1] ** 2) ** 2) / F
                     # power per hertz
                     PH = np.arctan2(sig[0], sig[1])
         elif np.iscomplex(sig):

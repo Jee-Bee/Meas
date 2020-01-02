@@ -18,11 +18,10 @@ Created on Tue Dec 29 12:26:12 2015
 # |_ Live updating    2     (FuncAnimation in Matplotlib)
 
 import numpy as np
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
-#import matplotlib as mpl
-#http://matplotlib.org/api/mlab_api.html
-from scripts import measerror
+# http://matplotlib.org/api/mlab_api.html
+# from scripts import measerror
 
 # what variable needed:
 # Signal x axis (t[sec]/ t_samples[-]/ F[Hz]/ Freuencynr[-] / Quefrecy[?])

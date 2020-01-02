@@ -5,8 +5,6 @@ Created on Wed Mar  9 19:06:07 2016
 @author: Jee-Bee for Jbae (c) 2016
 """
 #import MeasWarning
-import os, sys
-#sys.path.append(os.path.dirname(os.path.realpath(__file__)), '../scripts/')
 from scripts.measerror import MeasError
 
 
@@ -14,9 +12,11 @@ class SigGen(object):
     def __init__(self):
         pass
 
-    def varlist(var, length):
+    def varlist(self, var, length):
         from numpy import array
-        if len(array(var)) > length:
+        self.var = var
+        self.length = length
+        if len(array(self.var)) > self.length:
     #        msg =
             # raise MeasWarning.DimWarning (length, 'list is to long only first ' + str(length) + ' paramerets will be used' )
             return(False, True)
@@ -56,7 +56,7 @@ class SigGen(object):
                 Sig = np.sin(2 * np.pi * f0 * t)
                 return(Sig, t)
             else:
-                Sig = []
+                # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == "Sawtooth":
             if SigGen.varlist(f, 1) == (True, True):
@@ -78,7 +78,7 @@ class SigGen(object):
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t)
                 return(Sig, t)
             else:
-                Sig = []
+                # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'Square':
             if SigGen.varlist(f, 1) == (True, True):
@@ -100,7 +100,7 @@ class SigGen(object):
                 Sig = sig.Square(2 * np.pi * f0 * t)
                 return(Sig, t)
             else:
-                Sig = []
+                # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'Triangle':
             if SigGen.varlist(f, 1) == (True, True):
@@ -122,7 +122,7 @@ class SigGen(object):
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
                 return(Sig, t)
             else:
-                Sig = []
+                # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'ChirpLin':
             from scripts.window import Window
@@ -133,7 +133,7 @@ class SigGen(object):
                 f0 = f[0]
                 f1 = f[1]
             else:
-                Sig = []
+                # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
             t = np.arange(0, T * fs)/fs
 

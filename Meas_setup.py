@@ -75,7 +75,7 @@ class Meas(QtWidgets.QMainWindow):
         # logo jBae:
         jBae = QtGui.QPixmap('./resources/icons/jBaeLogo_0_1.png')
         jBae_Scaled = jBae.scaled(self.ui.jBaeLogo.size(), QtCore.Qt.KeepAspectRatio)
-        self.ui.jBaeLogo.setPixmap(jBae)
+        self.ui.jBaeLogo.setPixmap(jBae_Scaled)
         # self.ui.jBaeLogo.scaledContents(True)
         self.ui.jBaeLogo.show()
 
@@ -137,6 +137,7 @@ class Meas(QtWidgets.QMainWindow):
     def new_file(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
 # Save is now same as Save as. Futerure release Save change after known file
 # else save goes thru save as
@@ -164,6 +165,7 @@ class Meas(QtWidgets.QMainWindow):
     def open_file(self):
         name = QtWidgets.QFileDialog.getOpenFileName(self, 'open File')
         file = open(name, 'r')
+        return(file)
 
 #        self.editor()
 #
@@ -189,20 +191,24 @@ class Meas(QtWidgets.QMainWindow):
     def Delete_Measurement(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     # Pricture options
 
     def home_Top(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def zoom_Top(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def pan_Top(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def pref_Top(self):
         self.figMenu = FigMaster.runFig()
@@ -211,14 +217,17 @@ class Meas(QtWidgets.QMainWindow):
     def home_Bottom(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def zoom_Bottom(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def pan_Bottom(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def pref_Bottom(self):
         self.figMenu = FigMaster.runFig()
@@ -237,6 +246,7 @@ class Meas(QtWidgets.QMainWindow):
     def run_Test(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
 
 if __name__ == "__main__":

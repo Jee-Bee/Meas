@@ -6,7 +6,7 @@ Created on Sun Mar  6 13:04:25 2016
 """
 
 import sys, os
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets  # , QtCore
 # from ui.jBae_Meas_0_15 import Ui_MeasMain
 from ui.jBae_Meas_0_15_Pref import Ui_Dialog  # @@@ Change name to Ui_MeasPref
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../resources/'))

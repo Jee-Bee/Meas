@@ -34,7 +34,7 @@ def zeroCheck(vals):
         valsno0 = ()
         for idx in np.arange(arrdims[1]):
             exec('vals' + str(idx) + ' = vals.T[' + str(idx) + ']')
-            delrows= np.where(eval('vals' + str(idx)) == 0)
+            delrows = np.where(eval('vals' + str(idx)) == 0)
             exec('vals' + str(idx) + '= np.delete(vals' + str(idx) + ', delrows, 0)')
             valsno0 = valsno0 + (eval('vals' + str(idx)),)
         return(valsno0)

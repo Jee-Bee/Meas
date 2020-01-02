@@ -84,14 +84,17 @@ class Meas(QtWidgets.QDialog):
     def signal(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def sweep_length(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def sig_Repeats(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def measCancel(self):
         choice = QtWidgets.QMessageBox.question(self, 'Exit Meas',
@@ -104,6 +107,7 @@ class Meas(QtWidgets.QDialog):
     def measOk(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
 if __name__ == "__main__":
     import sys
