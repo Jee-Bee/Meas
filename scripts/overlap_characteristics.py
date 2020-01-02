@@ -1,7 +1,9 @@
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from Window import Window
-
+if sys.version_info.major <3:
+    from __future__ import division
 
 def OC(Window_Type, percent, *args, **kwargs):
     # See: http://www.recordingblogs.com/sa/tabid/88/Default.aspx?topic=Overlap+correlation

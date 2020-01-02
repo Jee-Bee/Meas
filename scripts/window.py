@@ -5,8 +5,10 @@ Created on Fri Feb 19 14:00:45 2016
 @author: Jee-Bee for jBae (c) 2016
 """
 
+import sys
 import numpy as np
-
+if sys.version_info.major <3:
+    from __future__ import division
 
 class Window():
     """Class of different Window types"""

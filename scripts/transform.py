@@ -14,8 +14,11 @@ Created on Tue Feb  9 15:25:42 2016
 # |_ Impulse response   0
 # |_ Cepstrum           0
 
+import sys
 import numpy as np
 # from ..script import MeasError #as ME # , MeasWarning
+if sys.version_info.major <3:
+    from __future__ import division
 
 
 def NFFT(x):
@@ -89,16 +92,12 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='comp
         N = np.int(nfft)
     elif Window_type == 'rectangle':
         N = np.int(Window_length)
-        pass
     elif Window_type == 'triangle':
         N = np.int(Window_length)
-        pass
     elif Window_type == 'partzen':
         N = np.int(Window_length)
-        pass
     elif Window_type == 'genhamming':
         N = np.int(Window_length)
-        pass
     elif Window_type == 'hann':
         N = np.int(Window_length)
         itterations = np.int32(np.ceil(len(x) / Window_length))
@@ -119,22 +118,16 @@ def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='comp
         X = repeat.repAvg(X, itterations)
     elif Window_type == 'hamming':
         N = np.int(Window_length)
-        pass
     elif Window_type == 'cosine':
         N = np.int(Window_length)
-        pass
     elif Window_type == 'gengaussian':
         N = np.int(Window_length)
-        pass
     elif Window_type == 'gaussian':
         N = np.int(Window_length)
-        pass
     elif Window_type == 'tukey':
         N = np.int(Window_length)
-        pass
     else:
         pass
-
     if shift is True:
         if spectrum is 'complex':
             X = fftshift(X)
@@ -331,7 +324,6 @@ def ImpulseResponse(H, F):
                     pass
                 elif max(abs(H[1])) <= 180:  # check for phase DEG information
                     H[1] = H[1] * np.pi / 180
-                    pass
 #                    http://stackoverflow.com/questions/2598734/numpy-creating-a-complex-array-from-2-real-ones
 #            elif ...:  # check for complex paterns don't know how
 #                pass

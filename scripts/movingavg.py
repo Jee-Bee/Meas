@@ -4,7 +4,11 @@ Created on Wed Jan 13 15:29:56 2016
 
 @author: enjbwink
 """
+import sys
 import numpy as np
+if sys.version_info.major <3:
+    from __future__ import division
+
 # Simple Moving Average
 # https://en.wikipedia.org/wiki/Moving_average
 
@@ -74,7 +78,7 @@ def cma(x, n):
     cma_n = np.sum(x[0:n])/n  # calculate mean/ average
     if n == 0:
         print("this Have to be added later")
-        pass  # return(cma)
+        # return(cma)
     else:
         for idx in range(len(x)):
             cma[idx] = cma_n + (x[idx] - cma_n) / (n + 1)

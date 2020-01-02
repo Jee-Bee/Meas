@@ -19,8 +19,11 @@ Created on Wed Feb 17 11:48:31 2016
 #self asking for making plot or return to plot depends on direction...
 #Update to 1/n method
 
+import sys
 import numpy as np
 import MeasError
+if sys.version_info.major <3:
+    from __future__ import division
 
 
 def Octave(Measurement, F):

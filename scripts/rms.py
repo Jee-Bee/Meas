@@ -4,7 +4,11 @@ Created on Mon Jan  4 13:53:54 2016
 
 @author: Jee-Bee for jBae 2016(c)
 """
+
+import sys
 import numpy as np
+if sys.version_info.major <3:
+    from __future__ import division
 
 # 2Do
 # check input type

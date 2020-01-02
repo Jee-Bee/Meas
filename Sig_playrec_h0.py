@@ -1,5 +1,8 @@
 # Test Script for signal generation and recording:
 
+import sys
+if sys.version_info.major <3:
+    from __future__ import division
 from scripts import interface, measerror
 import sounddevice as sd
 from scripts.measwarning import InterfaceWarning

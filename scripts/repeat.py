@@ -40,7 +40,6 @@ def repSig(sig, reps, l0=None, fs=None, addzeros=False):
             sig = np.append(sig, np.zeros(l0*fs))
             repsig = np.tile(sig, reps)
             return(repsig, len(sig))
-        pass
     else:
         repsig = np.tile(sig, reps)
         return(repsig, len(sig))

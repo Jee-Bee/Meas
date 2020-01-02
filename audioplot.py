@@ -4,12 +4,14 @@ Created on Wed Jan 27 16:45:59 2016
 
 @author: Jee-Bee for jBae (c) 2016
 """
-
+import sys
 from scipy.io import wavfile
 import numpy as np
 import matplotlib.pylab as plt
 from scripts import RMS, Transform, OctaveBands, Window, Conversion
 import sounddevice as sd
+if sys.version_info.major <3:
+    from __future__ import division
 
 # Samples for internal use only. Just test data for test Results
 #[fs,data] = wavfile.read('15 Sample 15Sec.wav')

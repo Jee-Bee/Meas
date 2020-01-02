@@ -5,6 +5,9 @@ Created on Tue Jan 26 14:32:59 2016
 @author: Jee-Bee for jBae (c) 2016
 """
 
+import sys
+if sys.version_info.major <3:
+    from __future__ import division
 import numpy as np
 from scipy.fftpack import fft
 from scipy.signal import chirp

@@ -243,7 +243,6 @@ class SigGen(object):
             return(Sig, t)
         elif gentype == 'Pnoise':  # Pink noise
             raise MeasError.FunctionError('Pnoise', 'Signal generator Not Implemented (Yet)')
-            pass
         elif gentype == 'bnoise':  # Brown noise
             # integral of white noise
             # white noise with random ofset or something like that see wikipedia

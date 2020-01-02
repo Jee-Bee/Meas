@@ -11,8 +11,11 @@ Spectral Class ??
 
 # https://wiki.python.org/moin/NumericAndScientificRecipes
 
+import sys
 import numpy as np
 from scripts.transform import FFT# , NFFT
+if sys.version_info.major <3:
+    from __future__ import division
 
 # Creating class from this??
 
