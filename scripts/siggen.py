@@ -10,9 +10,15 @@ from scripts.measerror import MeasError
 
 class SigGen(object):
     def __init__(self):
-        pass
+        super(SigGen, self).__init__(parent)
+
 
     def varlist(self, var, length):
+        """varlist:
+        var list checks the shape of an array compared with an expected length. The following situations are possible:
+        array - var > than expected length
+        array - var < than expected length
+        array - var == to expected length"""
         from numpy import array
         self.var = var
         self.length = length
@@ -29,9 +35,9 @@ class SigGen(object):
     # for generating sounds is time array not importand...
     # for generating plots is time array importand!!
     def SigGen(gentype, f, T, fs, *arg):
-        # Creating signal generator:
-        # Options gentype: Sine; Sawtooth; Triangle; Square PW; ...
-        # White/Pink noise; Chirp; Poly Chirp
+        """Creating signal generator:
+        Options gentype: Sine; Sawtooth; Triangle; Square PW; ...
+        White/Pink noise; Chirp; Poly Chirp"""
         # http://stackoverflow.com/questions/919680/can-a-variable-number-of-arguments-be-passed-to-a-function
         import numpy as np
         import scipy.signal as sig
@@ -190,7 +196,7 @@ class SigGen(object):
                 f0 = f[0]
                 f1 = f[1]
             else:
-                Sig = []
+                # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
             t = np.arange(0, T * fs)/fs
 
@@ -204,26 +210,20 @@ class SigGen(object):
                 raise ValueError('variable f1 < as fs/2')
             elif round(factor_f, 0) < 3:
                 wl = 2  # window lenght
-                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
-                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             elif round(factor_f, 0) < 6:
                 wl = 4  # window lenght
-                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             elif round(factor_f, 0) < 13:
                 wl = 8  # window lenght
-                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
-                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             else:
                 wl = 16  # window lenght
-                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
-                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             hanwindow = Window(wl)  # window
             dummy, W = hanwindow.hanwind()
             dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+            dW = wl / 2  # dW = delta Window
             if dsample == 0:
                 Sig = np.zeros(len(Sig_unw))
                 # ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2

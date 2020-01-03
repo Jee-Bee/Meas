@@ -13,7 +13,7 @@ Spectral Class ??
 
 import sys
 import numpy as np
-from scripts.transform import FFT# , NFFT
+from scripts.transform import FFT  # , NFFT
 if sys.version_info.major <3:
     from __future__ import division
 
@@ -340,7 +340,7 @@ def AS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
             pass
         else:
             raise ValueError('value fs is \'None\' this should be changed')
-
+# https://stackoverflow.com/questions/18472904/how-to-use-a-python-function-with-keyword-self-in-arguments
         if (window_length is None) and (weighting is False):
             F, AS, PH = FFT(sig, fs, spectrum='AmPh0')
         elif (window_length is None) and (weighting is not False):
@@ -354,19 +354,24 @@ def AS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
             pass
         elif weighting is True:
             from scripts.weighting import AWeighting
-            AS = AWeighting.A_Weighting(F, AS)
+            aw = AWeighting()
+            AS = aw.A_Weighting(F, AS)
         elif weighting == 'A':
             from scripts.weighting import AWeighting
-            AS = AWeighting.A_Weighting(F, AS)
+            aw = AWeighting()
+            AS = aw.A_Weighting(F, AS)
         elif weighting == 'B':
             from scripts.weighting import BWeighting
-            AS = BWeighting.B_Weighting(F, AS)
+            bw = BWeighting()
+            AS = bw.B_Weighting(F, AS)
         elif weighting == 'C':
             from scripts.weighting import CWeighting
-            AS = CWeighting.C_Weighting(F, AS)
+            cw = CWeighting()
+            AS = cw.C_Weighting(F, AS)
         elif weighting == 'D':
             from scripts.weighting import DWeighting
-            AS = DWeighting.D_Weighting(F, AS)
+            dw = DWeighting()
+            AS = dw.D_Weighting(F, AS)
         else:
             raise ValueError('weighing should be True, False, or the letters A to D')
     else:

@@ -220,13 +220,13 @@ try:
     timeplt = default2D(t_ir, IR)
     timeplt.Time()
 except measerror.InterfaceError:
-    InterfaceWarning("cant play and record at same time")  #, "Sigplayrec.py", 64):
+    raise InterfaceWarning("cant play and record at same time")  #, "Sigplayrec.py", 64):
 
 
 try:
     np.savez(savename, sigout, rec1, fs, SIGOUT, REC1)
 except NameError:
-    NameError("Name allready excist or whatever... as long as it works...")
+    raise NameError("Name allready excist or whatever... as long as it works...")
 
 
 #    # len(devopt) == 0:

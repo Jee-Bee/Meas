@@ -331,11 +331,11 @@ def ImpulseResponse(H, F):
                 pass
         else:
             raise MeasError.DataError(H, 'No valid frequency array')
+        IR = ifft(H)
     elif np.any(np.iscomplex(H)):
         IR = ifft(H)
     else:
         raise TypeError('Not right input type')
-    IR = ifft(H)
     dF = F[1]-F[0]
     fs = np.round(len(F) * dF)
     T = len(F) * 1 / fs

@@ -141,6 +141,7 @@ class Fig(QtWidgets.QDialog):
     def spectype(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",
                                                     "This function Don\'t exist yet", QtWidgets.QMessageBox.Ok)
+        return(Message)
 
     def weighting(self):
         Message = QtWidgets.QMessageBox.information(self, "Empty function!",

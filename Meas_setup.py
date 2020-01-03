@@ -121,14 +121,6 @@ class Meas(QtWidgets.QMainWindow):
         # http://www.qtcentre.org/threads/23057-how-do-add-a-page-in-QToolBox
         self.ui.Recordings.setVisible(False)
 
-    def Exit(self):
-        choice = QtGui.QMessageBox.question(self, 'Exit Meas',
-                    "Are You sure to Leave Meas?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if choice == QtGui.QMessageBox.Yes:
-            sys.exit()
-        else:
-            pass
-
         # test + run measurement
         self.ui.testSig.clicked.connect(self.run_Test)
         self.ui.runMeas.clicked.connect(self.run_Measurement)
@@ -176,6 +168,15 @@ class Meas(QtWidgets.QMainWindow):
     def Preference_menu(self):
         self.prefMenu = PrefMaster.runPref()
         self.prefMenu.show()
+
+
+#     def Exit(self):
+#         choice = QtGui.QMessageBox.question(self, 'Exit Meas',
+#                     "Are You sure to Leave Meas?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+#         if choice == QtGui.QMessageBox.Yes:
+#             sys.exit()
+#         else:
+#             pass
 
 
 # http://stackoverflow.com/questions/36180552/linking-pyqt-files-dont-relate/
