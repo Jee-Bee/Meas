@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 # from matplotlib.ticker import LinearLocator, FormatStrFormatter
 
-“””transfer function test
+"""transfer function test
 Signal out is signal for speaker. 
 Signal in1 is recorded by mic.
 Signal in2 is recorded + filter
@@ -25,7 +25,7 @@ transfer function is:
     in signal     in1    in2
 H = ---------- --> --- or ---
     out signal     out    out
-”””
+"""
 
 
 # http://www.mathworks.com/matlabcentral/answers/33500-2nd-order-digital-butterworth-filter
