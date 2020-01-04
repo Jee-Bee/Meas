@@ -52,11 +52,12 @@ from mpl_toolkits.mplot3d import Axes3D
 class defaultFigures():
         
     def __init__(self):
-        pass
+        __all__ = ['default2D', 'default3D', 'Overlap_Characterestics']
 
 class default2D(defaultFigures):
     
     def __init__(self, signalx, signaly):
+        __all__ = ['Time' , 'SpecMag', 'SpecPh', 'Bode']
         self.signalx = signalx
         self.signaly = signaly
 
@@ -110,6 +111,7 @@ class default2D(defaultFigures):
 class default3D(defaultFigures):
 
     def __init__(self, signalx, signaly, signalz):
+        __all__ = ['Spect', 'water']
         self.signalx = signalx
         self.signaly = signaly
         self.signalz = signalz
@@ -180,6 +182,7 @@ class default3D(defaultFigures):
 class Overlap_Characterestics(defaultFigures):
     
     def __init__(self, percent, afval, ocval, WindowType):
+        __all__ = ['oc']
         self.precent = percent
         self.afval = afval
         self.ocval = ocval

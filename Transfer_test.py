@@ -9,7 +9,6 @@ import sys
 if sys.version_info.major <3:
     from __future__ import division
 import numpy as np
-from scipy.fftpack import fft
 from scipy.signal import chirp
 from scripts import Transform, Window, DefaultFigures
 import matplotlib.pyplot as plt

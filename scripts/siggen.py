@@ -153,26 +153,19 @@ class SigGen(object):
                 raise ValueError('variable f1 < as fs/2')
             elif round(factor_f, 0) < 3:
                 wl = 2  # window lenght
-                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
-                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             elif round(factor_f, 0) < 6:
-                wl = 4  # window lenght
-                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             elif round(factor_f, 0) < 13:
                 wl = 8  # window lenght
-                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
-                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             else:
                 wl = 16  # window lenght
-                dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
-                dW = wl/2 # dW = delta Window
                 # overlap = 0.5
             hanwindow = window(wl)  # window
             dummy, W = hanwindow.hanwind()
             dsample = len(Sig_unw) % wl  # delta in samples between mod (x/windw length)
+            dW = wl / 2  # dW = delta Window
             if dsample == 0:
                 Sig = np.zeros(len(Sig_unw))
                 # ul = np.arange((len(Sig_unw) - (wl - 1)) / 2) * 2

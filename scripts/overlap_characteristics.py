@@ -18,12 +18,12 @@ def OC(Window_Type, percent, *args, **kwargs):
             if len(args) == 2:
                 dummy, w = Window.gengausswind(N, args[1], args[2])
             else:
-                raise TypeError(“2 Adidional args are needed but not given")
+                raise TypeError("2 Adidional args are needed but not given")
         elif Window_Type == "genhamwind":
             if len(args) == 2:
                 dummy, w = Window.genhamwind(N, args[1], args[2])
             else:
-                raise TypeError(“2 Adidional args are needed but not given")
+                raise TypeError("2 Adidional args are needed but not given")
         elif Window_Type == "hamwind":
             dummy, w = Window.hamwind(N)
         elif Window_Type == "hanwind":
