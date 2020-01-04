@@ -6,7 +6,7 @@ Created on Tue Feb  9 13:06:54 2016
 """
 
 import numpy as np
-# from scripts import measerror #import MeasError
+# from src import measerror #import MeasError
 
 
 # RX are the values of the different weightings

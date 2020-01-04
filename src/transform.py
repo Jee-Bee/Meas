@@ -16,7 +16,7 @@ Created on Tue Feb  9 15:25:42 2016
 
 import sys
 import numpy as np
-# from ..script import MeasError #as ME # , MeasWarning
+# from ..src import MeasError #as ME # , MeasWarning
 if sys.version_info.major <3:
     from __future__ import division
 
@@ -60,7 +60,7 @@ def MagPh2ReIm(Mag, Phi, output='ReIm'):
 def FFT(x, fs, Window_type=None, Window_length=8192, shift=False, spectrum='complex'):
     # FFT(x, fs, Window_type, Window_length, shift=False, spectrum=complex)
     from scipy.fftpack import fft, fftshift, fftfreq
-    from scripts import window, repeat
+    from src import window, repeat
     """
     Inputs:
         sig = [sec] time domain signal
@@ -216,7 +216,7 @@ def Transfer(x_in, x_out, fs):  # possible some input paremeters addded later
     # Compex valued signals = FFT
     # Nummeric is real valued and neeed FFT!!
     # else is wrong valued type and give error
-    from scripts.checks import even, odd, oddphase, phasecheck
+    from src.checks import even, odd, oddphase, phasecheck
 
     if isinstance(x_in, tuple):
         if phasecheck(x_in[1]) == True:

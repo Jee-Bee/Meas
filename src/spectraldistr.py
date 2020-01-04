@@ -13,7 +13,7 @@ Spectral Class ??
 
 import sys
 import numpy as np
-from scripts.transform import FFT  # , NFFT
+from src.transform import FFT  # , NFFT
 if sys.version_info.major <3:
     from __future__ import division
 
@@ -57,7 +57,7 @@ def PSD(sig, fs=None, window='hann', window_length=8192, weighting=False, inputs
     after this the single sided power spectrum is created and returned.
     """
     if inputspec is True:
-        from scripts.checks import istuple, even, odd, oddphase, phasecheck
+        from src.checks import istuple, even, odd, oddphase, phasecheck
         if istuple(sig):
             sig1phase = phasecheck(sig[1])
             if sig1phase is True:
@@ -137,7 +137,7 @@ def SD(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
     after this the single sided power spectrum is created and returned.
     """
     if inputspec is True:
-        from scripts.checks import istuple, even, odd, oddphase, phasecheck
+        from src.checks import istuple, even, odd, oddphase, phasecheck
         if istuple(sig):
             sig1phase = phasecheck(sig[1])
             if sig1phase is True:
@@ -219,7 +219,7 @@ def PS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
     after this the single sided power spectrum is created and returned.
     """
     if inputspec is True:
-        from scripts.checks import istuple, even, odd, oddphase, phasecheck
+        from src.checks import istuple, even, odd, oddphase, phasecheck
         if istuple(sig):
             sig1phase = phasecheck(sig[1])
             if sig1phase is True:
@@ -300,7 +300,7 @@ def AS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
     after this the single sided amplitude spectrum is created and returned.
     """
     if inputspec is True:
-        from scripts.checks import istuple, even, odd, oddphase, phasecheck
+        from src.checks import istuple, even, odd, oddphase, phasecheck
         if istuple(sig):
             sig1phase = phasecheck(sig[1])
             if sig1phase is True:
@@ -353,23 +353,23 @@ def AS(sig, fs=None, window='hann', window_length=8192, weighting=False, inputsp
         if weighting is False:
             pass
         elif weighting is True:
-            from scripts.weighting import AWeighting
+            from src.weighting import AWeighting
             aw = AWeighting()
             AS = aw.A_Weighting(F, AS)
         elif weighting == 'A':
-            from scripts.weighting import AWeighting
+            from src.weighting import AWeighting
             aw = AWeighting()
             AS = aw.A_Weighting(F, AS)
         elif weighting == 'B':
-            from scripts.weighting import BWeighting
+            from src.weighting import BWeighting
             bw = BWeighting()
             AS = bw.B_Weighting(F, AS)
         elif weighting == 'C':
-            from scripts.weighting import CWeighting
+            from src.weighting import CWeighting
             cw = CWeighting()
             AS = cw.C_Weighting(F, AS)
         elif weighting == 'D':
-            from scripts.weighting import DWeighting
+            from src.weighting import DWeighting
             dw = DWeighting()
             AS = dw.D_Weighting(F, AS)
         else:

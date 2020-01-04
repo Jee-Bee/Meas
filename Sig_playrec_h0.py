@@ -3,9 +3,9 @@
 import sys
 if sys.version_info.major <3:
     from __future__ import division
-from scripts import interface, measerror
+from src import interface, measerror
 import sounddevice as sd
-from scripts.measwarning import InterfaceWarning
+from src.measwarning import InterfaceWarning
 
 # Soundcard information
 (devinfo, devopt) = interface.InterfaceIO()
@@ -13,12 +13,12 @@ from scripts.measwarning import InterfaceWarning
 
 try:
     import numpy as np
-    import scripts.siggen as sg
-    from scripts import transform, checks, weighting, repeat, spectraldistr
+    import src.siggen as sg
+    from src import transform, checks, weighting, repeat, spectraldistr
     # from importlib.machinery import SourceFileLoader
     import matplotlib.pyplot as plt
-    # from scripts.DefaultFigures import Time, SpecMag, SpecPh
-    from scripts.defaultfigures import *  # defaultFigures
+    # from src.DefaultFigures import Time, SpecMag, SpecPh
+    from src.defaultfigures import *  # defaultFigures
 
     T = 5  # [s] T= Time in seconds
     f = (10, 350)  # [Hz] Frequency signal generation
@@ -65,7 +65,7 @@ try:
 
     # add RMS Crest and PAPR as optional processing
     if (RMS_res is True) or (crest is True) or (papr is true):
-        from scripts import rms
+        from src import rms
 
         if RMS_res is True:
             sigout = rms.RMS(sigout)   # return RMS value of stard signal

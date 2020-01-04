@@ -9,8 +9,8 @@ import sys
 if sys.version_info.major <3:
     from __future__ import division
 import numpy as np
-from scipy.signal import chirp
-from scripts import Transform, Window, DefaultFigures
+from src.signal import chirp
+from src import Transform, Window, DefaultFigures
 import matplotlib.pyplot as plt
 # from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm

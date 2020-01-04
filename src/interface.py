@@ -3,8 +3,8 @@
 import sys
 import numpy as np
 import sounddevice as sd
-# import scripts.measerror
-# from scripts.measwarning import InterfaceWarning
+# import src.measerror
+# from src.measwarning import InterfaceWarning
 
 
 def InterfaceIO():

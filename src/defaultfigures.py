@@ -21,7 +21,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 # http://matplotlib.org/api/mlab_api.html
-# from scripts import measerror
+# from src import measerror
 
 # what variable needed:
 # Signal x axis (t[sec]/ t_samples[-]/ F[Hz]/ Freuencynr[-] / Quefrecy[?])

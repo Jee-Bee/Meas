@@ -5,7 +5,7 @@ Created on Wed Mar  9 19:06:07 2016
 @author: Jee-Bee for Jbae (c) 2016
 """
 #import MeasWarning
-from scripts.measerror import MeasError
+from src.measerror import MeasError
 
 
 class SigGen(object):
@@ -131,7 +131,7 @@ class SigGen(object):
                 # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'ChirpLin':
-            from scripts.window import Window
+            from src.window import Window
             if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
@@ -181,7 +181,7 @@ class SigGen(object):
             # http://docs.scipy.org/doc/scipy-0.17.0/reference/generated/scipy.signal.chirp.html
         elif gentype == 'ChirpLog':
             # http://dsp.stackexchange.com/questions/30245/clicks-at-end-of-chirp-signal
-            from scripts.window import Window
+            from src.window import Window
             if SigGen.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]

@@ -8,7 +8,7 @@ import sys
 from scipy.io import wavfile
 import numpy as np
 import matplotlib.pylab as plt
-from scripts import RMS, Transform, OctaveBands, Window, Conversion
+from src import RMS, Transform, OctaveBands, Window, Conversion
 import sounddevice as sd
 if sys.version_info.major <3:
     from __future__ import division
@@ -56,7 +56,7 @@ sd.play(data, fs)
 
 #sd.stop()
 
-from scripts.DefaultFigures import Time, SpecMag  #, SpecPh
+from src.DefaultFigures import Time, SpecMag  #, SpecPh
 plt.figure()
 Time(t, data)
 plt.figure()
