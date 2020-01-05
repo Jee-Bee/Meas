@@ -152,15 +152,16 @@ class SigGen(object):
                 # print error
                 raise ValueError('variable f1 < as fs/2')
             elif round(factor_f, 0) < 3:
-                wl = 2  # window lenght
+                wl = 2  # window length
                 # overlap = 0.5
             elif round(factor_f, 0) < 6:
+                wl = 4  # window length
                 # overlap = 0.5
             elif round(factor_f, 0) < 13:
-                wl = 8  # window lenght
+                wl = 8  # window length
                 # overlap = 0.5
             else:
-                wl = 16  # window lenght
+                wl = 16  # window length
                 # overlap = 0.5
             hanwindow = window(wl)  # window
             dummy, W = hanwindow.hanwind()
