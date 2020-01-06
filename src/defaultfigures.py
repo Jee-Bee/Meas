@@ -19,7 +19,9 @@ Created on Tue Dec 29 12:26:12 2015
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 from mpl_toolkits.mplot3d import Axes3D
+# https://matplotlib.org/3.1.1/gallery/subplots_axes_and_figures/custom_figure_class.html
 # http://matplotlib.org/api/mlab_api.html
 # from src import measerror
 
@@ -48,15 +50,19 @@ from mpl_toolkits.mplot3d import Axes3D
 # save figure:
 #plt.savefig("test.png")
 
+__all__ = ['defaultFigures', 'default2D', 'default3D', 'Overlap_Characterestics']
 
-class defaultFigures():
+class defaultFigures(Figure):
         
     def __init__(self):
+        super().__init__(*args, **kwargs)
         __all__ = ['default2D', 'default3D', 'Overlap_Characterestics']
 
 class default2D(defaultFigures):
     
-    def __init__(self, signalx, signaly):
+    def __init__(self, signalx, signaly,*args):
+        defaultFigures.__init__(self)
+        # super().__init__(*args, **kwargs)
         __all__ = ['Time' , 'SpecMag', 'SpecPh', 'Bode']
         self.signalx = signalx
         self.signaly = signaly
@@ -111,6 +117,8 @@ class default2D(defaultFigures):
 class default3D(defaultFigures):
 
     def __init__(self, signalx, signaly, signalz):
+        defaultFigures.__init__(self)
+        # super().__init__(*args, **kwargs)
         __all__ = ['Spect', 'water']
         self.signalx = signalx
         self.signaly = signaly
@@ -182,7 +190,9 @@ class default3D(defaultFigures):
 class Overlap_Characterestics(defaultFigures):
     
     def __init__(self, percent, afval, ocval, WindowType):
-        __all__ = ['oc']
+        defaultFigures.__init__(self)
+        # super().__init__(*args, **kwargs)
+        __all__ = ['OC']
         self.precent = percent
         self.afval = afval
         self.ocval = ocval
