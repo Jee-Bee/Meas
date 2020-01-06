@@ -41,9 +41,10 @@ class SigGen(object):
         # http://stackoverflow.com/questions/919680/can-a-variable-number-of-arguments-be-passed-to-a-function
         import numpy as np
         import scipy.signal as sig
+        sg = SigGen()
         f = np.array(f)
         if gentype == "Sine":
-            if SigGen.varlist(f, 1) == (True, True):
+            if sg.varlist(f, 1) == (True, True):
                 f0 = f
                 ps = fs / f  # samples per period
                 periods = np.ceil(T * fs / ps)
@@ -52,7 +53,7 @@ class SigGen(object):
                 t = np.arange(0, T * fs)/fs
                 Sig = np.sin(2 * np.pi * f0 * t)
                 return(Sig, t)
-            elif SigGen.varlist(f, 1) == (False, True):
+            elif sg.varlist(f, 1) == (False, True):
                 f0 = f[0]
                 ps = fs / f  # samples per period
                 periods = np.ceil(T * fs / ps)
@@ -65,7 +66,7 @@ class SigGen(object):
                 # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == "Sawtooth":
-            if SigGen.varlist(f, 1) == (True, True):
+            if sg.varlist(f, 1) == (True, True):
                 f0 = f
                 ps = fs / f  # samples per period
                 periods = np.ceil(T * fs / ps)
@@ -87,7 +88,7 @@ class SigGen(object):
                 # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'Square':
-            if SigGen.varlist(f, 1) == (True, True):
+            if sg.varlist(f, 1) == (True, True):
                 f0 = f
                 ps = fs / f  # samples per period
                 periods = np.ceil(T * fs / ps)
@@ -96,7 +97,7 @@ class SigGen(object):
                 t = np.arange(0, T * fs)/fs
                 Sig = sig.Square(2 * np.pi * f0 * t)
                 return(Sig, t)
-            elif SigGen.varlist(f, 1) == (False, True):
+            elif sg.varlist(f, 1) == (False, True):
                 f0 = f[0]
                 ps = fs / f  # samples per period
                 periods = np.ceil(T * fs / ps)
@@ -109,7 +110,7 @@ class SigGen(object):
                 # Sig = []
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'Triangle':
-            if SigGen.varlist(f, 1) == (True, True):
+            if sg.varlist(f, 1) == (True, True):
                 f0 = f
                 ps = fs / f  # samples per period
                 periods = np.ceil(T * fs / ps)
@@ -118,7 +119,7 @@ class SigGen(object):
                 t = np.arange(0, T * fs)/fs
                 Sig = sig.Sawtooth(2 * np.pi * f0 * t, width=0.5)
                 return(Sig, t)
-            elif SigGen.varlist(f, 1) == (False, True):
+            elif sg.varlist(f, 1) == (False, True):
                 f0 = f[0]
                 ps = fs / f  # samples per period
                 periods = np.ceil(T * fs / ps)
@@ -132,7 +133,7 @@ class SigGen(object):
                 raise MeasError.EmptyError(sig, 'Nothing to return')
         elif gentype == 'ChirpLin':
             from src.window import Window
-            if SigGen.varlist(f, 2) == (True, True):
+            if sg.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
             elif SigGen.varlist(f, 2) == (False, True):
@@ -183,7 +184,7 @@ class SigGen(object):
         elif gentype == 'ChirpLog':
             # http://dsp.stackexchange.com/questions/30245/clicks-at-end-of-chirp-signal
             from src.window import Window
-            if SigGen.varlist(f, 2) == (True, True):
+            if sg.varlist(f, 2) == (True, True):
                 f0 = f[0]
                 f1 = f[1]
             elif SigGen.varlist(f, 2) == (False, True):
