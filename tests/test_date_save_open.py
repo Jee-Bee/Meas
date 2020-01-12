@@ -58,7 +58,6 @@ exec("m" + timenow + " = sig")  # for now Measurement = signal
 # save figures only
 
 
-
 ts_names = []
 for name in locals():
     if "timeStamp" in name:
@@ -107,11 +106,11 @@ np.savez("measout_names", eval(str(sd_names)))
 # time = timenow.isoformat()
 
 # http://stackoverflow.com/questions/633127/viewing-all-defined-variables
-#for name in vars():  #.keys():
-#    print(name)
+# for name in vars():  #.keys():
+#     print(name)
 # and
 # for value in vars().values():
-#    print(value)
+#     print(value)
 
 
 # existing_vars = locals()

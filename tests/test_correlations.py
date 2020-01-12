@@ -6,7 +6,7 @@ Created on Thu Mar  3 16:10:00 2016
 """
 
 import numpy as np
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 
 # for info see: https://en.wikipedia.org/wiki/Cross-correlation
 # for info see: https://en.wikipedia.org/wiki/Convolution

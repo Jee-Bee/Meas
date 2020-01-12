@@ -5,7 +5,7 @@ Created on Fri Aug 19 20:39:45 2016
 @author: Jee-Bee for jBae (c) 2016
 """
 import numpy as np
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 from scipy.io import wavfile
 
 def findPeak(data, m=None, itt=4, nf=60):

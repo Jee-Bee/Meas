@@ -16,7 +16,7 @@ import numpy as np
 #from scipy.io import wavfile
 from scipy.fftpack import fft, fftshift
 import scipy.stats as stat
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 import Window_1 as wind  # 2 possible error depend on lokation file
 # For testing make copy of window function. Otherwise one of the following
 #   Errors occure

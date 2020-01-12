@@ -8,7 +8,7 @@ Created on Wed Jan 27 16:45:59 2016
 #import
 import numpy as np
 import scipy.signal as sig
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 
 f0 = 50
 f1 = 20000 

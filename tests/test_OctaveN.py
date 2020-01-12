@@ -2,8 +2,11 @@
 """
 Created on Thu Mar 31 19:31:40 2016
 
-@author: winkelk
+@author: Jee-Bee for jBae (c) 2016
 """
+
+import numpy as np
+
 
 T = 5
 fs = 44100

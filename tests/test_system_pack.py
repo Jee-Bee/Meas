@@ -15,15 +15,15 @@ import os
 if sys.platform.startswith('linux'):
     currentdir = os.path.dirname(os.path.realpath(__file__))
     pathtests = "tests/"
-    pathscripts = "scripts/"
+    pathscripts = "src/"
 elif sys.platform.startswith('win32'):
     currentdir = os.path.dirname(os.path.realpath(__file__))
     pathtests = "tests\\"
-    pathscripts = "scripts\\"
+    pathscripts = "src\\"
 elif sys.platform.startswith('cygwin'):
     currentdir = os.path.dirname(os.path.realpath(__file__))
     pathtests = "tests\\"
-    pathscripts = "scripts\\"
+    pathscripts = "src\\"
 elif sys.platform.startswith('darwin'):
     pass
 

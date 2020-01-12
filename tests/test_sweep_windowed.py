@@ -8,7 +8,7 @@ Created on Tue Jun 28 12:46:06 2016
 import numpy as np
 from scipy import signal
 from scipy.fftpack import fft, fftshift, fftfreq
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 
 f0 = 20  # frequency start
 f1 = 10000  # frequency end
@@ -20,7 +20,7 @@ t = np.arange(0, T*fs)/fs  # time array
 factor_f = fs/f1  # factor fs/f1
 T = T - (np.ceil(factor_f) + 1) / fs
 
-#x = signal.chirp(t, f0, T, f1, 'log', 90)
+# x = signal.chirp(t, f0, T, f1, 'log', 90)
 x = np.sin(2 * np.pi * 100 * t) + 0.7 * np.sin(2 * np.pi * 880 * t) + 0.2 * np.sin(2 * np.pi * 2400 * t)
 
 bitDept = 16
@@ -74,14 +74,14 @@ Wx = np.zeros(len(x))
 dsample = len(x) % wl  # delta in samples between mod (x/windw length)
 if dsample == 0:
     ul = np.arange((len(x) - (wl - 1)) / 2) * 2
-    it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  #, 'external_loop'])
+    it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
     for idx in it:
         Wx[idx:idx + wl] += x[idx:idx + wl] * W
     Wx = np.append(Wx, 0)
 else:
     x = np.append(x, np.zeros(wl - dsample))
     ul = np.arange((len(x) - (wl - 1)) / 2) * 2
-    it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  #, 'external_loop'])
+    it = np.nditer(np.int_(ul), flags=['buffered'], casting='same_kind')  # , 'external_loop'])
     for idx in it:
         Wx[idx:idx + wl] += x[idx:idx + wl] * W
     Wx = np.append(Wx, 0)
@@ -98,10 +98,10 @@ else:
 # where e + f is either 0 or 1 and the other exponents are arbitrary.
 
 # Frequency spectrums with NFFT and diferent names (13.152 seconds)
-#NFFT = np.int(2 ** np.ceil(np.log2(len(x))))
-#NFFW = np.int(2 ** np.ceil(np.log2(len(Wx))))
-#X = fft(x, NFFT)
-#WX = fft(Wx, NFFW)
+# NFFT = np.int(2 ** np.ceil(np.log2(len(x))))
+# NFFW = np.int(2 ** np.ceil(np.log2(len(Wx))))
+# X = fft(x, NFFT)
+# WX = fft(Wx, NFFW)
 
 # Frequency spectrums with NFFT and same name (13.121 seconds - 13.504 seconds)
 NFFT = np.int(2 ** np.ceil(np.log2(len(x))))
@@ -110,20 +110,20 @@ NFFT = np.int(2 ** np.ceil(np.log2(len(Wx))))
 WX = fft(Wx, NFFT)
 
 # Frequency spectrums no NFFT (27.034 seconds)
-#X = fft(x)
-#WX = fft(Wx)
+# X = fft(x)
+# WX = fft(Wx)
 # Conclusion without NFFT (Next number off FFT) loop much slower renamening
 # don't do much around the same speed.
 
 
-#if len(t) < 10000:
-#    # mpl.RcParams()
-#    plt.rcParams['agg.path.chunksize'] = 2 ** 16
+# if len(t) < 10000:
+#     # mpl.RcParams()
+#     plt.rcParams['agg.path.chunksize'] = 2 ** 16
 #
-#plt.figure()
+# plt.figure()
 # plt.plot(t, x)
-#plt.plot(t[-10000:], x[-10000:])
-#plt.plot(t[-10000:], Wx[-10000:])
+# plt.plot(t[-10000:], x[-10000:])
+# plt.plot(t[-10000:], Wx[-10000:])
 
 # plt.figure()
 # # plt.plot(t, x)
@@ -134,16 +134,16 @@ WX = fft(Wx, NFFT)
 # plt.plot(W)
 
 # fft signals
-#plt.figure()
-#plt.semilogx(np.abs(X))
-#plt.semilogx(np.abs(WX))
-#plt.plot(np.abs(X))
-#plt.plot(np.abs(WX))
+# plt.figure()
+# plt.semilogx(np.abs(X))
+# plt.semilogx(np.abs(WX))
+# plt.plot(np.abs(X))
+# plt.plot(np.abs(WX))
 
 # Window length frequency band
-#fs = 192000
-#n = np.arange(10)
-#wl = 2 ** n  # window length
-#Tw = wl/fs  # time length Window
-#freq = 1/Tw
-#print(n, wl, freq)
+# fs = 192000
+# n = np.arange(10)
+# wl = 2 ** n  # window length
+# Tw = wl/fs  # time length Window
+# freq = 1/Tw
+# print(n, wl, freq)

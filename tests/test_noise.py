@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jan 29 12:43:07 2016
-@author: enjbwink
+
+@author: Jee-Bee for jBae (c) 2016
 """
 import numpy as np
 import numpy.fft as fft

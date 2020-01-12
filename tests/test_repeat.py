@@ -2,14 +2,14 @@
 """
 Created on Sat Jul 16 17:17:27 2016
 
-@author: winkelk
+@author: Jee-Bee for jBae (c) 2016
 """
 
 # test repeat
 
 import scipy.signal as sg
 import numpy as np
-import scripts.Repeat as rp
+import scripts.repeat as rp
 
 T = 5
 fs = 44100

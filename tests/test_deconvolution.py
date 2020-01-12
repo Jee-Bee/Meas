@@ -5,9 +5,9 @@ Created on Sat Apr 16 18:22:57 2016
 """
 
 import numpy as np
-from scipy.signal import chirp, convolve, deconvolve # , hann # hanning window
+from scipy.signal import chirp, convolve, deconvolve  # , hann # hanning window
 from scipy.fftpack import fft, ifft
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 # signal generating:
@@ -85,12 +85,12 @@ def harmonic_distorded_fft(sig1k, sig1kresp, sig1kh, plot_figure=True, plot_spec
 
 # deconvolution:
 # --------------
-#from scipy import fftpack
-#from scipy import signal
+# from scipy import fftpack
+# from scipy import signal
 
 def deconvolution_harmonic(sig1k, sig1kresp, sig1kh, plot_figure=True):
     deconvolved1kq, deconvolved1kr, = deconvolve(sig1k[1::], sig1kresp[1::])
-#convolve()
+# convolve()
 
     if plot_figure is True:
         figd = plt.figure()
@@ -103,16 +103,16 @@ def deconvolution_harmonic(sig1k, sig1kresp, sig1kh, plot_figure=True):
 
 
 # ----------------- Sweep -------------------------------------
-#sig = chirp(t, 20 ,T,1000)
+# sig = chirp(t, 20, T, 1000)
 
 
 # ----------------- Temp --------------------------------------
 # http://stackoverflow.com/questions/35445424/surface-and-3d-contour-in-matplotlib
-#fig = plt.figure()
-#ax = fig.add_subplot(111, projection="3d")
-#X, Y = np.mgrid[-2:2:60j, -1:1:30j]
-#Z = np.sin(np.pi*X)*np.sin(np.pi*Y)
-#ax.plot_surface(X, Y, Z, cmap="autumn_r", lw=0.5, rstride=1, cstride=1)
+# fig = plt.figure()
+# ax = fig.add_subplot(111, projection="3d")
+# X, Y = np.mgrid[-2:2:60j, -1:1:30j]
+# Z = np.sin(np.pi*X)*np.sin(np.pi * Y)
+# ax.plot_surface(X, Y, Z, cmap="autumn_r", lw=0.5, rstride=1, cstride=1)
 
 if __name__ == "__main__":
     sig1k_or, sig1k_custh, sig1k_sinh = harmonic_distorted_signals()

@@ -23,7 +23,7 @@ Created on Wed Jan  6 10:34:31 2016
 import numpy as np
 from scipy.io import wavfile
 from scipy.fftpack import fft, fftshift
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 from scripts.Window import *
 
 # Vars

@@ -7,7 +7,7 @@ Created on Wed Aug  3 11:40:51 2016
 
 import numpy as np
 from scipy.fftpack import fft, ifft
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 
 # test script for making multi channel calculations
 
@@ -21,10 +21,10 @@ chan = []
 for channel in range(nChan):
     print(channel)
     if channel == 0:
-        chan = np.concatenate((chan, np.ones(1024)*channel),axis=0)
+        chan = np.concatenate((chan, np.ones(1024)*channel), axis=0)
     else:
-        #chan_stack = np.concatenate((chan_stack, np.ones(1024)*chan),axis=0)
-        chan = np.vstack((chan, np.ones(1024)*channel))
+        # chan_stack = np.concatenate((chan_stack, np.ones(1024) * chan),axis=0)
+        chan = np.vstack((chan, np.ones(1024) * channel))
 
 
 # simple multi channel sine generator
@@ -33,10 +33,10 @@ chansine = []
 for channel in range(nChan):
     print(channel)
     if channel == 0:
-        chansine = np.concatenate((chansine, (0.5 + 0.5 * channel) * np.sin(2*np.pi * (1 + channel * 5) *t)),axis=0)
+        chansine = np.concatenate((chansine, (0.5 + 0.5 * channel) * np.sin(2 * np.pi * (1 + channel * 5) * t)), axis=0)
     else:
-        #chan_stack = np.concatenate((chan_stack, np.ones(1024)*chan),axis=0)
-        chansine = np.vstack((chansine, (0.5 + 0.5 * channel) * np.sin(2*np.pi * (1 + channel * 5) *t)))
+        # chan_stack = np.concatenate((chan_stack, np.ones(1024) * chan), axis=0)
+        chansine = np.vstack((chansine, (0.5 + 0.5 * channel) * np.sin(2 * np.pi * (1 + channel * 5) * t)))
 
 if transformed == True:
     chan = chan.T
@@ -81,7 +81,7 @@ if len(sineshape) > 1:
 # FFT analysis at signals:
 # multi fft in form of (channels, length), otherwise transpose
 # limit number of channels to 32
-chanshape = np.shape((chansine))
+chanshape = np.shape(chansine)
 if len(chanshape) == 1:
     # std fft is correct
     print('std FFT is fine no multi channel FFT Needed')

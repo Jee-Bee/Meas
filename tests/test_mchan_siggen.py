@@ -8,7 +8,7 @@ Created on Wed Aug  3 11:40:51 2016
 import numpy as np
 from scipy.fftpack import fft, ifft
 from scipy.signal import chirp
-import matplotlib.pylab as plt
+import matplotlib.pyplot as plt
 
 # test script for making multi channel calculations
 
@@ -28,12 +28,12 @@ f0 = fs/128
 f1 = fs/8
 
 # simple multi channel sine generator
-t = np.arange(T * fs)/fs
-si_chirp = chirp(t,f0,T,f1,method='log',phi=90)
-si_chirp = np.append(si_chirp,np.zeros(T_s * fs))
+t = np.arange(T * fs) / fs
+si_chirp = chirp(t, f0, T, f1, method='log', phi=90)
+si_chirp = np.append(si_chirp, np.zeros(T_s * fs))
 if cascade is True:
     # method 1: repeats chirps per channel than channels in serie
-    if method ==  1:
+    if method == 1:
         chan_chirp = []
         rep_chirp = []
         # step 1: repeat chrip signal:
@@ -43,7 +43,7 @@ if cascade is True:
         print("len rep_chirp", len(rep_chirp.T))
         # step 2 place chirps in total lenght signal positions
         for Channel in range(nChan):
-            rep_chirp[Channel, Channel * len(temp_chirp) : (Channel + 1) * len(temp_chirp)] = temp_chirp
+            rep_chirp[Channel, Channel * len(temp_chirp): (Channel + 1) * len(temp_chirp)] = temp_chirp
         t = np.arange(len(rep_chirp.T))/fs
     # method 2: chirps in channels; repeat all channels
     elif method == 2:
@@ -54,7 +54,7 @@ if cascade is True:
             rep_chirp[Channel, Channel * len(si_chirp) : (Channel + 1) * len(si_chirp)] = si_chirp
         # step 2: repeat total signal set:
         for repeats in range(nrepeates):
-            rep_chirp = np.concatenate((rep_chirp, rep_chirp[0:len(si_chirp)]),axis=1)
+            rep_chirp = np.concatenate((rep_chirp, rep_chirp[0:len(si_chirp)]), axis=1)
         t = np.arange(len(rep_chirp.T))/fs
     else:
         raise ValueError("method should be a 1 or a 2")
@@ -78,10 +78,10 @@ else:
 chan_chirp = []
 for Channel in range(nChan):
     if Channel == 0:
-        chan_chirp = np.concatenate((chan_chirp, (0.5 + 0.5 * Channel) * np.sin(2*np.pi * (1 + Channel * 5) *t)),axis=0)
+        chan_chirp = np.concatenate((chan_chirp, (0.5 + 0.5 * Channel) * np.sin(2 * np.pi * (1 + Channel * 5) * t)), axis=0)
     else:
         #chan_stack = np.concatenate((chan_stack, np.ones(1024)*chan),axis=0)
-        chan_chirp = np.vstack((chan_chirp, (0.5 + 0.5 * Channel) * np.sin(2*np.pi * (1 + Channel * 5) *t)))
+        chan_chirp = np.vstack((chan_chirp, (0.5 + 0.5 * Channel) * np.sin(2 * np.pi * (1 + Channel * 5) * t)))
 
 
 # dimension checker
