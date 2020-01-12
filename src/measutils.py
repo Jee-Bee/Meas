@@ -206,42 +206,6 @@ def phasecheck(x):
     else:
         return(False)
 
-def addzeros(signal, l0, fs):
-    pass
-
-def srepeat(sig, reps, l0=None, fs=None, addzeros=True):
-    """
-    Input:
-        sig
-        reps
-        l0(Optional) = length in samples or if it an array T(length time) together
-        with fs (sample frequency)
-        fs(optional) = sample Frequency
-        addzeros = True
-    Output:
-        repsig = repeated signal
-        ursl = unrepeatedsignal length
-
-    TODO:
-    - Make ursl optional
-    """
-    if addzeros is True:
-        if (l0 is None) and (fs is None):
-            raise ValueError("if addzeros is True l0 AND fs can't be None")
-        elif (fs is None) and l0 < 1024:
-            raise ValueError("if addzeros is True and fsis None. l0 should be greather than 1024 samples")
-        elif (fs is None) and l0 > 1024:
-            sig = np.append(sig, np.zeros(l0))
-            repsig = np.tile(sig, reps)
-            return(repsig, len(sig))
-        else:
-            sig = np.append(sig, np.zeros(l0*fs))
-            repsig = np.tile(sig, reps)
-            return(repsig, len(sig))
-        pass
-    else:
-        repsig = np.tile(sig, reps)
-        return(repsig, len(sig))
 
 def zeroCheck(vals):
     """

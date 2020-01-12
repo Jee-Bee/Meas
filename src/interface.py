@@ -4,6 +4,7 @@ import sys
 import numpy as np
 import sounddevice as sd
 import src.measerror
+import src.repeat
 from src.measwarning import InterfaceWarning
 
 
@@ -101,8 +102,9 @@ def IOcheck():
         raise ("No module named 'sounddevice'. ")
 
 
-def advPlayRec(data, samplerate=None, input_channels=None, output_channels=None,
-               repeats=None, l0=None, cascade=False, dtype=None, out=None,
+
+def advPlayRec(data, fs=None, repeats=None, l0=None, cascade=False,
+               input_channels=None, l0type='samples', output_channels=None, dtype=None, out=None,
                input_mapping=None, output_mapping=None, blocking=False, **kwargs):
     """
     adv PlayRec
@@ -110,6 +112,7 @@ def advPlayRec(data, samplerate=None, input_channels=None, output_channels=None,
     Parameters
     ----------
     data: Audio data to be played back. see python Sounddevice
+    fs: sample rate od data signal
     repeats: Number of repeats (per channel).
     cascade: If ''False''(the default) measure all output channels at once. If
         ''True'' Solo measurement per channel.
@@ -139,8 +142,14 @@ def advPlayRec(data, samplerate=None, input_channels=None, output_channels=None,
         import sounddevice as sd
         print(sd.get_portaudio_version())  # this works
 
+        limit_subwoofers = 10  # add to general properties - 10, 100, etc
         if output_channels is int:
             pass
+        elif output_channels is float:
+            output_channels = np.round(output_channels, int(np.log10(limit_subwoofers)))
+            top = output_channels // 1
+            sub = np.int(np.round((output_channels - top) * limit_subwoofers))
+            output_channels = top + sub
         elif output_channels in ['mono', 'Mono', 'MONO', 'm', 'M']:
             output_channels = 1
         elif output_channels in ['stereo', 'Stereo', 'STEREO', 's', 'S']:
@@ -148,10 +157,10 @@ def advPlayRec(data, samplerate=None, input_channels=None, output_channels=None,
         else:
             raise ValueError("Output have to be an integer or 'Mono' or 'Stereo'")
 
-        if repeats is None:
-            repeats = 1
-        else:
-            data = np.tile(data, repeats)
+        if (repeats is not None) and (l0type in [samples, Samples, SAMPLES, s, S]):
+            data = repeat.srepeat(data, repeats, l0)
+        elif (repeats is not None) and (l0type in [time, Time, TIME, t, T]):
+            data = repeat.srepeat(data, repeats, l0, fs)
 
         if (output_mapping is not None) and (cascade is True):
             # chack same dimension
@@ -166,8 +175,7 @@ def advPlayRec(data, samplerate=None, input_channels=None, output_channels=None,
                     recarray = np.vstack((recarray, chanarray))
                 else:
                     recarray = np.dstack((recarray, chanarray))
-            recarray = np.array_split(recarray, repeats, axis=0)
-            recarray /= repeats
+            recarray = repAvg(recarray, repeats)
             return(recarray)
         elif (output_mapping is not None):
             recarray = []
