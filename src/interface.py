@@ -3,8 +3,8 @@
 import sys
 import numpy as np
 import sounddevice as sd
-import src.measerror
-import src.repeat
+import src.measerror as me
+import src.repeat as repeat
 from src.measwarning import InterfaceWarning
 
 
@@ -63,9 +63,9 @@ def interfaceIO():
                     print(idx, temp['name'])
                 devopt = (nzin, nzout)
             elif sys.platform.startswith('win32'):
-                raise InterfaceError(str(devopt), 'No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
+                raise me.InterfaceError(str(devopt), 'No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
             elif sys.platform.startswith('cygwin'):
-                raise InterfaceError(str(devopt), 'No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
+                raise me.InterfaceError(str(devopt), 'No full dupplex interfaces are availlable. Create Aggrigate Device or virtual In/Out Device:')
             elif sys.platform.startswith('darwin'):
                 # raise InterfaceWarning('No full dupplex interfaces are availlable. Any valid combination of interfaces will work :')
                 print('This are full dupplex interfaces under all circumstances:')
@@ -157,9 +157,9 @@ def advPlayRec(data, fs=None, repeats=None, l0=None, cascade=False,
         else:
             raise ValueError("Output have to be an integer or 'Mono' or 'Stereo'")
 
-        if (repeats is not None) and (l0type in [samples, Samples, SAMPLES, s, S]):
+        if (repeats is not None) and (l0type in ['samples', 'Samples', 'SAMPLES', 's', 'S']):
             data = repeat.srepeat(data, repeats, l0)
-        elif (repeats is not None) and (l0type in [time, Time, TIME, t, T]):
+        elif (repeats is not None) and (l0type in ['time', 'Time', 'TIME', 't', 'T']):
             data = repeat.srepeat(data, repeats, l0, fs)
 
         if (output_mapping is not None) and (cascade is True):
@@ -225,17 +225,27 @@ def advPlayRec(data, fs=None, repeats=None, l0=None, cascade=False,
 def simplePlayRec(data, samplerate=None, input_channels=None, output_channels=None,
                repeats=None):
     import sounddevice as sd
-    print("break during recording")
-    data = np.repeat(data, output_channels).reshape((len(data), output_channels))
-    print("break after this")
-    recarray = sd.playrec(data, samplerate, input_channels)
-    print("break after this")
+    print("In function")
+    if repeats is not None:
+        data = repeat.repeat(data, repeats)
+    print("startpalying")
     recarray = sd.playrec(data, samplerate, input_channels)
     sd.wait()
-    recarray = recarray = np.array_split(recarray, repeats, axis=0)
-    recarray /= repeats
+    if repeats is not None:
+        pass
     return(recarray)
 
 
 def BufferSampt(Ns):
     print('Sample buffer is ' + Ns + 'Samples')
+
+if __name__ == "__main__":
+    f = 1000
+    fs = 44100
+    T = 5
+    rec_channels=2
+    t = np.arange (T * fs)
+    play_sig = np.sin(2 * np.pi * f * t)
+
+    rec_sig = simplePlayRec(play_sig, fs, rec_channels)
+    print(rec_sig.shape)
